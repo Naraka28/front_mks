@@ -14,7 +14,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': '/src/ui/views'
+      '@': '/src/ui/views',
     }
   }
 })

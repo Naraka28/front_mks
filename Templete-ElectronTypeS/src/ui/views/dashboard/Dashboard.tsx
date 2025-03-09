@@ -1,11 +1,13 @@
+import MainDashboard from './mainDashboard/MainDashboard';
+import Sidebar from './sidebar/Sidebar';
+
 function Dashboard() {
     return (
-      <div>
-        <h1>Dashboard</h1>
-        <p>Welcome to the dashboard!</p>
-      </div>
+        <main className='grid gap-4 p-4 grid-cols-[220px,_1fr]'>
+            <Sidebar />
+            <MainDashboard />
+        </main>
     );
-  }
-  
-  export default Dashboard;
-  
+}
+
+export default Dashboard;
