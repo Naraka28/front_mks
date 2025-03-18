@@ -1,7 +1,11 @@
 import { useState } from "react";
-import reactLogo from "./../assets/react.svg";
+import mokkaSoftLogo from "./../assets/coffee-icon.svg";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Dashboard from "./dashboard/Dashboard";
+import Trabajadores from './dashboard/Trabajadores';
+import Reportes from './dashboard/Reportes';
+import Ventas from './dashboard/Ventas';
+import Inventario from './dashboard/Inventario';
 import "./../App.css";
 // import "./tailwind.css";
 
@@ -15,32 +19,16 @@ function App() {
           path="/"
           element={
             <>
-              <div>
-                Fran Epic deaaaaa Hola Miguel hola estrada hola klep
-                <a href="https://react.dev" target="_blank">
-                  <img src={reactLogo} className="logo react" alt="React logo" />
-                </a>
-              </div>
-              <h1>Vite + React</h1>
-              <div className="card">
-                <button onClick={() => setCount((count) => count + 1)}>
-                  count is {count}
-                </button>
-                <p>
-                  Edit <code>src/App.tsx</code> and save to test HMR
-                </p>
-              </div>
-              <p className="read-the-docs">
-                Click on the Vite and React logos to learn more
-              </p>
+              <h1>MokkaSoft</h1>
               <Link to="/dashboard">Go to Dashboard</Link>
             </>
           }
         />
-        <Route
-          path="/dashboard"
-          element={<Dashboard />}
-        />
+        <Route path="/dashboard" element={<Dashboard />}/>
+        <Route path="/trabajadores" element={<Trabajadores />} />
+        <Route path="/reportes" element={<Reportes />} />
+        <Route path="/ventas" element={<Ventas />} />
+        <Route path="/inventario" element={<Inventario />} />
       </Routes>
     </Router>
   );
