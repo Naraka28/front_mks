@@ -1,13 +1,13 @@
 import Sidebar from './sidebar/Sidebar';
-import InventoryTable from './tables/InventoryTable';
+import { ReportsGrid } from './reports/ReportsGrid'
 
-function Inventario() {
+function Reports() {
     return (
         <main className='grid gap-4 p-4 grid-cols-[220px,_1fr]'>
             <Sidebar />
-            <InventoryTable />
+            <ReportsGrid />
         </main>
     );
 }
 
-export default Inventario;
+export default Reports;

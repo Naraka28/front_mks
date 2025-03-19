@@ -1,13 +1,13 @@
 import Sidebar from './sidebar/Sidebar';
-import { SalesTable } from './tables/salesTable';
+import { BodyEmployees } from './auxiliaryComponents/BodyEmployees';
 
-function Ventas() {
+function Employees() {
     return (
         <main className='grid gap-4 p-4 grid-cols-[220px,_1fr]'>
             <Sidebar />
-            <SalesTable />
+            <BodyEmployees />
         </main>
     );
 }
 
-export default Ventas;
+export default Employees;

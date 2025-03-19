@@ -1,12 +1,13 @@
 import Sidebar from './sidebar/Sidebar';
+import { BodySales } from './auxiliaryComponents/BodySales';
 
-function Reportes() {
+function Sales() {
     return (
         <main className='grid gap-4 p-4 grid-cols-[220px,_1fr]'>
             <Sidebar />
-            <h1>Reportes</h1>
+            <BodySales />
         </main>
     );
 }
 
-export default Reportes;
+export default Sales;

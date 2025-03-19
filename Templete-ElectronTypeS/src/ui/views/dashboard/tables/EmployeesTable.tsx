@@ -4,37 +4,37 @@ export const EmployeesTable = () => {
   const customers = [
     {
       name: "Alex Shatov",
-      email: "alexshatov@gmail.com",
+      contact: "6621234567",
       spent: "$2,890.66",
-      country: "🇺🇸",
+      country: "Activo",
       img: "https://raw.githubusercontent.com/cruip/vuejs-admin-dashboard-template/main/src/images/user-36-05.jpg",
     },
     {
       name: "Philip Harbach",
-      email: "philip.h@gmail.com",
+      contact: "6621234567",
       spent: "$2,767.04",
-      country: "🇩🇪",
+      country: "Activo",
       img: "https://raw.githubusercontent.com/cruip/vuejs-admin-dashboard-template/main/src/images/user-36-06.jpg",
     },
     {
       name: "Mirko Fisuk",
-      email: "mirkofisuk@gmail.com",
+      contact: "6621234567",
       spent: "$2,996.00",
-      country: "🇫🇷",
+      country: "Baja",
       img: "https://raw.githubusercontent.com/cruip/vuejs-admin-dashboard-template/main/src/images/user-36-07.jpg",
     },
     {
       name: "Olga Semklo",
-      email: "olga.s@cool.design",
-      spent: "$1,220.66",
-      country: "🇮🇹",
+      contact: "6621234567",
+      spent: "$6621234567",
+      country: "Activo",
       img: "https://raw.githubusercontent.com/cruip/vuejs-admin-dashboard-template/main/src/images/user-36-08.jpg",
     },
     {
       name: "Burak Long",
-      email: "longburak@gmail.com",
+      contact: "6621234567",
       spent: "$1,890.66",
-      country: "🇬🇧",
+      country: "Baja",
       img: "https://raw.githubusercontent.com/cruip/vuejs-admin-dashboard-template/main/src/images/user-36-09.jpg",
     },
   ];
@@ -60,10 +60,10 @@ const TableHead = () => {
   return (
     <thead className="text-xs font-semibold uppercase text-gray-400 bg-gray-50">
       <tr>
-        <th className="p-2 text-left">Name</th>
-        <th className="p-2 text-left">Email</th>
-        <th className="p-2 text-left">Spent</th>
-        <th className="p-2 text-center">Country</th>
+        <th className="p-2 text-left">Nombre</th>
+        <th className="p-2 text-left">Contacto</th>
+        <th className="p-2 text-left">Nómina</th>
+        <th className="p-2 text-center">Status</th>
       </tr>
     </thead>
   );
@@ -71,13 +71,13 @@ const TableHead = () => {
 
 const TableRow = ({
   name,
-  email,
+  contact,
   spent,
   country,
   img,
 }: {
   name: string;
-  email: string;
+  contact: string;
   spent: string;
   country: string;
   img: string;
@@ -94,7 +94,7 @@ const TableRow = ({
           <span className="font-medium text-gray-800">{name}</span>
         </div>
       </td>
-      <td className="p-2 whitespace-nowrap">{email}</td>
+      <td className="p-2 whitespace-nowrap">{contact}</td>
       <td className="p-2 whitespace-nowrap font-medium text-green-500">{spent}</td>
       <td className="p-2 text-lg text-center">{country}</td>
     </tr>

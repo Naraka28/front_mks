@@ -2,10 +2,10 @@ import { useState } from "react";
 import mokkaSoftLogo from "./../assets/coffee-icon.svg";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Dashboard from "./dashboard/Dashboard";
-import Trabajadores from './dashboard/Trabajadores';
-import Reportes from './dashboard/Reportes';
-import Ventas from './dashboard/Ventas';
-import Inventario from './dashboard/Inventario';
+import Trabajadores from './dashboard/Employees';
+import Reportes from './dashboard/Reports';
+import Ventas from './dashboard/Sales';
+import Inventario from './dashboard/Inventory';
 import "./../App.css";
 // import "./tailwind.css";
 
