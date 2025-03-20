@@ -17,8 +17,12 @@
     "dist:linux": "npm run transpile:electron && npm run build && electron-builder --linux --arm64"
   },
   "dependencies": {
+    "@radix-ui/react-dropdown-menu": "^2.1.6",
+    "lucide-react": "^0.479.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-icons": "^5.5.0",
+    "react-router-dom": "^7.3.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
