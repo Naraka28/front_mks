@@ -1,37 +1,52 @@
 import { useState } from "react";
-import Sidebar from "../user/Components/Sidebar";
+import { useNavigate } from "react-router-dom"; // Importa useNavigate
+import Sidebar from "./auxiliaryComponents/Sidebar";
 import MenuItems from "../user/Components/MenuItems";
 
 function Menu() {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedType, setselectedType] = useState<string | null>(null);
+  const navigate = useNavigate(); // Hook para navegar
+
+  const handleSelectItem = (id: number) => {
+    navigate(`/selected/${id}`); // Redirige a MenuSelected con el ID
+  };
 
   return (
     <div className="h-screen w-screen manrope-500">
-      <div className="relative grid grid-cols-9 grid-rows-8 gap-3 p-5 min-h-screen">
+      {/* Ocultar scrollbar */}
+      <style>{`
+          .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+          }
 
+          .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+          }
+        `}</style>
+
+      <div className="relative grid grid-cols-9 grid-rows-8 gap-3 p-5 min-h-screen">
         {/* Sidebar */}
         <div className="bg-[#ffdbe8] rounded-2xl row-span-8 flex">
-          <Sidebar onSelectCategory={setSelectedCategory} />
+          <Sidebar onSelectCategory={setselectedType} />
         </div>
 
+        
         {/* Contenido */}
         <div className="bg-white col-span-6 rounded-2xl flex justify-start items-center text-5xl font-[Poppins] font-extrabold p-4">
           <h1>
-            {selectedCategory ? `Categoría: ${selectedCategory}` : "¿Qué se te antoja hoy?"}
+            {selectedType ? `Categoría: ${selectedType}` : "¿Qué se te antoja hoy?"}
           </h1>
         </div>
-
-        <div className="bg-[#ffdbe8] rounded-2xl row-span-8 col-span-2">
-          <div className="flex flex-col justify-start items-center h-full">
-            <p className="text-3xl font-[Poppins] font-black py-5">NUEVA ORDEN</p>
-          </div>
+        
+        {/* Nueva Orden */}
+        <div className="bg-[#ffdbe8] rounded-2xl row-span-8 col-span-2 flex flex-col justify-start items-center p-4">
+          <p className="text-3xl font-[Poppins] font-black py-5">NUEVA ORDEN</p>
         </div>
 
-        <div className="bg-[#ffdbe8] rounded-2xl row-span-7 col-span-6 overflow-y overflow-hidden p-4" style={{ maxHeight: 'calc(109vh - 200px)' }}>
-          <MenuItems category={selectedCategory} />
+        <div className="bg-[#ffdbe8] rounded-2xl row-span-7 col-span-6 overflow-y-auto p-4 scrollbar-hide" style={{ maxHeight: 'calc(108vh - 200px)' }}>
+          <MenuItems category={selectedType} onSelectItem={handleSelectItem} />
         </div>
-
-
       </div>
     </div>
   );

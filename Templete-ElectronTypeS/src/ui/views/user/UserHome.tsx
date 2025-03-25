@@ -1,19 +1,31 @@
-import { useState } from 'react';
-import ImageAd from '../../assets/Ad.png';
-import Menu from '../user/Menu';
+import { useState } from "react";
+import imageAd from "../../assets/Ad.png";
+import imageTransition from "../../assets/test.png"; // Nueva imagen intermedia
+import Menu from "./Menu";
 
 function UserHome() {
-    const [showMenu, setShowMenu] = useState(false);
+    const [showApp, setShowApp] = useState(false);
+    const [showTransition, setShowTransition] = useState(false);
+
+    const handleClick = () => {
+        setShowTransition(true); // Mostrar imagen intermedia
+        setTimeout(() => {
+            setShowApp(true); // Después de un tiempo, mostrar la app
+        }, 2000); // 2 segundos de transición
+    };
 
     return (
-        <div>
-            <img
-                src={ImageAd}
-                alt="Publicidad"
-                style={{ cursor: 'pointer' }}
-                onClick={() => setShowMenu(true)}
-            />
-            {showMenu && <Menu />}
+        <div className="flex items-center justify-center h-screen">
+            {!showApp ? (
+                <img
+                    src={showTransition ? imageTransition : imageAd}
+                    alt="Ad"
+                    className="transition-opacity duration-1000 ease-in-out"
+                    onClick={handleClick}
+                />
+            ) : (
+                <Menu />
+            )}
         </div>
     );
 }

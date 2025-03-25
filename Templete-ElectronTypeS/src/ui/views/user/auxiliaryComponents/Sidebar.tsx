@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FaChevronUp, FaChevronDown, FaMugHot, FaCoffee, FaGlassMartini, FaCookie } from "react-icons/fa";
 
-const CATEGORIES = [
+const TYPES = [
     { icon: FaMugHot, name: "Bebida Caliente" },
     { icon: FaCoffee, name: "Cafés" },
     { icon: FaGlassMartini, name: "Bebida Fría" },
@@ -25,7 +25,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectCategory }) => {
             <FaChevronUp className="text-gray-600 cursor-pointer text-xl" />
 
             <div className="flex flex-col items-center gap-4">
-                {CATEGORIES.map((item, index) => (
+                {TYPES.map((item, index) => (
                     <button
                         key={index}
                         onClick={() => handleSelect(item.name)}
