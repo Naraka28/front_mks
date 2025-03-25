@@ -7,6 +7,8 @@ import Reportes from './dashboard/Reports';
 import Ventas from './dashboard/Sales';
 import Inventario from './dashboard/Inventory'
 import UserHome from "./user/UserHome";
+import MenuSelected from "./user/MenuSelected";
+
 
 // import "./tailwind.css";
 
@@ -34,6 +36,7 @@ function App() {
         <Route path="/ventas" element={<Ventas />} />
         <Route path="/inventario" element={<Inventario />} />
         <Route path="/userhome" element={<UserHome />} />
+        <Route path="/selected/:itemId" element={<MenuSelected />} />
       </Routes>
     </Router>
   );
