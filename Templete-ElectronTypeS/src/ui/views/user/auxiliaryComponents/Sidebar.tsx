@@ -21,7 +21,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectCategory }) => {
     };
 
     return (
-        <aside className="flex flex-col items-center w-full h-full rounded-3xl shadow-lg py-4 justify-between">
+        <aside className="flex flex-col items-center w-full h-full py-4 justify-between">
             <FaChevronUp className="text-gray-600 cursor-pointer text-xl" />
 
             <div className="flex flex-col items-center gap-4">
@@ -29,8 +29,8 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectCategory }) => {
                     <button
                         key={index}
                         onClick={() => handleSelect(item.name)}
-                        className={`flex items-center justify-center p-8 border shadow-md rounded-full transition 
-                            ${selectedCategory === item.name ? "bg-gray-300" : "bg-white hover:bg-gray-200"}
+                        className={`flex items-center justify-center p-8 border shadow-sm rounded-full transition 
+                            ${selectedCategory === item.name ? "bg-gray-200" : "bg-[#FAF9F6] hover:shadow-md"}
                         `}
                     >
                         <item.icon className="text-gray-900 text-4xl" />
