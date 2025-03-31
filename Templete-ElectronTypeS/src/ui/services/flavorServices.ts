@@ -12,18 +12,10 @@ export interface FlavorList{
     flavors: Flavor[];
 }
 
-export interface FlavorCreate{
-    name: string;
-    price: number;
-    image: string;
-}
+export type FlavorCreate = Omit<Flavor, 'id'>;
 
-export interface FlavorUpdate{
-    id: number;
-    name: string;
-    price: number;
-    image: string;
-}
+export type FlavorUpdate = Partial<Flavor>;
+
 
 
 export async function getFlavors(): Promise<Flavor[]> {
