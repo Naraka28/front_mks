@@ -24,7 +24,7 @@ const Sizes: React.FC<SizesProps> = ({ selectedCategory, onSelectSize }) => {
         : sizeItems;
 
     return (
-        <div className="grid grid-cols-3 gap-4 p-4 font-[Poppins]">
+        <div className="grid grid-cols-2 gap-4 p-4 font-[Poppins]">
             {filteredItems.map((item) => (
                 <Button
                     key={item.id}

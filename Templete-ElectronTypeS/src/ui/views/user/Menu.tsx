@@ -44,7 +44,7 @@ function Menu() {
           <p className="text-3xl font-[Poppins] font-black py-5 text-[#333333]">NUEVA ORDEN</p>
         </div>
 
-        <div className="shadow-lg border-2 border-[#E8E8E8] rounded-2xl row-span-7 col-span-6 overflow-y-auto p-4 scrollbar-hide" style={{ maxHeight: 'calc(108vh - 200px)' }}>
+        <div className="shadow-lg border-2 border-[#E8E8E8] rounded-2xl row-span-7 col-span-6 overflow-y-auto p-4 scrollbar-hide" style={{ maxHeight: 'calc(106vh - 200px)' }}>
           <MenuItems category={selectedType} onSelectItem={handleSelectItem} />
         </div>
       </div>

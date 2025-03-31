@@ -7,7 +7,9 @@ import Reportes from './dashboard/Reports';
 import Ventas from './dashboard/Sales';
 import Inventario from './dashboard/Inventory'
 import UserHome from "./user/UserHome";
+import Menu from "./user/Menu";
 import MenuSelected from "./user/MenuSelected";
+import OrderConfirmation from "./user/OrderConfirmation";
 
 
 // import "./tailwind.css";
@@ -36,7 +38,15 @@ function App() {
         <Route path="/ventas" element={<Ventas />} />
         <Route path="/inventario" element={<Inventario />} />
         <Route path="/userhome" element={<UserHome />} />
+        <Route path="/menu" element={<Menu />} />
         <Route path="/selected/:itemId" element={<MenuSelected />} />
+        <Route path="/menu/:itemId" element={<MenuSelected />} />
+        <Route path="/menu/:itemId/size/:sizeId" element={<MenuSelected />} />
+        <Route path="/menu/:itemId/size/:sizeId/flavour/:flavourId" element={<MenuSelected />} />
+        <Route path="/menu/:itemId/size/:sizeId/flavour/:flavourId/coffeeBeans/:coffeeBeansId" element={<MenuSelected />} />
+        <Route path="/menu/:itemId/size/:sizeId/flavour/:flavourId/coffeeBeans/:coffeeBeansId/toppings/:toppingId" element={<MenuSelected />} />
+        <Route path="/order-actions" element={<MenuSelected />} />
+        <Route path="/order/confirm" element={< OrderConfirmation />} />
       </Routes>
     </Router>
   );

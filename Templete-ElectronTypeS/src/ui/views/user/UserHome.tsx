@@ -1,16 +1,18 @@
 import { useState } from "react";
 import imageAd from "../../assets/Ad.png";
 import imageTransition from "../../assets/test.png";
-import Menu from "./Menu";
+import { useNavigate } from "react-router-dom";
 
 function UserHome() {
     const [showApp, setShowApp] = useState(false);
     const [showTransition, setShowTransition] = useState(false);
+    const navigate = useNavigate(); // Hook para navegar
 
     const handleClick = () => {
         setShowTransition(true);
         setTimeout(() => {
             setShowApp(true);
+            navigate("/Menu"); // Navega a /Menu
         }, 2000);
     };
 
@@ -25,16 +27,14 @@ function UserHome() {
 
     return (
         <div className="flex items-center justify-center h-screen w-screen">
-            {!showApp ? (
-                <img
-                    src={showTransition ? imageTransition : imageAd}
-                    alt="Ad"
-                    style={imageStyle}
-                    className="transition-opacity duration-1000 ease-in-out"
-                    onClick={handleClick}
-                />
-            ) : (
-                <Menu />
+            {!showApp && (
+            <img
+                src={showTransition ? imageTransition : imageAd}
+                alt="Ad"
+                style={imageStyle}
+                className="transition-opacity duration-1000 ease-in-out"
+                onClick={handleClick}
+            />
             )}
         </div>
     );
