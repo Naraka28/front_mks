@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import MultiSelectDropDown from "../auxiliaryComponents/MultiSelectDropDown";
 
 const ProductForm: React.FC = () => {
     const [formData, setFormData] = useState<{
@@ -29,6 +30,21 @@ const ProductForm: React.FC = () => {
     e.preventDefault();
     console.log("Form submitted:", formData);
   };
+
+  const toppings = [
+    { label: "Cinammon", value: "cinammon" },
+    { label: "Chocolate", value: "chocolate" },
+    { label: "Vanilla", value: "vanilla" },
+    { label: "Strawberry", value: "strawberry" },
+    { label: "Mint", value: "mint" },
+    { label: "Caramel", value: "caramel" }
+  ];
+
+  const sizes = [
+    { label: "Small", value: "small" },
+    { label: "Medium", value: "medium" },
+    { label: "Large", value: "large" }
+  ];
 
   return (
     <div className="max-w-lg mx-auto p-6 bg-white shadow-xl rounded-2xl border border-gray-200">
@@ -79,16 +95,18 @@ const ProductForm: React.FC = () => {
           </select>
         </div>
         <div>
-            aqui va el select de sabores
+           {/* topings */}
+          <MultiSelectDropDown content={toppings} />
         </div>
         <div>
-            aqui va el select de toppings
+          {/* sizes */}
+          <MultiSelectDropDown content={sizes} />
         </div>
         <div>
-            aqui va el select de leches
+          <MultiSelectDropDown content={toppings} />
         </div>
         <div>
-            aqui va el select de tamaños
+          <MultiSelectDropDown content={toppings} />
         </div>
         <button
           type="submit"
