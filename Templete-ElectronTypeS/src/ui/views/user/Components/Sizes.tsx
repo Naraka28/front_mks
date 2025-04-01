@@ -6,10 +6,10 @@ import GrandeSizeIcon from "./../../../assets/Prueba1.png";
 import VentiSizeIcon from "./../../../assets/Prueba1.png";
 
 const sizeItems = [
-    { id: 1, name: "Short", category: "size", icon: SmallSizeIcon },
-    { id: 2, name: "Tall", category: "size", icon: TallSizeIcon },
-    { id: 3, name: "Grande", category: "size", icon: GrandeSizeIcon },
-    { id: 4, name: "Venti", category: "size", icon: VentiSizeIcon },
+    { id: 1, name: "Short", category: "size", icon: SmallSizeIcon, price: 0 },
+    { id: 2, name: "Tall", category: "size", icon: TallSizeIcon,price: 5 },
+    { id: 3, name: "Grande", category: "size", icon: GrandeSizeIcon, price: 10 },
+    { id: 4, name: "Venti", category: "size", icon: VentiSizeIcon, price: 15 },
 ];
 
 interface SizesProps {
@@ -31,6 +31,7 @@ const Sizes: React.FC<SizesProps> = ({ selectedCategory, onSelectSize }) => {
                     text={item.name}
                     imageSrc={item.icon}
                     altText={`${item.name} size`}
+                    price={item.price}
                     onClick={() => onSelectSize(item.id)}
                 />
             ))}

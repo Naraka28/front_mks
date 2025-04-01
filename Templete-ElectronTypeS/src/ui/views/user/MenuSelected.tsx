@@ -1,64 +1,154 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Sizes from "./Components/Sizes";
 import Flavours from "./Components/Flavours";
 import CoffeeBeans from "./Components/CoffeeBeans";
 import Toppings from "./Components/Toppings";
 import Boton from "./auxiliaryComponents/Button";
 import OrderActions from "./Components/OrderActions";
+import Temperature from "./Components/Temperature";
+import Milks from "./Components/Milks";
+import Order from "./auxiliaryComponents/Order";
+import { useOrders } from "./auxiliaryComponents/OrderContext";
 
-const TOPPING_NAMES: Record<number, string> = {
-    1: "Azúcar",
-    2: "Canela",
-    3: "Mascabado",
-    4: "Svetia",
-    5: "Fruta",
-    6: "Nutella",
-    7: "Shot",
-    8: "Splenda"
-};
 
+// Mock or import toppingOptions
+const toppingOptions = [
+    { id: 1, name: "Azúcar", price: 2, freecuantity: 1, maxcuantity: 10 },
+    { id: 2, name: "Canela", price: 1, freecuantity: 2, maxcuantity: 10 },
+    { id: 3, name: "Mascabado", price: 3, freecuantity: 3, maxcuantity: 10 },
+    { id: 4, name: "Svetia", price: 2.5, freecuantity: 3, maxcuantity: 10 },
+    { id: 5, name: "Fruta", price: 1, freecuantity: 1, maxcuantity: 10 },
+    { id: 6, name: "Nutella", price: 6, freecuantity: 1, maxcuantity: 10 },
+    { id: 7, name: "Shot", price: 3, freecuantity: 1, maxcuantity: 10 },
+    { id: 8, name: "Splenda", price: 1, freecuantity: 1, maxcuantity: 10 }
+];
 
 const MenuSelected: React.FC = () => {
-    const { itemId, sizeId, flavourId, coffeeBeansId } = useParams();
+    const { addOrder } = useOrders();
+    const { itemId, tempId, sizeId, flavourId, coffeeBeansId, milkId } = useParams();
     const navigate = useNavigate();
 
     const [currentToppings, setCurrentToppings] = useState<Record<number, number>>({});
-    const [showOrderActions, setShowOrderActions] = useState(false); // Estado para mostrar OrderActions
+    const [showOrderActions, setShowOrderActions] = useState(false);
 
-    const handleToppingsChange = (selectedToppings: Record<number, number>) => {
-        setCurrentToppings(selectedToppings);
+    // Estado para manejar toda la orden
+    const [order, setOrder] = useState({
+        itemId,
+        tempId,
+        sizeId,
+        flavourId,
+        coffeeBeansId,
+        milkId,
+        toppings: currentToppings,
+        toppingsTotal: 0,
+        subtotal: 0,
+        iva: 0,
+        descuento: 0,
+        total: 0,
+    });
+
+    // Recalcular el total cada vez que cambia un dato
+    useEffect(() => {
+        const basePrice = 50; // Precio base
+        const toppingPrice = Object.values(currentToppings).reduce((acc, count) => acc + count * 5, 0);
+        const toppingsTotal = toppingPrice; // Initialize toppingsTotal
+        const subtotal = basePrice + toppingPrice;
+        const iva = subtotal * 0.16;
+        const descuento = subtotal * 0.10;
+        const total = subtotal + iva - descuento;
+
+        setOrder((prevOrder) => ({
+            ...prevOrder,
+            itemId,
+            tempId,
+            sizeId,
+            flavourId,
+            coffeeBeansId,
+            milkId,
+            toppingsTotal,
+            subtotal,
+            iva,
+            descuento,
+            total
+        }));
+    }, [itemId, tempId, sizeId, flavourId, coffeeBeansId, milkId, currentToppings]);
+
+    const handleTempSelect = (selectedTempId: number) => {
+        navigate(`/menu/${itemId}/temp/${selectedTempId}`);
     };
+
+    const handleMilkSelect = (selectedMilkId: number) => {
+        navigate(`/menu/${itemId}/temp/${tempId}/size/${sizeId}/flavour/${flavourId}/coffeeBeans/${coffeeBeansId}/milk/${selectedMilkId}`);
+    };
+
     const handleSizeSelect = (selectedSizeId: number) => {
-        navigate(`/menu/${itemId}/size/${selectedSizeId}`);
+        navigate(`/menu/${itemId}/temp/${tempId}/size/${selectedSizeId}`);
     };
 
     const handleFlavourSelect = (selectedFlavourId: number) => {
-        navigate(`/menu/${itemId}/size/${sizeId}/flavour/${selectedFlavourId}`);
+        navigate(`/menu/${itemId}/temp/${tempId}/size/${sizeId}/flavour/${selectedFlavourId}`);
     };
 
     const handleCoffeeBeansSelect = (selectedCoffeeBeansId: number) => {
-        navigate(`/menu/${itemId}/size/${sizeId}/flavour/${flavourId}/coffeeBeans/${selectedCoffeeBeansId}`);
+        navigate(`/menu/${itemId}/temp/${tempId}/size/${sizeId}/flavour/${flavourId}/coffeeBeans/${selectedCoffeeBeansId}`);
     };
+
+    const handleToppingsChange = (selectedToppings: Record<number, number>) => {
+        setCurrentToppings(selectedToppings);
+
+        // Calcular el precio total de los toppings considerando la cantidad gratuita
+        let toppingsTotal = 0;
+
+        for (const [id, quantity] of Object.entries(selectedToppings)) {
+            const topping = toppingOptions.find(t => t.id === Number(id));
+            if (topping) {
+                const paidQuantity = Math.max(quantity - topping.freecuantity, 0);
+                toppingsTotal += paidQuantity * topping.price;
+            }
+        }
+
+        setOrder((prevOrder) => ({
+            ...prevOrder,
+            toppings: selectedToppings,
+            toppingsTotal,
+            subtotal: 50 + toppingsTotal, // Precio base + toppings
+            iva: (50 + toppingsTotal) * 0.16,
+            descuento: (50 + toppingsTotal) * 0.10,
+            total: (50 + toppingsTotal) * 1.06 - (50 + toppingsTotal) * 0.10,
+        }));
+    };
+
 
     const handleFinishSelection = () => {
-        setShowOrderActions(true); // Mostrar OrderActions después de toppings
+        addOrder({
+            itemId: order.itemId,
+            tempId: order.tempId,
+            sizeId: order.sizeId,
+            flavourId: order.flavourId,
+            coffeeBeansId: order.coffeeBeansId,
+            milkId: order.milkId,
+            toppings: order.toppings,
+            total: order.total
+        });
+        setShowOrderActions(true);
     };
 
-    const goBack = () => {
-        if (showOrderActions) {
-            setShowOrderActions(false); // Regresar a selección de toppings
+    function goBack(): void {
+        if (milkId) {
+            navigate(`/menu/${itemId}/temp/${tempId}/size/${sizeId}/flavour/${flavourId}/coffeeBeans/${coffeeBeansId}`);
         } else if (coffeeBeansId) {
-            navigate(`/menu/${itemId}/size/${sizeId}/flavour/${flavourId}`);
+            navigate(`/menu/${itemId}/temp/${tempId}/size/${sizeId}/flavour/${flavourId}`);
         } else if (flavourId) {
-            navigate(`/menu/${itemId}/size/${sizeId}`);
+            navigate(`/menu/${itemId}/temp/${tempId}/size/${sizeId}`);
         } else if (sizeId) {
+            navigate(`/menu/${itemId}/temp/${tempId}`);
+        } else if (tempId) {
             navigate(`/menu/${itemId}`);
         } else {
             navigate("/menu");
         }
-    };
-
+    }
 
     return (
         <div className="h-screen w-screen manrope-500 bg-[#F7F2F2] overflow-hidden">
@@ -67,8 +157,9 @@ const MenuSelected: React.FC = () => {
                 <div className="col-span-6 row-span-1 rounded-2xl flex justify-start items-center font-[Poppins] font-extrabold p-4">
                     <div className="text-2xl top-5 left-5 z-10">
                         <Boton
-                            texto="Regresar"
+                            texto=""
                             tipo="regresar"
+                            icono={<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-left"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 12l14 0" /><path d="M5 12l6 6" /><path d="M5 12l6 -6" /></svg>}
                             onClick={goBack}
                             className="pl-3 pr-4 py-2"
                         />
@@ -76,59 +167,77 @@ const MenuSelected: React.FC = () => {
                     <h1 className="px-10 text-4xl">
                         {showOrderActions
                             ? "¿Qué deseas hacer con tu pedido?"
-                            : coffeeBeansId
+                            : milkId
                                 ? "Selecciona tus toppings"
-                                : flavourId
-                                    ? "Selecciona tipo de grano"
-                                    : sizeId
-                                        ? `Selecciona un sabor para tamaño ${sizeId}`
-                                        : `¿Cómo se te antoja? ID: ${itemId}`}
+                                : coffeeBeansId
+                                    ? "Selecciona tipo de leche"
+                                    : flavourId
+                                        ? "Selecciona tipo de grano"
+                                        : sizeId
+                                            ? `Selecciona un sabor para tamaño ${sizeId}`
+                                            : tempId
+                                                ? "Selecciona tamaño"
+                                                : `Selecciona temperatura para ID: ${itemId}`}
                     </h1>
                 </div>
 
                 {/* Panel de Nueva Orden */}
-                <div className="shadow-lg border-2 border-[#E8E8E8] rounded-2xl row-span-8 col-span-2 flex flex-col justify-start items-center p-4 relative">
-                    <p className="text-3xl font-[Poppins] font-black py-5 text-[#333333]">NUEVA ORDEN</p>
-                    <div className="flex flex-col gap-4 w-full px-4 mt-auto mb-8">
-                        {sizeId && <p>Tamaño: {sizeId}</p>}
-                        {flavourId && <p>Sabor: {flavourId}</p>}
-                        {coffeeBeansId && <p>Granos: {coffeeBeansId}</p>}
-                        {Object.entries(currentToppings).map(([id, count]) => (
-                            count > 0 && <p key={id}>{TOPPING_NAMES[Number(id)]}: {count}</p>
-                        ))}
-                    </div>
+                <div className="shadow-lg border-2 border-[#E8E8E8] rounded-2xl row-span-8 col-span-2 flex flex-col justify-start items-center p-4 overflow-y-auto scrollbar-hide" style={{ maxHeight: 'calc(125vh - 255px)' }}>
+
+                    <Order order={order} />
+
                 </div>
 
-                {/* Contenido Principal */}
-                <div className="shadow-lg border-2 border-[#E8E8E8] rounded-2xl row-span-7 col-span-6 p-4 flex justify-center items-center"
-                    style={{ maxHeight: 'calc(108vh - 200px)', overflow: 'hidden' }}>
-                    <div className="w-full max-w-6xl">
-                        {!sizeId ? (
-                            <Sizes onSelectSize={handleSizeSelect} selectedCategory={null} />
+                {/* Contenedor de selección */}
+                <div className="shadow-lg border-2 border-[#E8E8E8] rounded-2xl row-span-7 col-span-6 relative flex">
+                    <div className="w-full overflow-y-auto flex items-center justify-center p-4">
+                        {!tempId ? (
+                            <div className="max-w-5xl w-full">
+                                <Temperature onSelectTemp={handleTempSelect} />
+                            </div>
+                        ) : !sizeId ? (
+                            <div className="max-w-2xl w-full">
+                                <Sizes onSelectSize={handleSizeSelect} selectedCategory={null} />
+                            </div>
                         ) : !flavourId ? (
-                            <Flavours onSelectFlavour={handleFlavourSelect} />
+                            <div className="max-w-6xl w-full">
+                                <Flavours onSelectFlavour={handleFlavourSelect} />
+                            </div>
                         ) : !coffeeBeansId ? (
-                            <CoffeeBeans onSelectCoffeeBeans={handleCoffeeBeansSelect} />
+                            <div className="max-w-2xl w-full">
+                                <CoffeeBeans onSelectCoffeeBeans={handleCoffeeBeansSelect} />
+                            </div>
+                        ) : !milkId ? (
+                            <div className="max-w-5xl w-full">
+                                <Milks onSelectMilk={handleMilkSelect} />
+                            </div>
                         ) : !showOrderActions ? (
-                            <Toppings onSelectionChange={handleToppingsChange} />
+                            <div className="max-w-3xl w-full">
+                                <Toppings onSelectionChange={handleToppingsChange} />
+                            </div>
                         ) : (
-                            <OrderActions
-                                itemId={itemId}
-                                sizeId={sizeId}
-                                flavourId={flavourId}
-                                coffeeBeansId={coffeeBeansId}
-                                toppings={currentToppings}
-                            />
+                            <div className="max-w-6xl w-full">
+                                <OrderActions
+                                    itemId={itemId}
+                                    tempId={tempId}
+                                    sizeId={sizeId}
+                                    flavourId={flavourId}
+                                    coffeeBeansId={coffeeBeansId}
+                                    milkId={milkId}
+                                    toppings={currentToppings}
+                                />
+                            </div>
                         )}
                     </div>
-                    {/* Botón "Terminar pedido" solo visible en la etapa de toppings */}
-                    {coffeeBeansId && !showOrderActions && (
-                        <div className="absolute bottom-6 p-4">
+
+                    {/* Botón Terminar Pedido */}
+                    {milkId && !showOrderActions && (
+                        <div className="absolute bottom-6 right-6">
                             <Boton
                                 texto="Terminar pedido"
                                 tipo="terminar"
                                 onClick={handleFinishSelection}
-                                className="py-3 px-8 text-lg shadow-lg"
+                                className="w-48 h-12 text-lg font-bold shadow-lg"
                             />
                         </div>
                     )}

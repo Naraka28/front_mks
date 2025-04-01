@@ -3,34 +3,50 @@ import React from 'react';
 interface CounterButtonProps {
     count: number;
     label: string;
+    price?: number;
     onIncrement: () => void;
     onDecrement: () => void;
 }
 
-const CounterButton: React.FC<CounterButtonProps> = ({ count, label, onIncrement, onDecrement }) => {
+
+
+const CounterButton: React.FC<CounterButtonProps> = ({ count, label, price, onIncrement, onDecrement }) => {
+    let priceComponent = null;
+    if (price && price > 0) {
+        priceComponent = <span className="text-[#333333] font-medium text-xl font-[Poppins]">+ $ {price}.00</span>;
+    }
+
     return (
-        <div className="flex flex-col items-center bg-neutral-100 p-5 rounded-3xl shadow-lg">
+        <div className="flex flex-col items-center p-4 rounded-3xl w-full">
             <div className="flex items-center justify-between w-full">
                 <button
                     onClick={onDecrement}
-                    className="w-10 h-10 flex items-center justify-center bg-gray-400 text-white text-lg rounded-full hover:bg-gray-500 transition"
+                    className="size-12 flex-shrink-0 flex items-center justify-center bg-gray-400 text-white text-lg rounded-full hover:bg-gray-500 transition"
                     disabled={count === 0}
                 >
                     -
                 </button>
-                <span className="font-semibold text-xl flex-1 text-center">{label}</span>
+
+                <div className="flex flex-col gap-2 px-4 font-[Poppins] flex-1 text-center min-h-[60px] justify-center items-center">
+                    <div className="leading-tight">
+                        <span className="text-[#333333] font-bold text-2xl">{label}</span>
+                        {count > 0 && <span className="text-[#333333] font-medium text-xl"> × {count}</span>}
+                    </div>
+
+                    <div className="h-6">  {/* Contenedor con altura fija para el precio */}
+                        {priceComponent}
+                    </div>
+                </div>
+
                 <button
                     onClick={onIncrement}
-                    className="w-10 h-10 flex items-center justify-center bg-gray-400 text-white text-lg rounded-full hover:bg-gray-500 transition"
+                    className="size-12 flex-shrink-0 flex items-center justify-center bg-gray-400 text-white text-lg rounded-full hover:bg-gray-500 transition"
                 >
                     +
                 </button>
             </div>
-            {count > 0 && (
-                <span className="mt-2 text-base font-medium text-gray-700">{count}</span>
-            )}
         </div>
     );
-};
+}
 
 export default CounterButton;
