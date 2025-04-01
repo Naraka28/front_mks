@@ -10,6 +10,12 @@ import UserHome from "./user/UserHome";
 import Menu from "./user/Menu";
 import MenuSelected from "./user/MenuSelected";
 import OrderConfirmation from "./user/OrderConfirmation";
+import Sizes from "./dashboard/Sizes";
+import Milks from "./dashboard/Milks";
+import Toppings from "./dashboard/Toppings";
+import Flavours from "./dashboard/Flavours";
+import Products from "./dashboard/Products";
+import CreateProductRegister from "./dashboard/createRegisters/CreateProductRegister";
 
 
 // import "./tailwind.css";
@@ -36,7 +42,15 @@ function App() {
         <Route path="/trabajadores" element={<Trabajadores />} />
         <Route path="/reportes" element={<Reportes />} />
         <Route path="/ventas" element={<Ventas />} />
+        <Route path="/sabores" element={<Flavours />} />
+        <Route path="/tamanos" element={<Sizes />} />
+        <Route path="/leches" element={<Milks />} />
+        <Route path="/toppings" element={<Toppings />} />
+        <Route path="/productos" element={<Products />} />
         <Route path="/inventario" element={<Inventario />} />
+
+        <Route path="/dashboard/add-item-inventory" element={<CreateProductRegister />} />
+
         <Route path="/userhome" element={<UserHome />} />
         <Route path="/menu" element={<Menu />} />
         <Route path="/selected/:itemId" element={<MenuSelected />} />

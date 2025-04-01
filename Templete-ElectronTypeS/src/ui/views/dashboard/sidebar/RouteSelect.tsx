@@ -19,6 +19,11 @@ export const RouteSelect = () => {
       <Route Icon={FiUsers} selected={location.pathname === "/trabajadores"} title="Trabajadores" path="/trabajadores" />
       <Route Icon={FiPaperclip} selected={location.pathname === "/reportes"} title="Reportes" path="/reportes" />
       <Route Icon={FiDollarSign} selected={location.pathname === "/ventas"} title="Ventas" path="/ventas" />
+      <Route Icon={FiBox} selected={location.pathname === "/sabores"} title="Sabores" path="/sabores" />
+      <Route Icon={FiBox} selected={location.pathname === "/tamanos"} title="Tamaños" path="/tamanos" />
+      <Route Icon={FiBox} selected={location.pathname === "/leches"} title="Leches" path="/leches" />
+      <Route Icon={FiBox} selected={location.pathname === "/toppings"} title="Toppings" path="/toppings" />
+      <Route Icon={FiBox} selected={location.pathname === "/productos"} title="Productos" path="/productos" />
       <Route Icon={FiBox} selected={location.pathname === "/inventario"} title="Inventario" path="/inventario" />
     </div>
   );
