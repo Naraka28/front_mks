@@ -29,10 +29,10 @@ const Boton: React.FC<BotonProps> = ({
         onClick?.();
     };
 
-    const baseStyles = "rounded-2xl px-4 py-2 font-medium transition-all flex items-center justify-center gap-2 font-[Poppins]";
+    const baseStyles = "rounded-2xl px-4 py-2 transition-all flex items-center justify-center gap-2 font-[Poppins]";
 
     const tipoStyles = {
-        terminar: "bg-[#FAF9F6] text-[#333333] border border-[#E8E8E8] hover:bg-[#E8E8E8] ",
+        terminar: "text-xl bg-[#FAF9F6] border border-[#E8E8E8] hover:bg-[#E8E8E8] font-bold ",
         regresar: "bg-[#FAF9F6] text-[#333333] border border-[#E8E8E8] hover:bg-[#E8E8E8] ",
     };
 

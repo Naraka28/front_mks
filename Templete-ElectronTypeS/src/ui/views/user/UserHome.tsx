@@ -13,7 +13,7 @@ function UserHome() {
         setTimeout(() => {
             setShowApp(true);
             navigate("/Menu"); // Navega a /Menu
-        }, 2000);
+        }, 20);
     };
 
     // Estilo común para ambas imágenes

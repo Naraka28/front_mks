@@ -8,6 +8,8 @@ interface OrderActionsProps {
     flavourId: string;
     coffeeBeansId: string;
     toppings: Record<number, number>;
+    milkId: string;
+    tempId: string;
 }
 
 
