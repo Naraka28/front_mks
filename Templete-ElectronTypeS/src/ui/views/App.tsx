@@ -49,7 +49,7 @@ function App() {
         <Route path="/productos" element={<Products />} />
         <Route path="/inventario" element={<Inventario />} />
 
-        <Route path="/dashboard/add-item-inventory" element={<CreateProductRegister />} />
+        <Route path="/dashboard/add-item-products" element={<CreateProductRegister />} />
 
         <Route path="/userhome" element={<UserHome />} />
         <Route path="/menu" element={<Menu />} />

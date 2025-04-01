@@ -1,6 +1,6 @@
 import React from 'react'
 
-const FlavourForm = () => {
+const CatForm = () => {
   return (
     <div>
       
@@ -8,4 +8,4 @@ const FlavourForm = () => {
   )
 }
 
-export default FlavourForm
+export default CatForm

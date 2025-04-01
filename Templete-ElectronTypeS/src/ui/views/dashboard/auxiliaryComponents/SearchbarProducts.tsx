@@ -6,11 +6,11 @@ interface SearchbarProps {
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const SearchbarInventory: React.FC<SearchbarProps> = ({ placeholder = "Search something..", onChange }) => {
+const SearchbarProducts: React.FC<SearchbarProps> = ({ placeholder = "Search something..", onChange }) => {
   const navigate = useNavigate();
 
   const handleAddClick = () => {
-    navigate("/dashboard/add-item-inventory");
+    navigate("/dashboard/add-item-products");
   };
 
   return (
@@ -42,4 +42,4 @@ const SearchbarInventory: React.FC<SearchbarProps> = ({ placeholder = "Search so
   );
 };
 
-export default SearchbarInventory;
+export default SearchbarProducts;
