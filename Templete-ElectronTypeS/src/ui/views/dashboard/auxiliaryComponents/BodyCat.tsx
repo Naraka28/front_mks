@@ -1,18 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { UniversalTopBar } from "./UniversalTopBar";
 import InventoryTable from "./../tables/InventoryTable";
-import SearchbarInventory from "./SearchbarInventory";
+import Searchbar from "./Searchbar";
 
-export const BodyInventory = () => {
+export const BodyCat = () => {
     return (
-        <div className="w-full px-4 grid gap-3 grid-cols-12">
+        <div className="w-full px-4 grid grid-cols-12">
             <div className="col-span-12 w-full">
                 <UniversalTopBar />
             </div>
             <div className="col-span-12 w-full mt-0">
-                <SearchbarInventory />
+                <Searchbar />
             </div>
-            <div className="col-span-12 w-full">
+            <div className="col-span-12 w-full mt-3">
                 <InventoryTable />
             </div>
         </div>
