@@ -73,7 +73,7 @@ const ProductForm: React.FC = () => {
           />
         </div>
         <div>
-          <label className="block text-gray-700 font-medium">Imagen</label>
+          <label className="block text-gray-700 font-medium ">Imagen</label>
           <input
             type="file"
             name="image"
@@ -95,18 +95,22 @@ const ProductForm: React.FC = () => {
           </select>
         </div>
         <div>
-           {/* topings */}
-          <MultiSelectDropDown content={toppings} />
+          {/* topings */}
+          {/* set data variable onChange */}
+          <label className="block text-gray-700 font-medium">Toppings</label>
+          <MultiSelectDropDown content={toppings} onChange={setFormData} />
         </div>
         <div>
           {/* sizes */}
-          <MultiSelectDropDown content={sizes} />
+          {/* set data variable onChange */}
+          <label className="block text-gray-700 font-medium">Tamaños</label>
+          <MultiSelectDropDown content={sizes} onChange={setFormData} />
         </div>
         <div>
-          <MultiSelectDropDown content={toppings} />
+          <MultiSelectDropDown content={toppings} onChange={setFormData} />
         </div>
         <div>
-          <MultiSelectDropDown content={toppings} />
+          <MultiSelectDropDown content={toppings} onChange={setFormData} />
         </div>
         <button
           type="submit"

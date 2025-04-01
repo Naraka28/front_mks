@@ -29,7 +29,6 @@ export const RouteSelect = () => {
       <Route Icon={FiCoffee} selected={location.pathname === "/leches"} title="Leches" path="/leches" />
       <Route Icon={FiStar} selected={location.pathname === "/toppings"} title="Toppings" path="/toppings" />
       <Route Icon={FiTag} selected={location.pathname === "/productos"} title="Productos" path="/productos" />
-      <Route Icon={FiBox} selected={location.pathname === "/inventario"} title="Inventario" path="/inventario" />
     </div>
   );
 };
