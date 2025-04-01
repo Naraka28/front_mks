@@ -1,7 +1,7 @@
 import React from "react";
 import { UniversalTopBar } from "./UniversalTopBar";
 import InventoryTable from "./../tables/InventoryTable";
-import Searchbar from "./Searchbar";
+import SearchbarInventory from "./SearchbarInventory";
 
 export const BodyInventory = () => {
     return (
@@ -10,7 +10,7 @@ export const BodyInventory = () => {
                 <UniversalTopBar />
             </div>
             <div className="col-span-12 w-full mt-0">
-                <Searchbar />
+                <SearchbarInventory />
             </div>
             <div className="col-span-12 w-full">
                 <InventoryTable />

@@ -16,6 +16,7 @@ import Toppings from "./dashboard/Toppings";
 import Flavours from "./dashboard/Flavours";
 import Products from "./dashboard/Products";
 import CreateProductRegister from "./dashboard/createRegisters/CreateProductRegister";
+import CreateCatRegister from "./dashboard/createRegisters/CreateCatRegister";
 
 
 // import "./tailwind.css";
@@ -50,6 +51,7 @@ function App() {
         <Route path="/inventario" element={<Inventario />} />
 
         <Route path="/dashboard/add-item-products" element={<CreateProductRegister />} />
+        <Route path="/dashboard/add-item-cat" element={<CreateCatRegister />} />
 
         <Route path="/userhome" element={<UserHome />} />
         <Route path="/menu" element={<Menu />} />

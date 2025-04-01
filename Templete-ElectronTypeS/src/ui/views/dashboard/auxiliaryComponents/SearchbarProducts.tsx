@@ -6,7 +6,7 @@ interface SearchbarProps {
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const SearchbarProducts: React.FC<SearchbarProps> = ({ placeholder = "Search something..", onChange }) => {
+const SearchbarProducts: React.FC<SearchbarProps> = ({ placeholder = "Buscar un Registro", onChange }) => {
   const navigate = useNavigate();
 
   const handleAddClick = () => {

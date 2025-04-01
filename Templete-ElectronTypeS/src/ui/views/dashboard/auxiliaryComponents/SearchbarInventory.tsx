@@ -1,17 +1,11 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 
 interface SearchbarProps {
   placeholder?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const SearchbarProducts: React.FC<SearchbarProps> = ({ placeholder = "Buscar un Registro", onChange }) => {
-  const navigate = useNavigate();
-
-  const handleAddClick = () => {
-    navigate("/dashboard/add-item-cat");
-  };
+const SearchbarInventory: React.FC<SearchbarProps> = ({ placeholder = "Buscar un Registro", onChange }) => {
 
   return (
     <div className="w-full">
@@ -30,16 +24,8 @@ const SearchbarProducts: React.FC<SearchbarProps> = ({ placeholder = "Buscar un 
           onChange={onChange}
         />
       </div>
-      <div className="flex justify-end mt-2">
-        <button 
-          onClick={handleAddClick} 
-          className="px-4 py-2 bg-violet-600 text-sm text-white rounded-lg shadow-md hover:bg-violet-800 transition"
-        >
-          Agregar nuevo registro
-        </button>
-      </div>
     </div>
   );
 };
 
-export default SearchbarProducts;
+export default SearchbarInventory;
