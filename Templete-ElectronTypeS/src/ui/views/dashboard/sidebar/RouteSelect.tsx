@@ -6,6 +6,11 @@ import {
   FiHome,
   FiPaperclip,
   FiUsers,
+  FiCoffee,
+  FiStar,
+  FiDroplet,
+  FiMaximize,
+  FiTag
 } from "react-icons/fi";
 import { Link, useLocation } from 'react-router-dom';
 
@@ -19,11 +24,11 @@ export const RouteSelect = () => {
       <Route Icon={FiUsers} selected={location.pathname === "/trabajadores"} title="Trabajadores" path="/trabajadores" />
       <Route Icon={FiPaperclip} selected={location.pathname === "/reportes"} title="Reportes" path="/reportes" />
       <Route Icon={FiDollarSign} selected={location.pathname === "/ventas"} title="Ventas" path="/ventas" />
-      <Route Icon={FiBox} selected={location.pathname === "/sabores"} title="Sabores" path="/sabores" />
-      <Route Icon={FiBox} selected={location.pathname === "/tamanos"} title="Tamaños" path="/tamanos" />
-      <Route Icon={FiBox} selected={location.pathname === "/leches"} title="Leches" path="/leches" />
-      <Route Icon={FiBox} selected={location.pathname === "/toppings"} title="Toppings" path="/toppings" />
-      <Route Icon={FiBox} selected={location.pathname === "/productos"} title="Productos" path="/productos" />
+      <Route Icon={FiDroplet} selected={location.pathname === "/sabores"} title="Sabores" path="/sabores" />
+      <Route Icon={FiMaximize} selected={location.pathname === "/tamanos"} title="Tamaños" path="/tamanos" />
+      <Route Icon={FiCoffee} selected={location.pathname === "/leches"} title="Leches" path="/leches" />
+      <Route Icon={FiStar} selected={location.pathname === "/toppings"} title="Toppings" path="/toppings" />
+      <Route Icon={FiTag} selected={location.pathname === "/productos"} title="Productos" path="/productos" />
       <Route Icon={FiBox} selected={location.pathname === "/inventario"} title="Inventario" path="/inventario" />
     </div>
   );
