@@ -1,14 +1,18 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { FiArrowUpRight, FiDollarSign, FiMoreHorizontal } from "react-icons/fi";
 
 export const RecentTransactions = () => {
+
+  const navigate = useNavigate();
+  
   return (
     <div className="col-span-12 p-4 rounded border border-stone-300">
       <div className="mb-4 flex items-center justify-between">
         <h3 className="flex items-center gap-1.5 font-medium">
           <FiDollarSign /> Transacciones Recientes
         </h3>
-        <button className="text-sm text-violet-500 hover:underline">
+        <button className="text-sm text-violet-500 hover:underline" onClick={() => navigate("/ventas")}>
           Ver Todos
         </button>
       </div>
