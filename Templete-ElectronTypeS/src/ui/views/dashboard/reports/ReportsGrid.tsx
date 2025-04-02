@@ -6,6 +6,7 @@ import { UniversalTopBar } from "../auxiliaryComponents/UniversalTopBar";
 
 export const ReportsGrid = () => {
     return (
+        <div className="bg-white rounded-lg pb-4 shadow h-[200vh]">
         <div className="px-4 grid gap-3 grid-cols-12">
             <div className="col-span-12">
                 <UniversalTopBar />
@@ -13,6 +14,7 @@ export const ReportsGrid = () => {
             <ReportUpperCards />
             <ReportGraph />
             <ReportLowerCards />
+        </div>
         </div>
     );
 };
