@@ -2,14 +2,24 @@ import React, { useEffect, useState, useRef } from 'react';
 import { IoMdClose } from 'react-icons/io';
 import { FaChevronDown } from "react-icons/fa6";
 
-export default function MultiSelectDropDown({ content, onChange }) {
-    const [searchText, setSearchText] = useState('');
-    const [filterOptions, setFilterOptions] = useState([]);
-    const [selectedOptions, setSelectedOptions] = useState([]);
-    const [active, setActive] = useState(false);
-    const selectRef = useRef(null);
+interface Option {
+    value: string;
+    label: string;
+}
 
-    const setOption = (value) => {
+interface MultiSelectDropDownProps {
+    content: Option[];
+    onChange: (selected: string[]) => void;
+}
+
+export default function MultiSelectDropDown({ content, onChange }: MultiSelectDropDownProps) {
+    const [searchText, setSearchText] = useState<string>('');
+    const [filterOptions, setFilterOptions] = useState<Option[]>([]);
+    const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+    const [active, setActive] = useState<boolean>(false);
+    const selectRef = useRef<HTMLDivElement>(null);
+
+    const setOption = (value: string) => {
         if (selectedOptions.includes(value)) {
             const opts = selectedOptions.filter(item => item !== value);
             setSelectedOptions([...opts]);
@@ -22,12 +32,12 @@ export default function MultiSelectDropDown({ content, onChange }) {
     };
 
     useEffect(() => {
-        const match = content.filter(item => item?.value.toLowerCase().includes(searchText?.toLowerCase()));
+        const match = content.filter(item => item.value.toLowerCase().includes(searchText.toLowerCase()));
         setFilterOptions(match.length ? match : content);
     }, [searchText, content]);
 
     useEffect(() => {
-        const closeHandler = (event) => {
+        const closeHandler = (event: MouseEvent) => {
             if (selectRef.current && !event.composedPath().includes(selectRef.current)) {
                 setActive(false);
             }
@@ -52,12 +62,12 @@ export default function MultiSelectDropDown({ content, onChange }) {
                 ))}
                 {/* Botón para abrir el input si hay opciones seleccionadas */}
                 {selectedOptions.length > 0 && (
-                        <a 
-                            onClick={(e) => { e.stopPropagation(); setActive(!active); }} 
-                            className="bg-violet-500 hover:bg-violet-600 text-white px-2 py-1 rounded-lg text-xs font-bold ml-auto"
-                        >
-                            <FaChevronDown />
-                        </a>
+                    <a 
+                        onClick={(e) => { e.stopPropagation(); setActive(!active); }} 
+                        className="bg-violet-500 hover:bg-violet-600 text-white px-2 py-1 rounded-lg text-xs font-bold ml-auto"
+                    >
+                        <FaChevronDown />
+                    </a>
                 )}
             </div>
 
