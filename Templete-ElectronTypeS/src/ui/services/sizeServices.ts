@@ -1,25 +1,25 @@
 const API_URL = import.meta.env.ENV_API_URL as string;
-const FLAVOR_API = `${API_URL}/flavors`;
+const Size_API = `${API_URL}/sizes`;
 
-export interface Flavor{
+export interface Size{
     id:number;
     name: string;
     price: number;
     image: string;
 }
 
-export interface FlavorList{
-    flavors: Flavor[];
+export interface SizeList{
+    sizes: Size[];
 }
 
-export type FlavorCreate = Omit<Flavor, 'id'>;
+export type SizeCreate = Omit<Size, 'id'>;
 
-export type FlavorUpdate = Partial<Flavor>;
+export type SizeUpdate = Partial<Size>;
 
 
 
-export async function getFlavors(): Promise<Flavor[]> {
-    const response = await fetch(FLAVOR_API, {
+export async function getSizes(): Promise<Size[]> {
+    const response = await fetch(Size_API, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -28,12 +28,12 @@ export async function getFlavors(): Promise<Flavor[]> {
     if (!response.ok) {
         throw new Error('Network response was not ok' + response.statusText);
     }
-    const data: FlavorList = await response.json();
-    return data.flavors;
+    const data: SizeList = await response.json();
+    return data.sizes;
 }
 
-export async function getFlavorById(id: number): Promise<Flavor> {
-    const response = await fetch(`${FLAVOR_API}/${id}`, {
+export async function getSizeById(id: number): Promise<Size> {
+    const response = await fetch(`${Size_API}/${id}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -42,44 +42,44 @@ export async function getFlavorById(id: number): Promise<Flavor> {
     if (!response.ok) {
         throw new Error('Network response was not ok' + response.statusText);
     }
-    const data: Flavor = await response.json();
+    const data: Size = await response.json();
     return data;
 }
 
 
-export async function createFlavor(flavor: FlavorCreate): Promise<Flavor> {
-    const response = await fetch(`${FLAVOR_API}/create`, {
+export async function createSize(Size: SizeCreate): Promise<Size> {
+    const response = await fetch(`${Size_API}/create`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(flavor),
+        body: JSON.stringify(Size),
     });
     if (!response.ok) {
         throw new Error('Network response was not ok' + response.statusText);
     }
-    const data: Flavor = await response.json();
+    const data: Size = await response.json();
     return data;
 }
 
 
-export async function updateFlavor(flavor: FlavorUpdate): Promise<Flavor> {
-    const response = await fetch(`${FLAVOR_API}/update/${flavor.id}`, {
-        method: 'PATCH',
+export async function updateSize(Size: SizeUpdate): Promise<Size> {
+    const response = await fetch(`${Size_API}/update/${Size.id}`, {
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(flavor),
+        body: JSON.stringify(Size),
     });
     if (!response.ok) {
         throw new Error('Network response was not ok' + response.statusText);
     }
-    const data: Flavor = await response.json();
+    const data: Size = await response.json();
     return data;
 }
 
-export async function deleteFlavor(id: number): Promise<void> {
-    const response = await fetch(`${FLAVOR_API}/delete/${id}`, {
+export async function deleteSize(id: number): Promise<void> {
+    const response = await fetch(`${Size_API}/delete/${id}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',

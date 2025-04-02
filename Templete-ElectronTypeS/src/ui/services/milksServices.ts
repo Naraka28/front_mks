@@ -1,25 +1,25 @@
 const API_URL = import.meta.env.ENV_API_URL as string;
-const FLAVOR_API = `${API_URL}/flavors`;
+const Milk_API = `${API_URL}/milks`;
 
-export interface Flavor{
+export interface Milk{
     id:number;
     name: string;
     price: number;
     image: string;
 }
 
-export interface FlavorList{
-    flavors: Flavor[];
+export interface MilkList{
+    milks: Milk[];
 }
 
-export type FlavorCreate = Omit<Flavor, 'id'>;
+export type MilkCreate = Omit<Milk, 'id'>;
 
-export type FlavorUpdate = Partial<Flavor>;
+export type MilkUpdate = Partial<Milk>;
 
 
 
-export async function getFlavors(): Promise<Flavor[]> {
-    const response = await fetch(FLAVOR_API, {
+export async function getMilks(): Promise<Milk[]> {
+    const response = await fetch(Milk_API, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -28,12 +28,12 @@ export async function getFlavors(): Promise<Flavor[]> {
     if (!response.ok) {
         throw new Error('Network response was not ok' + response.statusText);
     }
-    const data: FlavorList = await response.json();
-    return data.flavors;
+    const data: MilkList = await response.json();
+    return data.milks;
 }
 
-export async function getFlavorById(id: number): Promise<Flavor> {
-    const response = await fetch(`${FLAVOR_API}/${id}`, {
+export async function getMilkById(id: number): Promise<Milk> {
+    const response = await fetch(`${Milk_API}/${id}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -42,44 +42,44 @@ export async function getFlavorById(id: number): Promise<Flavor> {
     if (!response.ok) {
         throw new Error('Network response was not ok' + response.statusText);
     }
-    const data: Flavor = await response.json();
+    const data: Milk = await response.json();
     return data;
 }
 
 
-export async function createFlavor(flavor: FlavorCreate): Promise<Flavor> {
-    const response = await fetch(`${FLAVOR_API}/create`, {
+export async function createMilk(Milk: MilkCreate): Promise<Milk> {
+    const response = await fetch(`${Milk_API}/create`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(flavor),
+        body: JSON.stringify(Milk),
     });
     if (!response.ok) {
         throw new Error('Network response was not ok' + response.statusText);
     }
-    const data: Flavor = await response.json();
+    const data: Milk = await response.json();
     return data;
 }
 
 
-export async function updateFlavor(flavor: FlavorUpdate): Promise<Flavor> {
-    const response = await fetch(`${FLAVOR_API}/update/${flavor.id}`, {
-        method: 'PATCH',
+export async function updateMilk(Milk: MilkUpdate): Promise<Milk> {
+    const response = await fetch(`${Milk_API}/update/${Milk.id}`, {
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(flavor),
+        body: JSON.stringify(Milk),
     });
     if (!response.ok) {
         throw new Error('Network response was not ok' + response.statusText);
     }
-    const data: Flavor = await response.json();
+    const data: Milk = await response.json();
     return data;
 }
 
-export async function deleteFlavor(id: number): Promise<void> {
-    const response = await fetch(`${FLAVOR_API}/delete/${id}`, {
+export async function deleteMilk(id: number): Promise<void> {
+    const response = await fetch(`${Milk_API}/delete/${id}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
