@@ -5,7 +5,6 @@ import Dashboard from "./dashboard/Dashboard";
 import Trabajadores from './dashboard/Employees';
 import Reportes from './dashboard/Reports';
 import Ventas from './dashboard/Sales';
-import Inventario from './dashboard/Inventory'
 import UserHome from "./user/UserHome";
 import Menu from "./user/Menu";
 import MenuSelected from "./user/MenuSelected";
@@ -50,7 +49,6 @@ function App() {
         <Route path="/leches" element={<Milks />} />
         <Route path="/toppings" element={<Toppings />} />
         <Route path="/productos" element={<Products />} />
-        <Route path="/inventario" element={<Inventario />} />
   
         <Route path="/dashboard/add-item-products" element={<CreateProductRegister />} />
         <Route path="/dashboard/add-item-cat" element={<CreateCatRegister />} />

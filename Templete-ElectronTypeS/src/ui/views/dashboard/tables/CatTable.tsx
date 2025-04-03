@@ -33,12 +33,6 @@ const Modal = ({ open, onClose, product }) => {
               <p className="text-xl text-gray-700"><strong>Proveedor:</strong> {product.provider.name}</p>
               <p className="text-xl text-gray-700"><strong>Stock:</strong> {product.stock}</p>
               <p className="text-xl text-gray-700"><strong>Último restock:</strong> {product.lastVisit}</p>
-              <div className="bg-purple-100 bg-opacity-65 justify-center p-3 mt-2 gap-1 rounded-md">
-                <p className="text-xl text-gray-700"><strong>Temperatura:</strong> {product.product.temps}</p>
-                <p className="text-xl text-gray-700"><strong>Leches:</strong> {product.product.milks}</p>
-                <p className="text-xl text-gray-700"><strong>Sabores:</strong> {product.product.flavors}</p>
-                <p className="text-xl text-gray-700"><strong>Toppings:</strong> {product.product.toppings}</p>
-              </div>
             </div>
           </div>
         </DialogPanel>
@@ -53,19 +47,19 @@ const InventoryTable = () => {
 
   const products = [
     {
-      product: { name: 'Mexicano', img: '/src/ui/assets/Prueba2.png', temps: 'Caliente', flavors: 'Vainilla, Clasico', toppings: 'Stevia, ', milks: 'Entera, Deslactosada' },
+      product: { name: 'Vainilla', img: '/src/ui/assets/Prueba5.png' },
       provider: { name: 'John Michael', email: 'john@creative-tim.com', img: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg' },
       stock: 618,
       lastVisit: '23/04/18',
     },
     {
-      product: { name: 'Mokkaccino', img: '/src/ui/assets/Prueba3.png', temps: 'Frio', flavors: 'Vainilla, Clasico', toppings: 'Stevia, ', milks: 'Entera, Deslactosada' },
+      product: { name: 'Entera', img: '/src/ui/assets/Prueba6.png', temps: 'Frio', flavors: 'Vainilla, Clasico', toppings: 'Stevia, ', milks: 'Entera, Deslactosada' },
       provider: { name: 'Alexa Liras', email: 'alexa@creative-tim.com', img: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-2.jpg' },
       stock: 432,
       lastVisit: '23/04/18',
     },
     {
-      product: { name: 'Galletas', img: '/src/ui/assets/Prueba4.png', temps: 'Caliente', flavors: 'Vainilla, Clasico', toppings: 'Stevia, ', milks: 'Entera, Deslactosada' },
+      product: { name: 'Stevia', img: '/src/ui/assets/Prueba7.png', temps: 'Caliente', flavors: 'Vainilla, Clasico', toppings: 'Stevia, ', milks: 'Entera, Deslactosada' },
       provider: { name: 'Laurent Perrier', email: 'laurent@creative-tim.com', img: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-1.jpg' },
       stock: 819,
       lastVisit: '19/09/17',
