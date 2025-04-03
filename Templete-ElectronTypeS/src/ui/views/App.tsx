@@ -18,6 +18,8 @@ import Products from "./dashboard/Products";
 import CreateProductRegister from "./dashboard/createRegisters/CreateProductRegister";
 import CreateCatRegister from "./dashboard/createRegisters/CreateCatRegister";
 import { OrderProvider } from './user/auxiliaryComponents/OrderContext'
+import CashierPending from "./cashier/CashierPending";
+import CashierCompleted from "./cashier/CashierCompleted";
 
 
 
@@ -39,6 +41,8 @@ function App() {
                 <Link to="/dashboard">Go to Dashboard</Link>
                 <h1>User</h1>
                 <Link to="/userhome">Go to userhome</Link>
+                <h1>Cashier</h1>
+                <Link to="/cashier">Go to cashier</Link>
               </>
             }
           />
@@ -67,6 +71,9 @@ function App() {
           <Route path="/menu/:itemId/temp/:tempId/size/:sizeId/flavour/:flavourId/coffeeBeans/:coffeeBeansId/milk/:milkId" element={<MenuSelected />} />
           <Route path="/order-actions" element={<MenuSelected />} />
           <Route path="/order/confirm" element={< OrderConfirmation />} />
+
+          <Route path="/cashier" element={<CashierPending />} />
+          <Route path="/cashier/completados" element={<CashierCompleted />} />
 
         </Routes>
       </Router>
