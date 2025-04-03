@@ -23,12 +23,12 @@ const Modal = ({ open, onClose, product }) => {
               <DialogTitle className="text-4xl font-bold text-center">Detalles del Producto</DialogTitle>
             </div>
           </div>
-          <div className="flex items-center justify-center mt-2 border-t-2 border-gray-200 pt-1">
-            <div className="p-2 mr-10 bg-purple-100 rounded-full">
+          <div className="flex items-center justify-center border-t-2 border-gray-200 pt-1 mb-6 mt-4">
+            <div className="p-2 mr-10 bg-purple-100 rounded-full mt-6">
               {/*<img src={product.image} alt="" height="25px" width="25px" />*/}
               <img src={product.product.img} alt="" height="200rem" width="200rem" />
             </div>
-            <div className="p-2 gap-1">
+            <div className="gap-1">
               <p className="text-xl text-gray-700"><strong>Producto:</strong> {product.product.name}</p>
               <p className="text-xl text-gray-700"><strong>Proveedor:</strong> {product.provider.name}</p>
               <p className="text-xl text-gray-700"><strong>Stock:</strong> {product.stock}</p>
