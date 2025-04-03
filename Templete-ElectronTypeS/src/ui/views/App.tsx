@@ -17,8 +17,7 @@ import Flavours from "./dashboard/Flavours";
 import Products from "./dashboard/Products";
 import CreateProductRegister from "./dashboard/createRegisters/CreateProductRegister";
 import CreateCatRegister from "./dashboard/createRegisters/CreateCatRegister";
-import { OrderProvider } from './user/auxiliaryComponents/OrderContext'
-
+import { OrderProvider } from './user/auxiliaryComponents/OrderContext';
 
 
 // import "./tailwind.css";
