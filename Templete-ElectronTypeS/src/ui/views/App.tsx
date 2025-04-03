@@ -20,6 +20,7 @@ import CreateCatRegister from "./dashboard/createRegisters/CreateCatRegister";
 import { OrderProvider } from './user/auxiliaryComponents/OrderContext'
 import CashierPending from "./cashier/CashierPending";
 import CashierCompleted from "./cashier/CashierCompleted";
+import Login from "./Login";
 
 
 
@@ -36,13 +37,7 @@ function App() {
             path="/"
             element={
               <>
-                <h1>MokkaSoft</h1>
-                <h1>Dashboard</h1>
-                <Link to="/dashboard">Go to Dashboard</Link>
-                <h1>User</h1>
-                <Link to="/userhome">Go to userhome</Link>
-                <h1>Cashier</h1>
-                <Link to="/cashier">Go to cashier</Link>
+              <Login />
               </>
             }
           />
