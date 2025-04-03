@@ -1,6 +1,6 @@
 import React from "react";
 import { UniversalTopBar } from "./UniversalTopBar";
-import InventoryTable from "./../tables/InventoryTable";
+import ProductsTable from "./../tables/ProductsTable";
 import SearchbarInventory from "./SearchbarInventory";
 
 export const BodyInventory = () => {
@@ -13,7 +13,7 @@ export const BodyInventory = () => {
                 <SearchbarInventory />
             </div>
             <div className="col-span-12 w-full">
-                <InventoryTable />
+                <ProductsTable />
             </div>
         </div>
     );

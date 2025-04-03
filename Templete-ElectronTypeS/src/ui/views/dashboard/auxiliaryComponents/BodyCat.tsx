@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { UniversalTopBar } from "./UniversalTopBar";
-import InventoryTable from "./../tables/InventoryTable";
+import ProductsTable from "./../tables/ProductsTable";
 import Searchbar from "./Searchbar";
 
 export const BodyCat = () => {
@@ -14,7 +14,7 @@ export const BodyCat = () => {
                 <Searchbar />
             </div>
             <div className="col-span-12 w-full mt-3">
-                <InventoryTable />
+                <ProductsTable />
             </div>
         </div>
         </div>

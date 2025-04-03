@@ -10,22 +10,35 @@ const Modal = ({ open, onClose, product }) => {
     <Dialog open={open} onClose={onClose} className="relative z-10 ">
       <DialogBackdrop className="fixed inset-0 bg-gray-500/75 transition-opacity" />
       <div className="bg-black bg-opacity-45 fixed inset-0 z-10 w-screen overflow-y-auto flex items-center justify-center">
-        <DialogPanel className="bg-white border-4 border-gray-300 p-3 rounded-lg shadow-2xl max-w-lg w-full">
+        <DialogPanel className="bg-white border-4 border-gray-300 p-3 rounded-lg shadow-2xl w-[42rem] h-auto overflow-y-auto">
           <div className="flex justify-end text-purple-600">
             <button onClick={onClose} className="px-2 py-2 bg-red-700 rounded-full hover:bg-red-900 transition duration-200 ease-in-out">
 
             </button>
           </div>
-          <DialogTitle className="text-4xl font-bold text-center">Detalles del Producto</DialogTitle>
+          <div className="p-2 mr-10 flex justify-center items-center">
+            {/*<img src={product.image} alt="" height="25px" width="25px" />*/}
+            <ListBulletIcon className="mr-4 mt-1 w-10 h-10 text-purple-600 " />
+            <div>
+              <DialogTitle className="text-4xl font-bold text-center">Detalles del Producto</DialogTitle>
+            </div>
+          </div>
           <div className="flex items-center justify-center mt-2 border-t-2 border-gray-200 pt-1">
-            <div className="p-3 mr-4 bg-purple-100 rounded-full">
-              <ListBulletIcon className="w-10 h-10 text-purple-600" />
+            <div className="p-2 mr-10 bg-purple-100 rounded-full">
+              {/*<img src={product.image} alt="" height="25px" width="25px" />*/}
+              <img src={product.product.img} alt="" height="200rem" width="200rem" />
             </div>
             <div className="p-2 gap-1">
-              <p className="text-xl text-gray-700"><strong>Producto:</strong> {product.product}</p>
+              <p className="text-xl text-gray-700"><strong>Producto:</strong> {product.product.name}</p>
               <p className="text-xl text-gray-700"><strong>Proveedor:</strong> {product.provider.name}</p>
               <p className="text-xl text-gray-700"><strong>Stock:</strong> {product.stock}</p>
               <p className="text-xl text-gray-700"><strong>Último restock:</strong> {product.lastVisit}</p>
+              <div className="bg-purple-100 bg-opacity-65 justify-center p-3 mt-2 gap-1 rounded-md">
+                <p className="text-xl text-gray-700"><strong>Temperatura:</strong> {product.product.temps}</p>
+                <p className="text-xl text-gray-700"><strong>Leches:</strong> {product.product.milks}</p>
+                <p className="text-xl text-gray-700"><strong>Sabores:</strong> {product.product.flavors}</p>
+                <p className="text-xl text-gray-700"><strong>Toppings:</strong> {product.product.toppings}</p>
+              </div>
             </div>
           </div>
         </DialogPanel>
@@ -40,25 +53,22 @@ const InventoryTable = () => {
 
   const products = [
     {
-      product: 'Granos de Café',
+      product: { name: 'Mexicano', img: '/src/ui/assets/Prueba2.png', temps: 'Caliente', flavors: 'Vainilla, Clasico', toppings: 'Stevia, ', milks: 'Entera, Deslactosada' },
       provider: { name: 'John Michael', email: 'john@creative-tim.com', img: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg' },
       stock: 618,
       lastVisit: '23/04/18',
-      image: '',
     },
     {
-      product: 'Leche deslactosada',
+      product: { name: 'Mokkaccino', img: '/src/ui/assets/Prueba3.png', temps: 'Frio', flavors: 'Vainilla, Clasico', toppings: 'Stevia, ', milks: 'Entera, Deslactosada' },
       provider: { name: 'Alexa Liras', email: 'alexa@creative-tim.com', img: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-2.jpg' },
       stock: 432,
       lastVisit: '23/04/18',
-      image: '',
     },
     {
-      product: 'Galletas',
+      product: { name: 'Galletas', img: '/src/ui/assets/Prueba4.png', temps: 'Caliente', flavors: 'Vainilla, Clasico', toppings: 'Stevia, ', milks: 'Entera, Deslactosada' },
       provider: { name: 'Laurent Perrier', email: 'laurent@creative-tim.com', img: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-1.jpg' },
       stock: 819,
       lastVisit: '19/09/17',
-      image: '',
     },
   ];
 
@@ -87,7 +97,7 @@ const InventoryTable = () => {
         <tbody>
           {products.map((row, index) => (
             <tr key={index}>
-              <td className="p-4 border-b border-blue-gray-50">{row.product}</td>
+              <td className="p-4 border-b border-blue-gray-50">{row.product.name}</td>
               <td className="p-4 border-b border-blue-gray-50">
                 <div className="flex items-center gap-3">
                   <img src={row.provider.img} alt={row.provider.name} className="inline-block object-cover rounded-full w-9 h-9" />
