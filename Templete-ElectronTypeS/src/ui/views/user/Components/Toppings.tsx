@@ -14,6 +14,7 @@ const toppingOptions = [
 
 interface ToppingsProps {
     onSelectionChange: (selectedToppings: Record<number, number>) => void;
+    productId: number; // ID del producto para el que se seleccionan los toppings (opcional)
 }
 
 const Toppings: React.FC<ToppingsProps> = ({ onSelectionChange }) => {

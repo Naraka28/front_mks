@@ -1,25 +1,35 @@
+import { getAllowedMilks } from "../../../services/productsServices";
 import Button from "../auxiliaryComponents/ButtonCard";
+import { useQuery } from "@tanstack/react-query";
 
-const milksOptions = [
-    { id: 1, name: "Entera", icon: "/icons/whole-milk.png", price: 1.00 },
-    { id: 2, name: "Deslactosada", icon: "/icons/lactose-free.png", price: 0.00 },
-    { id: 3, name: "Almendras", icon: "/icons/almond-milk.png", price: 2.0 },
-    { id: 4, name: "Avena", icon: "/icons/oat-milk.png" }
-];
+
 
 interface MilksProps {
     onSelectMilk: (id: number) => void;
+    productId: number; // ID del producto para el que se seleccionan los sabores
+
 }
 
-const Milks: React.FC<MilksProps> = ({ onSelectMilk }) => {
+const Milks: React.FC<MilksProps> = ({ onSelectMilk, productId }) => {
+
+       const { data: milksOptions, isLoading, error } = useQuery({
+             queryKey: ["milks", productId], // Incluye productId para evitar datos en caché incorrectos
+             queryFn: () => getAllowedMilks(productId),   
+         });
+    
+        if (isLoading) return <p>Loading Milks...</p>;
+        if (error) return <p>Error loading milks</p>;
+    
+
+
     return (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4">
-            {milksOptions.map(milks => (
+            {milksOptions?.map(milks => (
             <Button
             key={milks.id}
             text={milks.name}
-            imageSrc={milks.icon}
-            altText={`${milks.name} size`}
+            imageSrc={milks.image}
+            altText={`${milks.name} milk`}
             price={milks.price}
             onClick={() => onSelectMilk(milks.id)}
             />

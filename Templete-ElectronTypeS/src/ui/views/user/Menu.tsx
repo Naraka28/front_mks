@@ -12,7 +12,7 @@ function Menu() {
   const navigate = useNavigate();
   const { orders } = useOrders(); // Obtén las órdenes del contexto
 
-  const handleSelectItem = (id: number) => {
+  const handleSelectProduct = (id: number) => {
     navigate(`/selected/${id}`);
   };
 
@@ -76,7 +76,7 @@ function Menu() {
         </div>
 
         <div className="shadow-lg border-2 border-[#E8E8E8] rounded-2xl row-span-7 col-span-6 overflow-y-auto p-4 scrollbar-hide" style={{ maxHeight: 'calc(106vh - 200px)' }}>
-          <MenuItems category={selectedType} onSelectItem={handleSelectItem} />
+          <MenuItems category={selectedType} onSelectItem={handleSelectProduct} />
         </div>
       </div>
     </div>
