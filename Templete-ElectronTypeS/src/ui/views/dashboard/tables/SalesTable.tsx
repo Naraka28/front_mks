@@ -3,9 +3,9 @@ import { FiArrowUpRight, FiDollarSign, FiMoreHorizontal } from "react-icons/fi";
 
 export const SalesTable = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-white">
-      <div className="overflow-scroll px-0">
-        <table className="w-full min-w-max table-auto text-left">
+    <div className="flex w-full items-center justify-center bg-white">
+      <div className="w-full overflow-x-auto px-0">
+        <table className="w-full min-w-full table-auto text-left">
           <TableHead />
           <tbody>
             <TableRow

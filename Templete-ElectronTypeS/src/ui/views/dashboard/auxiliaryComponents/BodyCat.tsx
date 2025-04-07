@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { UniversalTopBar } from "./UniversalTopBar";
-import InventoryTable from "./../tables/InventoryTable";
+import CatTable from "./../tables/CatTable";
 import Searchbar from "./Searchbar";
 
 export const BodyCat = () => {
     return (
+        <div className="bg-white rounded-lg pb-4 shadow h-[200vh]">
         <div className="w-full px-4 grid grid-cols-12">
             <div className="col-span-12 w-full">
                 <UniversalTopBar />
@@ -13,8 +14,9 @@ export const BodyCat = () => {
                 <Searchbar />
             </div>
             <div className="col-span-12 w-full mt-3">
-                <InventoryTable />
+                <CatTable />
             </div>
+        </div>
         </div>
     );
 };

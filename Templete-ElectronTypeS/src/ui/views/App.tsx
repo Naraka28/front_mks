@@ -5,7 +5,6 @@ import Dashboard from "./dashboard/Dashboard";
 import Trabajadores from './dashboard/Employees';
 import Reportes from './dashboard/Reports';
 import Ventas from './dashboard/Sales';
-import Inventario from './dashboard/Inventory'
 import UserHome from "./user/UserHome";
 import Menu from "./user/Menu";
 import MenuSelected from "./user/MenuSelected";
@@ -17,7 +16,10 @@ import Flavours from "./dashboard/Flavours";
 import Products from "./dashboard/Products";
 import CreateProductRegister from "./dashboard/createRegisters/CreateProductRegister";
 import CreateCatRegister from "./dashboard/createRegisters/CreateCatRegister";
-import { OrderProvider } from './user/auxiliaryComponents/OrderContext'
+import { OrderProvider } from './user/auxiliaryComponents/OrderContext';
+import CashierPending from "./cashier/CashierPending";
+import CashierCompleted from "./cashier/CashierCompleted";
+import Login from "./Login";
 
 
 
@@ -34,11 +36,7 @@ function App() {
             path="/"
             element={
               <>
-                <h1>MokkaSoft</h1>
-                <h1>Dashboard</h1>
-                <Link to="/dashboard">Go to Dashboard</Link>
-                <h1>User</h1>
-                <Link to="/userhome">Go to userhome</Link>
+              <Login />
               </>
             }
           />
@@ -51,7 +49,6 @@ function App() {
         <Route path="/leches" element={<Milks />} />
         <Route path="/toppings" element={<Toppings />} />
         <Route path="/productos" element={<Products />} />
-        <Route path="/inventario" element={<Inventario />} />
   
         <Route path="/dashboard/add-item-products" element={<CreateProductRegister />} />
         <Route path="/dashboard/add-item-cat" element={<CreateCatRegister />} />
@@ -67,6 +64,9 @@ function App() {
           <Route path="/menu/:itemId/temp/:tempId/size/:sizeId/flavour/:flavourId/coffeeBeans/:coffeeBeansId/milk/:milkId" element={<MenuSelected />} />
           <Route path="/order-actions" element={<MenuSelected />} />
           <Route path="/order/confirm" element={< OrderConfirmation />} />
+
+          <Route path="/cashier" element={<CashierPending />} />
+          <Route path="/cashier/completados" element={<CashierCompleted />} />
 
         </Routes>
       </Router>
