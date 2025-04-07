@@ -29,8 +29,8 @@ export type ProductCreate = Omit<Product, 'id'>;
 export type ProductUpdate = Partial<Product>;
 
 export async function getProducts(): Promise<Product[]> {
-    console.log('API_URL:', API_URL);
-    console.log('Products_API:', Products_API);
+    // console.log('API_URL:', API_URL);
+    // console.log('Products_API:', Products_API);
     const response = await fetch(Products_API, {
         method: 'GET',
         headers: {

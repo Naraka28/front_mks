@@ -2,9 +2,17 @@ import { useState } from 'react';
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
 import { ListBulletIcon } from '@heroicons/react/24/outline';
 import { FaEye } from 'react-icons/fa6';
+import { useQuery } from '@tanstack/react-query';
+import { getProducts } from '../../../services/productsServices';
+
+
+
+
 
 const Modal = ({ open, onClose, product }) => {
   if (!product) return null;
+
+  
 
   return (
     <Dialog open={open} onClose={onClose} className="relative z-10 ">
@@ -50,6 +58,18 @@ const Modal = ({ open, onClose, product }) => {
 const InventoryTable = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+
+  const { data: productList =[], isLoading, error } = useQuery({
+    queryKey: ["products"],
+    queryFn: ()=> getProducts(),   
+});
+
+console.log(productList);
+
+if (isLoading) return <p>Cargando productos...</p>;
+if (error) {
+    console.log(error);
+}
 
   const products = [
     {
