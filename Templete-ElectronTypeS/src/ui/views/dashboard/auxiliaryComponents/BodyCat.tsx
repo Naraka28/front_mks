@@ -4,6 +4,10 @@ import CatTable from "./../tables/CatTable";
 import Searchbar from "./Searchbar";
 
 export const BodyCat = () => {
+
+
+
+    
     return (
         <div className="bg-white rounded-lg pb-4 shadow h-[200vh]">
         <div className="w-full px-4 grid grid-cols-12">

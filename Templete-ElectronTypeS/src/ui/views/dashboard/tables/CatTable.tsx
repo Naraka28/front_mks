@@ -4,6 +4,9 @@ import { ListBulletIcon } from '@heroicons/react/24/outline';
 import { FaEye } from 'react-icons/fa6';
 import { useQuery } from '@tanstack/react-query';
 import { getMilks } from '../../../services/milksServices';
+import { getToppings } from '../../../services/toppingsServices';
+import { getSizes } from '../../../services/sizeServices';
+import { getFlavors } from '../../../services/flavorServices';
 
 const Modal = ({ open, onClose, product }) => {
   if (!product) return null;
@@ -47,18 +50,51 @@ const Modal = ({ open, onClose, product }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
   
-    const { data: milkList =[], isLoading, error } = useQuery({
-      queryKey: ["milks"],
-      queryFn: ()=> getMilks(),   
-      
-  });
-  console.log(milkList)
-  console.log(milkList);
+    const { data: milkList = [], isLoading: isMilkLoading, error: milkError } = useQuery({
+      queryKey: ["products"],
+      queryFn: () => getMilks(),
+    });
+    
+    const { data: flavorList = [], isLoading: isFlavorLoading, error: flavorError } = useQuery({
+      queryKey: ["flavors"],
+      queryFn: () => getFlavors(),
+    });
+    
+    const { data: toppingList = [], isLoading: isToppingLoading, error: toppingError } = useQuery({
+      queryKey: ["toppings"],
+      queryFn: () => getToppings(),
+    });
   
-  if (isLoading) return <p>Cargando productos...</p>;
-  if (error) {
-      console.log(error);
-  }
+    const { data: sizeList = [], isLoading: isSizeLoading, error: sizeError } = useQuery({
+      queryKey: ["sizes"],
+      queryFn: () => getSizes(),
+    });
+  
+    
+    // Mostrar loading si alguno está cargando
+    if (isMilkLoading || isFlavorLoading || isToppingLoading || isSizeLoading) {
+      return <div>Loading...</div>;
+    }
+    
+    // Mostrar error si alguno falla
+    if (milkError || flavorError || toppingError || sizeError) {
+      return (
+        <div>
+          {milkError && <div>Error loading milks: {milkError.message}</div>}
+          {flavorError && <div>Error loading flavors: {flavorError.message}</div>}
+          {toppingError && <div>Error loading toppings: {toppingError.message}</div>}
+          {sizeError && <div>Error loading sizes: {sizeError.message}</div>}
+  
+        </div>
+      );
+    }
+    
+  console.log(milkList);
+  console.log(flavorList);
+  console.log(toppingList);
+  console.log(sizeList);
+  
+  
   
 
   const openModal = (product) => {
