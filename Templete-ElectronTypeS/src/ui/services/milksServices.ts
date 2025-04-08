@@ -18,9 +18,22 @@ export type MilkUpdate = Partial<Milk>;
 
 
 
+// export async function getMilks(): Promise<Milk[]> {
+//     const response = await fetch(Milk_API, {
+//         method: 'GET',
+//         headers: {
+//             'Content-Type': 'application/json',
+//         },
+//     });
+//     if (!response.ok) {
+//         throw new Error('Network response was not ok' + response.statusText);
+//     }
+//     const data: Milk[] = await response.json();
+//     console.log(data);
+//     return data;
+// }
+
 export async function getMilks(): Promise<Milk[]> {
-    console.log('API_URL:', API_URL);
-    console.log('Products_API:', Milk_API);
     const response = await fetch(Milk_API, {
         method: 'GET',
         headers: {
@@ -33,6 +46,8 @@ export async function getMilks(): Promise<Milk[]> {
     const data: Milk[] = await response.json();
     return data;
 }
+
+
 
 export async function getMilkById(id: number): Promise<Milk> {
     const response = await fetch(`${Milk_API}/${id}`, {
