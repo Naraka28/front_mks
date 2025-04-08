@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.ENV_API_URL as string;
+const API_URL = import.meta.env.VITE_ENV_API_URL as string;
 const Milk_API = `${API_URL}/milks`;
 
 export interface Milk{
@@ -19,6 +19,8 @@ export type MilkUpdate = Partial<Milk>;
 
 
 export async function getMilks(): Promise<Milk[]> {
+    console.log('API_URL:', API_URL);
+    console.log('Products_API:', Milk_API);
     const response = await fetch(Milk_API, {
         method: 'GET',
         headers: {
@@ -28,8 +30,8 @@ export async function getMilks(): Promise<Milk[]> {
     if (!response.ok) {
         throw new Error('Network response was not ok' + response.statusText);
     }
-    const data: MilkList = await response.json();
-    return data.milks;
+    const data: Milk[] = await response.json();
+    return data;
 }
 
 export async function getMilkById(id: number): Promise<Milk> {
