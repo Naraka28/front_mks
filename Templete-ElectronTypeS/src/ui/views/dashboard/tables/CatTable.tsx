@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
 import { ListBulletIcon } from '@heroicons/react/24/outline';
 import { FaEye } from 'react-icons/fa6';
+import { useQuery } from '@tanstack/react-query';
+import { getMilks } from '../../../services/milksServices';
 
 const Modal = ({ open, onClose, product }) => {
   if (!product) return null;
@@ -41,30 +43,23 @@ const Modal = ({ open, onClose, product }) => {
   );
 };
 
-const InventoryTable = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState(null);
-
-  const products = [
-    {
-      product: { name: 'Vainilla', img: '/src/ui/assets/Prueba5.png' },
-      provider: { name: 'John Michael', email: 'john@creative-tim.com', img: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg' },
-      stock: 618,
-      lastVisit: '23/04/18',
-    },
-    {
-      product: { name: 'Entera', img: '/src/ui/assets/Prueba6.png', temps: 'Frio', flavors: 'Vainilla, Clasico', toppings: 'Stevia, ', milks: 'Entera, Deslactosada' },
-      provider: { name: 'Alexa Liras', email: 'alexa@creative-tim.com', img: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-2.jpg' },
-      stock: 432,
-      lastVisit: '23/04/18',
-    },
-    {
-      product: { name: 'Stevia', img: '/src/ui/assets/Prueba7.png', temps: 'Caliente', flavors: 'Vainilla, Clasico', toppings: 'Stevia, ', milks: 'Entera, Deslactosada' },
-      provider: { name: 'Laurent Perrier', email: 'laurent@creative-tim.com', img: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-1.jpg' },
-      stock: 819,
-      lastVisit: '19/09/17',
-    },
-  ];
+  const InventoryTable = () => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedProduct, setSelectedProduct] = useState(null);
+  
+    const { data: milkList =[], isLoading, error } = useQuery({
+      queryKey: ["milks"],
+      queryFn: ()=> getMilks(),   
+      
+  });
+  console.log(milkList)
+  console.log(milkList);
+  
+  if (isLoading) return <p>Cargando productos...</p>;
+  if (error) {
+      console.log(error);
+  }
+  
 
   const openModal = (product) => {
     setSelectedProduct(product);
@@ -89,20 +84,20 @@ const InventoryTable = () => {
           </tr>
         </thead>
         <tbody>
-          {products.map((row, index) => (
+          {milkList.map((row, index) => (
             <tr key={index}>
-              <td className="p-4 border-b border-blue-gray-50">{row.product.name}</td>
+              <td className="p-4 border-b border-blue-gray-50">{row.name}</td>
               <td className="p-4 border-b border-blue-gray-50">
                 <div className="flex items-center gap-3">
-                  <img src={row.provider.img} alt={row.provider.name} className="inline-block object-cover rounded-full w-9 h-9" />
+                  <img src={row.name} alt={row.name} className="inline-block object-cover rounded-full w-9 h-9" />
                   <div>
-                    <p className="text-sm text-blue-gray-900 font-normal">{row.provider.name}</p>
-                    <p className="text-sm text-blue-gray-900 font-normal opacity-70">{row.provider.email}</p>
+                    <p className="text-sm text-blue-gray-900 font-normal">{row.name}</p>
+                    <p className="text-sm text-blue-gray-900 font-normal opacity-70">{row.email}</p>
                   </div>
                 </div>
               </td>
-              <td className="p-4 border-b border-blue-gray-50">{row.stock}</td>
-              <td className="p-4 border-b border-blue-gray-50">{row.lastVisit}</td>
+              <td className="p-4 border-b border-blue-gray-50">{row.name}</td>
+              <td className="p-4 border-b border-blue-gray-50">{row.name}</td>
               <td className="p-4 border-b border-blue-gray-50">
                 <button className="relative align-middle select-none font-sans font-medium text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none w-10 max-w-[40px] h-10 max-h-[40px] rounded-lg text-xs text-blue-gray-500 hover:bg-blue-gray-500/10 active:bg-blue-gray-500/30" type="button">
                   <span className="absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2">
