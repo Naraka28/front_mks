@@ -3,7 +3,7 @@ import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/re
 import { ListBulletIcon } from '@heroicons/react/24/outline';
 import { FaEye } from 'react-icons/fa6';
 import { useQuery } from '@tanstack/react-query';
-import { getProducts } from '../../../services/productsServices';
+import { getToppings } from '../../../services/toppingsServices';
 
 
 
@@ -52,13 +52,13 @@ const Modal = ({ open, onClose, product }) => {
   );
 };
 
-const InventoryTable = () => {
+const ToppingsTable = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const { data: productList =[], isLoading, error } = useQuery({
-    queryKey: ["products"],
-    queryFn: ()=> getProducts(),   
+    queryKey: ["toppings"],
+    queryFn: ()=> getToppings(),   
 });
 
 console.log(productList);
@@ -76,20 +76,41 @@ if (error) {
   return (
     <div className="p-6 overflow-scroll px-0">
       <table className="mt-4 w-full min-w-max table-auto text-left">
-        <thead>
-          <tr>
-            {['Producto', 'Tipo', 'Tamaños', 'Precio Base', 'Acciones'].map((header) => (
-              <th
-                key={header}
-                className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50"
-              >
-                <p className="antialiased font-sans text-sm text-blue-gray-900 flex items-center justify-between gap-2 font-normal leading-none opacity-70">
-                  {header}
-                </p>
-              </th>
-            ))}
-          </tr>
-        </thead>
+      <thead>
+  <tr>
+    <th className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50">
+      <p className="antialiased font-sans text-sm text-blue-gray-900 flex items-center justify-between gap-2 font-normal leading-none opacity-70">
+        Producto
+      </p>
+    </th>
+    <th className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50">
+      <p className="antialiased font-sans text-sm text-blue-gray-900 flex items-center justify-between gap-2 font-normal leading-none opacity-70">
+        Imagen
+      </p>
+    </th>
+    <th className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 text-center">
+      <p className="antialiased font-sans text-sm text-blue-gray-900 flex items-center justify-center gap-2 font-normal leading-none opacity-70">
+        Cantidades Gratis
+      </p>
+    </th>
+    <th className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 text-center">
+    <p className="antialiased font-sans text-sm text-blue-gray-900 flex items-center justify-center gap-2 font-normal leading-none opacity-70">
+        Cantidad Máxima
+      </p>
+    </th>
+    <th className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50">
+      <p className="antialiased font-sans text-sm text-blue-gray-900 flex items-center justify-between gap-2 font-normal leading-none opacity-70">
+        Precio
+      </p>
+    </th>
+    <th className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50">
+      <p className="antialiased font-sans text-sm text-blue-gray-900 flex items-center justify-between gap-2 font-normal leading-none opacity-70">
+        Acciones
+      </p>
+    </th>
+  </tr>
+</thead>
+
         <tbody>
           {productList.map((row, index) => (
             <tr key={index}>
@@ -97,14 +118,11 @@ if (error) {
               <td className="p-4 border-b border-blue-gray-50">
                 <div className="flex items-center gap-3">
                   <img src={row.image} alt="Link invalido" className="inline-block object-cover rounded-full w-9 h-9" />
-                  <div>
-                    <p className="text-sm text-blue-gray-900 font-normal">{row.type.type}</p>
-                    <p className="text-sm text-blue-gray-900 font-normal opacity-70">{row.temp.map((t) => t.name).join(', ')}</p>
-                  </div>
                 </div>
               </td>
-              <td className="p-4 border-b border-blue-gray-50">{row.sizes.map((t) => t.name).join(', ')}</td>
-              <td className="p-4 border-b border-blue-gray-50">${row.base_price}</td>
+              <td className="p-4 border-b border-blue-gray-50 text-center">{row.free_quantity}</td>
+              <td className="p-4 border-b border-blue-gray-50 text-center">{row.max_quantity}</td>
+              <td className="p-4 border-b border-blue-gray-50">${row.price}</td>
               <td className="p-4 border-b border-blue-gray-50">
                 <button className="relative align-middle select-none font-sans font-medium text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none w-10 max-w-[40px] h-10 max-h-[40px] rounded-lg text-xs text-blue-gray-500 hover:bg-blue-gray-500/10 active:bg-blue-gray-500/30" type="button">
                   <span className="absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2">
@@ -128,4 +146,4 @@ if (error) {
   );
 };
 
-export default InventoryTable;
+export default ToppingsTable;

@@ -87,7 +87,6 @@ const InventoryTable = () => {
 
   return (
     <div className="p-6 overflow-scroll px-0">
-      <h2 className="text-2xl font-bold mb-4">{fetchConfig.label}</h2>
       <table className="mt-4 w-full min-w-max table-auto text-left">
         <thead>
           <tr>
@@ -109,7 +108,7 @@ const InventoryTable = () => {
                   <img src={row.product?.image || '/placeholder.png'} alt="null img" className="inline-block object-cover rounded-full w-9 h-9" />
                 </div>
               </td>
-              <td className="p-4 border-b border-blue-gray-50">{row.price}</td>
+              <td className="p-4 border-b border-blue-gray-50">${row.price}</td>
               <td className="p-4 border-b border-blue-gray-50">
                 <button
                   onClick={() => openModal(row)}
