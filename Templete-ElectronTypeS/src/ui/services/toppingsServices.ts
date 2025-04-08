@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.ENV_API_URL as string;
+const API_URL = import.meta.env.VITE_ENV_API_URL as string;
 const Toppings_API = `${API_URL}/toppings`;
 
 export interface Topping {
@@ -29,8 +29,8 @@ export async function getToppings(): Promise<Topping[]> {
     if (!response.ok) {
         throw new Error('Network response was not ok' + response.statusText);
     }
-    const data: ToppingList = await response.json();
-    return data.toppings;
+    const data: Topping[] = await response.json();
+    return data;
 }
 
 export async function getToppingById(id: number): Promise<Topping> {

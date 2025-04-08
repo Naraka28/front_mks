@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.ENV_API_URL as string;
+const API_URL = import.meta.env.VITE_ENV_API_URL as string;
 const Size_API = `${API_URL}/sizes`;
 
 export interface Size{
@@ -28,8 +28,8 @@ export async function getSizes(): Promise<Size[]> {
     if (!response.ok) {
         throw new Error('Network response was not ok' + response.statusText);
     }
-    const data: SizeList = await response.json();
-    return data.sizes;
+    const data: Size[] = await response.json();
+    return data;
 }
 
 export async function getSizeById(id: number): Promise<Size> {
