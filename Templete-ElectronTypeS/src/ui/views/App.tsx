@@ -24,6 +24,7 @@ import { OrderProvider } from './user/auxiliaryComponents/OrderContext';
 import CashierPending from "./cashier/CashierPending";
 import CashierCompleted from "./cashier/CashierCompleted";
 import Login from "./Login";
+import CashierLayout from "./cashier/CashierLayout";
 
 
 
@@ -74,8 +75,7 @@ function App() {
           <Route path="/order-actions" element={<MenuSelected />} />
           <Route path="/order/confirm" element={< OrderConfirmation />} />
 
-          <Route path="/cashier" element={<CashierPending />} />
-          <Route path="/cashier/completados" element={<CashierCompleted />} />
+          <Route path="/cashier/*" element={<CashierLayout />} />
 
         </Routes>
       </Router>
