@@ -1,39 +1,51 @@
-import React from "react";
+import React, { useState } from "react";
 import ButtonCard from "../auxiliaryComponents/ButtonCard.tsx";
-import Prueba1 from "./../../../assets/Prueba1.png";
-import Prueba2 from "./../../../assets/Prueba2.png";
-import Prueba3 from "./../../../assets/Prueba3.png";
-import Prueba4 from "./../../../assets/Prueba4.png";
+import { useQuery } from "@tanstack/react-query";
+import { getProducts, getProductsByType } from "../../../services/productsServices.ts";
 
-const menuItems = [
-    { id: 1, name: "Té caliente", category: "Bebida Caliente", icon: Prueba3 },
-    { id: 2, name: "Espresso", category: "Cafés", icon: Prueba1 },
-    { id: 3, name: "Latte", category: "Cafés", icon: Prueba1 },
-    { id: 4, name: "Cappuccino", category: "Cafés", icon: Prueba1 },
-    { id: 5, name: "Americano", category: "Cafés", icon: Prueba1 },
-    { id: 6, name: "Frappé de Chocolate", category: "Bebida Fría", icon: Prueba2 },
-    { id: 7, name: "Galleta", category: "Postre", icon: Prueba4 },
-];
+
+
 
 interface MenuItemsProps {
     category: string | null;
     onSelectItem: (id: number) => void; // Nueva prop para manejar selección
+    selectedProductId?: number; // ID del producto seleccionado (opcional)
 }
 
-const MenuItems: React.FC<MenuItemsProps> = ({ category, onSelectItem }) => {
-    const filteredItems = category
-        ? menuItems.filter(item => item.category === category)
-        : menuItems;
+const MenuItems: React.FC<MenuItemsProps> = ({  onSelectItem }) => {
+
+    const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
+
+
+    const { data: menuItems =[], isLoading, error } = useQuery({
+        queryKey: ["products"],
+        queryFn: ()=> getProducts(),   
+    });
+    console.log(menuItems);
+
+    const handleSelectItem = (id: number) => {
+        setSelectedProductId(id); // Guardar el ID del producto seleccionado
+        onSelectItem(id); // Llamar la función externa si es necesario
+    };
+
+    if (isLoading) return <p>Cargando productos...</p>;
+    if (error) {
+        console.log(error);
+      
+        return <p>Error al cargar los productos</p>;
+      }
+    
+
 
     return (
         <div className="grid grid-cols-3 gap-4 p-4 font-[Poppins]">
-            {filteredItems.map((item) => (
+            {menuItems.map((item) => (
                 <ButtonCard
                     key={item.id}
                     text={item.name}
-                    imageSrc={item.icon}
-                    altText="Coffee cup"
-                    onClick={() => onSelectItem(item.id)} // Enviar ID al hacer clic
+                    imageSrc={item.image}
+                    altText={`${item.name} product`}
+                    onClick={() => handleSelectItem(item.id)} // Enviar ID al hacer clic
                 />
             ))}
         </div>

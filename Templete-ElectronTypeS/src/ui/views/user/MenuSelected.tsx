@@ -193,15 +193,15 @@ const MenuSelected: React.FC = () => {
                     <div className="w-full overflow-y-auto flex items-center justify-center p-4">
                         {!tempId ? (
                             <div className="max-w-5xl w-full">
-                                <Temperature onSelectTemp={handleTempSelect} />
+                                <Temperature onSelectTemp={handleTempSelect} productId={Number(itemId)} />
                             </div>
                         ) : !sizeId ? (
                             <div className="max-w-2xl w-full">
-                                <Sizes onSelectSize={handleSizeSelect} selectedCategory={null} />
+                                <Sizes onSelectSize={handleSizeSelect} productId={Number(itemId)} />
                             </div>
                         ) : !flavourId ? (
                             <div className="max-w-6xl w-full">
-                                <Flavours onSelectFlavour={handleFlavourSelect} />
+                                <Flavours onSelectFlavour={handleFlavourSelect} productId={Number(itemId)} />
                             </div>
                         ) : !coffeeBeansId ? (
                             <div className="max-w-2xl w-full">
@@ -209,11 +209,11 @@ const MenuSelected: React.FC = () => {
                             </div>
                         ) : !milkId ? (
                             <div className="max-w-5xl w-full">
-                                <Milks onSelectMilk={handleMilkSelect} />
+                                <Milks onSelectMilk={handleMilkSelect}  productId={Number(itemId)} />
                             </div>
                         ) : !showOrderActions ? (
                             <div className="max-w-3xl w-full">
-                                <Toppings onSelectionChange={handleToppingsChange} />
+                                <Toppings onSelectionChange={handleToppingsChange} productId={Number(itemId)}/>
                             </div>
                         ) : (
                             <div className="max-w-6xl w-full">

@@ -1,38 +1,37 @@
 import React from "react";
 import Button from "../auxiliaryComponents/ButtonCard.tsx";
-import SmallSizeIcon from "./../../../assets/Prueba3.png";
-import TallSizeIcon from "./../../../assets/Prueba1.png";
-import GrandeSizeIcon from "./../../../assets/Prueba1.png";
-import VentiSizeIcon from "./../../../assets/Prueba1.png";
-
-const sizeItems = [
-    { id: 1, name: "Short", category: "size", icon: SmallSizeIcon, price: 0 },
-    { id: 2, name: "Tall", category: "size", icon: TallSizeIcon,price: 5 },
-    { id: 3, name: "Grande", category: "size", icon: GrandeSizeIcon, price: 10 },
-    { id: 4, name: "Venti", category: "size", icon: VentiSizeIcon, price: 15 },
-];
+import {useQuery} from "@tanstack/react-query";
+import { getAllowedSizes } from "../../../services/productsServices.ts";
 
 interface SizesProps {
-    selectedCategory: string | null;
     onSelectSize: (id: number) => void;
+    productId: number; // ID del producto para el que se seleccionan los tamaños
 }
 
-const Sizes: React.FC<SizesProps> = ({ selectedCategory, onSelectSize }) => {
-    // Filtramos solo los items de tipo 'size' por si acaso
-    const filteredItems = selectedCategory
-        ? sizeItems.filter(item => item.category === selectedCategory)
-        : sizeItems;
+const Sizes: React.FC<SizesProps> = ({ productId, onSelectSize }) => {
 
+    const { data: sizeOptions, isLoading, error } = useQuery({
+           queryKey: ["sizes", productId], // Incluye productId para evitar datos en caché incorrectos
+           queryFn: () => getAllowedSizes(productId),   
+       });
+    
+        if (isLoading) return <p>Loading sizes...</p>;
+        if (error) return <p>Error loading sizes</p>;
+    
+
+
+    // Filtramos solo los items de tipo 'size' por si acaso
+  
     return (
         <div className="grid grid-cols-2 gap-4 p-4 font-[Poppins]">
-            {filteredItems.map((item) => (
+            {sizeOptions?.map((size) => (
                 <Button
-                    key={item.id}
-                    text={item.name}
-                    imageSrc={item.icon}
-                    altText={`${item.name} size`}
-                    price={item.price}
-                    onClick={() => onSelectSize(item.id)}
+                    key={size.id}
+                    text={size.name}
+                    price={size.price}
+                    imageSrc={size.image}
+                    altText={`${size.name} size`}
+                    onClick={() => onSelectSize(size.id)}
                 />
             ))}
         </div>

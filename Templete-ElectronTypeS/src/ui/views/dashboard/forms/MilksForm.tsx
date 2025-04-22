@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import { createMilk } from "../../../services/milksServices";
 
-
-const CatForm: React.FC = () => {
+const MilksForm: React.FC = () => {
   const [formData, setFormData] = useState<{
     name: string;
     price: string;
@@ -25,31 +23,10 @@ const CatForm: React.FC = () => {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-  
-    try {
-      const milkData = {
-        name: formData.name,
-        price: parseFloat(formData.price),
-        image: null,
-        // imagen no incluida aún
-      };
-  
-      const created = await createMilk(milkData);
-      console.log("Producto creado:", created);
-  
-      // Limpia el formulario si quieres
-      setFormData({
-        name: "",
-        price: "",
-        image: null,
-      });
-    } catch (error) {
-      console.error("Error al crear el producto:", error);
-    }
+    console.log("Form submitted:", formData);
   };
-  
 
   return (
     <div className="max-w-lg mx-auto p-6 bg-white shadow-xl rounded-2xl border border-gray-200">
@@ -98,4 +75,4 @@ const CatForm: React.FC = () => {
   );
 };
 
-export default CatForm;
+export default MilksForm;

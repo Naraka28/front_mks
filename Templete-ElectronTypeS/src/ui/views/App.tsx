@@ -5,7 +5,6 @@ import Dashboard from "./dashboard/Dashboard";
 import Trabajadores from './dashboard/Employees';
 import Reportes from './dashboard/Reports';
 import Ventas from './dashboard/Sales';
-import Inventario from './dashboard/Inventory'
 import UserHome from "./user/UserHome";
 import Menu from "./user/Menu";
 import MenuSelected from "./user/MenuSelected";
@@ -16,10 +15,16 @@ import Toppings from "./dashboard/Toppings";
 import Flavours from "./dashboard/Flavours";
 import Products from "./dashboard/Products";
 import CreateProductRegister from "./dashboard/createRegisters/CreateProductRegister";
+import CreateFlavourRegister from "./dashboard/createRegisters/CreateFlavourRegister";
+import CreateSizeRegister from "./dashboard/createRegisters/CreateSizesRegister";
+import CreateMilkRegister from "./dashboard/createRegisters/CreateMilkRegister";
+import CreateToppingRegister from "./dashboard/createRegisters/CreateToppingsRegister";
 import CreateCatRegister from "./dashboard/createRegisters/CreateCatRegister";
-import { OrderProvider } from './user/auxiliaryComponents/OrderContext'
+import { OrderProvider } from './user/auxiliaryComponents/OrderContext';
+import CashierPending from "./cashier/CashierPending";
+import CashierCompleted from "./cashier/CashierCompleted";
+import Login from "./Login";
 import CashierLayout from "./cashier/CashierLayout";
-
 
 
 
@@ -36,13 +41,7 @@ function App() {
             path="/"
             element={
               <>
-                <h1>MokkaSoft</h1>
-                <h1>Dashboard</h1>
-                <Link to="/dashboard">Go to Dashboard</Link>
-                <h1>User</h1>
-                <Link to="/userhome">Go to userhome</Link>
-                <h1>Cashier</h1>
-                <Link to="/cashier">Go to cashier</Link>
+              <Login />
               </>
             }
           />
@@ -55,9 +54,13 @@ function App() {
         <Route path="/leches" element={<Milks />} />
         <Route path="/toppings" element={<Toppings />} />
         <Route path="/productos" element={<Products />} />
-        <Route path="/inventario" element={<Inventario />} />
   
         <Route path="/dashboard/add-item-products" element={<CreateProductRegister />} />
+        <Route path="/dashboard/add-item-flavour" element={<CreateFlavourRegister />} />
+        <Route path="/dashboard/add-item-size" element={<CreateSizeRegister />} />
+        <Route path="/dashboard/add-item-milk" element={<CreateMilkRegister />} />
+        <Route path="/dashboard/add-item-topping" element={<CreateToppingRegister />} />
+
         <Route path="/dashboard/add-item-cat" element={<CreateCatRegister />} />
 
         <Route path="/userhome" element={<UserHome />} />

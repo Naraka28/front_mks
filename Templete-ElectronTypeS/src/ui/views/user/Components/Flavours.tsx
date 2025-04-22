@@ -1,31 +1,34 @@
+import { getAllowedFlavors } from "../../../services/productsServices";
 import Button from "../auxiliaryComponents/ButtonCard";
-import prueba1 from "./../../../assets/Prueba1.png";
+import { useQuery } from '@tanstack/react-query';
 
-const flavourOptions = [
-    { id: 1, name: "Vainilla", icon: prueba1, price: 0 },
-    { id: 2, name: "Chocolate", icon: prueba1, price: 15 },
-    { id: 3, name: "Caramelo", icon: prueba1, price: 0 },
-    { id: 4, name: "Avellana", icon: prueba1, price: 0 },
-    { id: 5, name: "Moka", icon: prueba1, price: 0 },
-    { id: 6, name: "Café", icon: prueba1, price: 12 },
-    { id: 7, name: "Coco", icon: prueba1, price: 0 },
-    { id: 8, name: "Almendra", icon: prueba1, price: 18 }
-];
+
 
 interface FlavoursProps {
     onSelectFlavour: (id: number) => void;
+    productId: number; // ID del producto para el que se seleccionan los sabores
 }
 
-const Flavours: React.FC<FlavoursProps> = ({ onSelectFlavour }) => {
+const Flavours: React.FC<FlavoursProps> = ({ onSelectFlavour, productId }) => {
+    const { data: flavourOptions, isLoading, error } = useQuery({
+        queryKey: ["flavors", productId], // Incluye productId para evitar datos en caché incorrectos
+        queryFn: () => getAllowedFlavors(productId),   
+    });
+    
+
+    if (isLoading) return <p>Cargando sabores...</p>;
+    if (error) return <p>Error al cargar los sabores</p>;
+
+
     return (
         <div className="grid grid-cols-4 gap-4 p-4 font-[Poppins]">
-            {flavourOptions.map((flavour) => (
+            {flavourOptions?.map((flavour) => (
                 <Button
                     key={flavour.id}
                     text={flavour.name}
-                    imageSrc={flavour.icon}
+                    imageSrc={flavour.image}
                     price={flavour.price}
-                    altText={`${flavour.name} flavour`}
+                    altText={`${flavour.name} flavor`}
                     onClick={() => onSelectFlavour(flavour.id)}
                 />
             ))}

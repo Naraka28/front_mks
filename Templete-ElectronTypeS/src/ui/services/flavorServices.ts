@@ -1,5 +1,5 @@
-const API_URL = import.meta.env.ENV_API_URL as string;
-const FLAVOR_API = `${API_URL}/flavors`;
+const API_URL = import.meta.env.VITE_ENV_API_URL as string;
+const FLAVOR_API = `${API_URL}/flavours`;
 
 export interface Flavor{
     id:number;
@@ -19,6 +19,7 @@ export type FlavorUpdate = Partial<Flavor>;
 
 
 export async function getFlavors(): Promise<Flavor[]> {
+    console.log('Flavors_API:', FLAVOR_API);
     const response = await fetch(FLAVOR_API, {
         method: 'GET',
         headers: {
@@ -28,8 +29,8 @@ export async function getFlavors(): Promise<Flavor[]> {
     if (!response.ok) {
         throw new Error('Network response was not ok' + response.statusText);
     }
-    const data: FlavorList = await response.json();
-    return data.flavors;
+    const data: Flavor[] = await response.json();
+    return data;
 }
 
 export async function getFlavorById(id: number): Promise<Flavor> {
@@ -65,7 +66,7 @@ export async function createFlavor(flavor: FlavorCreate): Promise<Flavor> {
 
 export async function updateFlavor(flavor: FlavorUpdate): Promise<Flavor> {
     const response = await fetch(`${FLAVOR_API}/update/${flavor.id}`, {
-        method: 'PATCH',
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
         },
