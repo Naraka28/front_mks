@@ -15,6 +15,10 @@ import Toppings from "./dashboard/Toppings";
 import Flavours from "./dashboard/Flavours";
 import Products from "./dashboard/Products";
 import CreateProductRegister from "./dashboard/createRegisters/CreateProductRegister";
+import CreateFlavourRegister from "./dashboard/createRegisters/CreateFlavourRegister";
+import CreateSizeRegister from "./dashboard/createRegisters/CreateSizesRegister";
+import CreateMilkRegister from "./dashboard/createRegisters/CreateMilkRegister";
+import CreateToppingRegister from "./dashboard/createRegisters/CreateToppingsRegister";
 import CreateCatRegister from "./dashboard/createRegisters/CreateCatRegister";
 import { OrderProvider } from './user/auxiliaryComponents/OrderContext';
 import CashierPending from "./cashier/CashierPending";
@@ -51,6 +55,11 @@ function App() {
         <Route path="/productos" element={<Products />} />
   
         <Route path="/dashboard/add-item-products" element={<CreateProductRegister />} />
+        <Route path="/dashboard/add-item-flavour" element={<CreateFlavourRegister />} />
+        <Route path="/dashboard/add-item-size" element={<CreateSizeRegister />} />
+        <Route path="/dashboard/add-item-milk" element={<CreateMilkRegister />} />
+        <Route path="/dashboard/add-item-topping" element={<CreateToppingRegister />} />
+
         <Route path="/dashboard/add-item-cat" element={<CreateCatRegister />} />
 
         <Route path="/userhome" element={<UserHome />} />

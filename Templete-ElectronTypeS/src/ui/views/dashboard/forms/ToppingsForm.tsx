@@ -1,16 +1,18 @@
 import React, { useState } from "react";
-import { createMilk } from "../../../services/milksServices";
 
-
-const CatForm: React.FC = () => {
+const ToppingsForm: React.FC = () => {
   const [formData, setFormData] = useState<{
     name: string;
     price: string;
     image: File | null;
+    freeQuantity: string;
+    maxQuantity: string;
   }>({
     name: "",
     price: "",
     image: null,
+    freeQuantity: "",
+    maxQuantity: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,31 +27,10 @@ const CatForm: React.FC = () => {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-  
-    try {
-      const milkData = {
-        name: formData.name,
-        price: parseFloat(formData.price),
-        image: null,
-        // imagen no incluida aún
-      };
-  
-      const created = await createMilk(milkData);
-      console.log("Producto creado:", created);
-  
-      // Limpia el formulario si quieres
-      setFormData({
-        name: "",
-        price: "",
-        image: null,
-      });
-    } catch (error) {
-      console.error("Error al crear el producto:", error);
-    }
+    console.log("Form submitted:", formData);
   };
-  
 
   return (
     <div className="max-w-lg mx-auto p-6 bg-white shadow-xl rounded-2xl border border-gray-200">
@@ -87,6 +68,30 @@ const CatForm: React.FC = () => {
             className="w-full p-3 border rounded-lg bg-gray-100 focus:ring-2 focus:ring-gray-300 focus:outline-none transition"
           />
         </div>
+        <div>
+          <label className="block text-gray-700 font-medium">Cantidad gratuita de toppings</label>
+          <input
+            type="number"
+            name="freeQuantity"
+            value={formData.freeQuantity}
+            onChange={handleChange}
+            required
+            min={0}
+            className="w-full p-3 border rounded-lg bg-gray-100 focus:ring-2 focus:ring-gray-300 focus:outline-none transition"
+          />
+        </div>
+        <div>
+          <label className="block text-gray-700 font-medium">Cantidad máxima de toppings</label>
+          <input
+            type="number"
+            name="maxQuantity"
+            value={formData.maxQuantity}
+            onChange={handleChange}
+            required
+            min={1}
+            className="w-full p-3 border rounded-lg bg-gray-100 focus:ring-2 focus:ring-gray-300 focus:outline-none transition"
+          />
+        </div>
         <button
           type="submit"
           className="w-full p-3 bg-violet-600 text-white rounded-lg shadow-md hover:bg-violet-700 transition"
@@ -98,4 +103,4 @@ const CatForm: React.FC = () => {
   );
 };
 
-export default CatForm;
+export default ToppingsForm;
