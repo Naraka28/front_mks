@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 interface SearchbarProps {
   placeholder?: string;
@@ -8,9 +8,20 @@ interface SearchbarProps {
 
 const SearchbarProducts: React.FC<SearchbarProps> = ({ placeholder = "Buscar un Registro", onChange }) => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleAddClick = () => {
-    navigate("/dashboard/add-item-cat");
+    const currentPath = location.pathname;
+
+    if (currentPath.includes("/sabores")) {
+      navigate("/dashboard/add-item-flavour");
+    } else if (currentPath.includes("/tamanos")) {
+      navigate("/dashboard/add-item-size");
+    } else if (currentPath.includes("/leches")) {
+      navigate("/dashboard/add-item-milk");
+    } else if (currentPath.includes("/toppings")) {
+      navigate("/dashboard/add-item-topping");
+    }
   };
 
   return (
