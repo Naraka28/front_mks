@@ -19,24 +19,17 @@ const ModalDetails = ({ open, onClose, product }) => {
           </div>
           <div className="p-2 mr-10 flex justify-center items-center">
             <ListBulletIcon className="mr-4 mt-1 w-10 h-10 text-purple-600" />
-            <DialogTitle className="text-4xl font-bold text-center">Detalles del Producto</DialogTitle>
+            <DialogTitle className="text-4xl font-bold text-center">Detalles del topping</DialogTitle>
           </div>
           <div className="flex items-center justify-center border-t-2 border-gray-200 pt-1 mb-6 mt-4">
             <div className="p-2 mr-10 bg-purple-100 rounded-full mt-4">
               <img src={product.image} alt="" height="200rem" width="200rem" />
             </div>
             <div className="gap-1 mt-4">
-              <p className="text-xl text-gray-700"><strong>Producto:</strong> {product.name}</p>
+              <p className="text-xl text-gray-700"><strong>Topping:</strong> {product.name}</p>
               <p className="text-xl text-gray-700"><strong>Tipo:</strong> {product.type?.type}</p>
               <p className="text-xl text-gray-700"><strong>Precio Base:</strong> ${product.base_price}</p>
 
-              <div className="bg-purple-100 bg-opacity-65 justify-center p-3 mt-2 gap-1 rounded-md">
-                <p className="text-xl text-gray-700"><strong>Temperatura:</strong> {product.temp?.map(t => t.name).join(', ')}</p>
-                <p className="text-xl text-gray-700"><strong>Leches:</strong> {product.milks?.map(m => m.name).join(', ')}</p>
-                <p className="text-xl text-gray-700"><strong>Sabores:</strong> {product.flavours?.map(f => f.name).join(', ')}</p>
-                <p className="text-xl text-gray-700"><strong>Toppings:</strong> {product.toppings?.map(tp => tp.name).join(', ')}</p>
-                <p className="text-xl text-gray-700"><strong>Tamaños:</strong> {product.sizes?.map(s => s.name).join(', ')}</p>
-              </div>
             </div>
           </div>
         </DialogPanel>
@@ -63,7 +56,7 @@ const DeleteConfirmationModal = ({ open, onClose, product, onConfirm }) => {
           <div className="text-center mb-4">
             <p className="text-xl text-gray-700 mb-2">¿Estás seguro que deseas eliminar el topping?</p>
             <p className="text-2xl font-bold text-gray-800">"{product.name}"</p>
-            <div className="p-2 bg-purple-100 rounded-full mt-2">
+            <div className="p-2 bg-purple-100 items-center justify-center rounded-full mt-2">
               <img src={product.image} alt="" height="100rem" width="100rem" />
             </div>
             <p className="text-xl text-red-600 font-semibold mt-2">Esta acción no se puede deshacer</p>
