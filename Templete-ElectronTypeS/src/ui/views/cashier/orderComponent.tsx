@@ -15,7 +15,6 @@ const OrderComponent: React.FC<OrderProps> = ({ order }) => {
         tempName,
         flavourName,
         milkName,
-        basePrice,
         sizePrice,
         milkPrice,
         flavourPrice,

@@ -1,5 +1,3 @@
-import React from 'react'
-import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 
 const CashierAccountToggle = () => {
   return (
@@ -14,9 +12,6 @@ const CashierAccountToggle = () => {
           <span className="text-sm font-bold block">Juan Luis Lagunas</span>
           <span className="text-xs block text-stone-500">elpirata@gmail.com</span>
         </div>
-
-        <FiChevronDown className="absolute right-2 top-1/2 translate-y-[calc(-50%+4px)] text-xs" />
-        <FiChevronUp className="absolute right-2 top-1/2 translate-y-[calc(-50%-4px)] text-xs" />
       </button>
     </div>
   )
