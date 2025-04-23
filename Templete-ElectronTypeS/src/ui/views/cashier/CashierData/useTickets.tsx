@@ -170,6 +170,10 @@ const exampleOrders2: OrderItem[] = [
     },
 ];
 
+export const exampleUser: User = {
+    id: 1, name: 'Juan Luis Lagunas', email: 'Elpirata@gmail.com', password: '1234', roleId: { id: 1, name: 'Cajero' }
+};
+
 export const exampleTickets: Ticket[] = [
     {
         id: 1,
@@ -177,7 +181,7 @@ export const exampleTickets: Ticket[] = [
         total: calculateTicketTotal(exampleOrders),
         payment_method: 'Efectivo',
         ticket_date: new Date(),
-        cashier: { id: 1, name: 'Juan Pérez', email: 'juan@example', password: '1234', roleId: { id: 1, name: 'Cajero' } },
+        cashier: exampleUser,
         orders: exampleOrders
     },
     {
@@ -186,7 +190,7 @@ export const exampleTickets: Ticket[] = [
         total: calculateTicketTotal(exampleOrders2),
         payment_method: 'Tarjeta',
         ticket_date: new Date(),
-        cashier: { id: 1, name: 'Juan Pérez', email: 'juan@example', password: '1234', roleId: { id: 1, name: 'Cajero' } },
+        cashier: exampleUser,
         orders: exampleOrders2
     },
 ];

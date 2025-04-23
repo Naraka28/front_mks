@@ -30,7 +30,7 @@ export const CashierLayout: React.FC = () => {
                     />
 
                     <Route
-                        path="completados"
+                        path="completados/:ticketId"
                         element={<BodyCashier orderStatus="completed" />}
                     />
                 </Routes>
