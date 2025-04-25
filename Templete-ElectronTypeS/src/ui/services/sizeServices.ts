@@ -5,7 +5,7 @@ export interface Size{
     id:number;
     name: string;
     price: number;
-    image: string;
+    image: File | null;
 }
 
 export interface SizeList{
@@ -47,13 +47,10 @@ export async function getSizeById(id: number): Promise<Size> {
 }
 
 
-export async function createSize(Size: SizeCreate): Promise<Size> {
+export async function createSize(Size: FormData): Promise<Size> {
     const response = await fetch(`${Size_API}/create`, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(Size),
+        body:Size
     });
     if (!response.ok) {
         throw new Error('Network response was not ok' + response.statusText);

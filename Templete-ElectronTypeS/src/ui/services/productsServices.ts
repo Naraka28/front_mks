@@ -6,13 +6,15 @@ import { Topping, ToppingList } from "./toppingsServices";
 
 const API_URL = import.meta.env.VITE_ENV_API_URL as string;
 const Products_API = `${API_URL}/products`;
+const ProductsType_API = `${API_URL}/product_types`;
+
 
 export interface Product {
     id: number;
     name: string;
     base_price: number;
     type: string;
-    image: string;
+    image: File | null;
     flavours: Flavor[];
     toppings: Topping[];
     sizes: Size[];
@@ -25,6 +27,7 @@ export interface ProductList {
 }
 
 export type ProductCreate = Omit<Product, 'id'>;
+export type ProductCreatePartial = Partial<ProductCreate>;
 
 export type ProductUpdate = Partial<Product>;
 
@@ -43,7 +46,24 @@ export async function getProducts(): Promise<Product[]> {
     const data: Product[] = await response.json();
  
     return data;
+
+
 }
+
+export async function getProductTypes(): Promise<Product[]> {
+    const response = await fetch(`${ProductsType_API}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    if (!response.ok) {
+        throw new Error('Network response was not ok' + response.statusText);
+    }
+    const data: Product[] = await response.json();
+    return data;
+}
+
 
 export async function getProductById(id: number): Promise<Product> {
     const response = await fetch(`${Products_API}/${id}`, {
@@ -59,13 +79,10 @@ export async function getProductById(id: number): Promise<Product> {
     return data;
 }
 
-export async function createProduct(product: ProductCreate): Promise<Product> {
+export async function createProduct(product: FormData): Promise<Product> {
     const response = await fetch(`${Products_API}/create`, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(product),
+        body: product
     });
     if (!response.ok) {
         throw new Error('Network response was not ok' + response.statusText);

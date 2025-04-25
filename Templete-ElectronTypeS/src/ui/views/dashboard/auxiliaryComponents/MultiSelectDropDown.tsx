@@ -3,7 +3,7 @@ import { IoMdClose } from 'react-icons/io';
 import { FaChevronDown } from "react-icons/fa6";
 
 interface Option {
-    value: string;
+    value: number;
     label: string;
 }
 
@@ -32,7 +32,7 @@ export default function MultiSelectDropDown({ content, onChange }: MultiSelectDr
     };
 
     useEffect(() => {
-        const match = content.filter(item => item.value.toLowerCase().includes(searchText.toLowerCase()));
+        const match = content.filter(item => item.label.toLowerCase().includes(searchText.toLowerCase()));
         setFilterOptions(match.length ? match : content);
     }, [searchText, content]);
 

@@ -3,8 +3,7 @@ import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/re
 import { ListBulletIcon } from '@heroicons/react/24/outline';
 import { FaEye } from 'react-icons/fa6';
 import { useQuery } from '@tanstack/react-query';
-import { getToppings } from '../../../services/toppingsServices';
-
+import { getToppings, Topping } from '../../../services/toppingsServices';
 
 
 
@@ -31,6 +30,7 @@ const Modal = ({ open, onClose, product }) => {
           <div className="flex items-center justify-center border-t-2 border-gray-200 pt-1 mb-6 mt-4">
             <div className="p-2 mr-10 bg-purple-100 rounded-full mt-4">
               <img src={product.image} alt="" height="200rem" width="200rem" />
+              
             </div>
             <div className="gap-1 mt-4">
               <p className="text-xl text-gray-700"><strong>Producto:</strong> {product.name}</p>
@@ -147,3 +147,5 @@ if (error) {
 };
 
 export default ToppingsTable;
+
+

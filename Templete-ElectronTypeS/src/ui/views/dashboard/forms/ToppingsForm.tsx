@@ -1,18 +1,14 @@
 import React, { useState } from "react";
+import { createTopping, ToppingCreate } from "../../../services/toppingsServices";
+import { useMutation } from "@tanstack/react-query";
 
 const ToppingsForm: React.FC = () => {
-  const [formData, setFormData] = useState<{
-    name: string;
-    price: string;
-    image: File | null;
-    freeQuantity: string;
-    maxQuantity: string;
-  }>({
+  const [formData, setFormData] = useState<ToppingCreate>({
     name: "",
-    price: "",
+    price: 0,
     image: null,
-    freeQuantity: "",
-    maxQuantity: "",
+    free_quantity: 0,
+    max_quantity: 0,
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,7 +26,33 @@ const ToppingsForm: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
+    const toppingData = new FormData();
+    toppingData.append("name", formData.name);
+    toppingData.append("price", formData.price.toString());
+    toppingData.append("free_quantity", formData.free_quantity.toString());
+    toppingData.append("max_quantity", formData.max_quantity.toString());
+    if (formData.image) {
+      toppingData.append("image", formData.image);
+    }
+    console.log("📦 FormData contents:");
+    for (let [key, value] of toppingData.entries()) {
+      console.log(`${key}:`, value);
+    }
+    mutation.mutate(toppingData); // Llama a la mutación con los datos del formulario
   };
+
+  const mutation = useMutation({
+    mutationFn: createTopping,
+    onSuccess: (data) => {
+      console.log("Producto creado:", data);
+      setFormData({ name: "", price: 0, free_quantity:0, max_quantity:0, image: null }); // limpia el form
+      alert("Producto creado con éxito ✅"); // o usa un toast
+    },
+    onError: (error) => {
+      console.error("Error al crear el producto:", error);
+      alert("Error al guardar 😢");
+    },
+  });
 
   return (
     <div className="max-w-lg mx-auto p-6 bg-white shadow-xl rounded-2xl border border-gray-200">
@@ -72,8 +94,8 @@ const ToppingsForm: React.FC = () => {
           <label className="block text-gray-700 font-medium">Cantidad gratuita de toppings</label>
           <input
             type="number"
-            name="freeQuantity"
-            value={formData.freeQuantity}
+            name="free_quantity"
+            value={formData.free_quantity}
             onChange={handleChange}
             required
             min={0}
@@ -84,8 +106,8 @@ const ToppingsForm: React.FC = () => {
           <label className="block text-gray-700 font-medium">Cantidad máxima de toppings</label>
           <input
             type="number"
-            name="maxQuantity"
-            value={formData.maxQuantity}
+            name="max_quantity"
+            value={formData.max_quantity}
             onChange={handleChange}
             required
             min={1}
