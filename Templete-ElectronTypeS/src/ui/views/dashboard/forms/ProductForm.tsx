@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import MultiSelectDropDown from "../auxiliaryComponents/MultiSelectDropDown";
+import { useQuery } from "@tanstack/react-query";
+import { getToppings } from "../../../services/toppingsServices";
+import { getSizes } from "../../../services/sizeServices";
+import { getFlavors } from "../../../services/flavorServices";
+import { getMilks } from "../../../services/milksServices";
+import { getProductTypes, ProductCreate, ProductCreatePartial } from "../../../services/productsServices";
 
 const ProductForm: React.FC = () => {
-    const [formData, setFormData] = useState<{
-        productName: string;
-        basePrice: string;
-        image: File | null;
-        productTypeId: string;
-      }>({
-        productName: "",
-        basePrice: "",
+    const [formData, setFormData] = useState<ProductCreatePartial>({
+        name: "",
+        base_price: 0,
         image: null,
-        productTypeId: "1",
+        type: "",
       });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -31,20 +32,65 @@ const ProductForm: React.FC = () => {
     console.log("Form submitted:", formData);
   };
 
-  const toppings = [
-    { label: "Cinammon", value: "cinammon" },
-    { label: "Chocolate", value: "chocolate" },
-    { label: "Vanilla", value: "vanilla" },
-    { label: "Strawberry", value: "strawberry" },
-    { label: "Mint", value: "mint" },
-    { label: "Caramel", value: "caramel" }
-  ];
+  const { data: toppingsList =[], isLoading:loadingToppings, error:errorTopping } = useQuery({
+    queryKey: ["toppings"],
+    queryFn: ()=> getToppings(),   
+});
 
-  const sizes = [
-    { label: "Small", value: "small" },
-    { label: "Medium", value: "medium" },
-    { label: "Large", value: "large" }
-  ];
+const { data: sizes =[], isLoading: loadingSizes, error:errorSizes } = useQuery({
+  queryKey: ["sizes"],
+  queryFn: ()=> getSizes(),   
+});
+
+const { data: flavors =[], isLoading: loadingFlavors, error:errorFlavors } = useQuery({
+  queryKey: ["flavors"],
+  queryFn: ()=> getFlavors(),   
+});
+
+const { data: milks =[], isLoading: loadingMilks, error:errorMilks } = useQuery({
+  queryKey: ["milks"],
+  queryFn: ()=> getMilks(),   
+});
+
+const { data: productTypes =[], isLoading: loadingTypes, error:errorTypes } = useQuery({
+  queryKey: ["productTypes"],
+  queryFn: ()=> getProductTypes(),   
+});
+
+
+
+
+
+  if (loadingToppings || loadingSizes || loadingFlavors || loadingMilks || loadingTypes) {
+    return <div>Loading...</div>;
+  }
+  if (errorTopping || errorSizes || errorFlavors || errorMilks || errorTypes) {
+    console.error("Error fetching data:", errorTopping || errorSizes || errorFlavors || errorMilks || errorTypes);
+    return <div>Error loading data</div>;
+  }
+  
+
+  const productTypesOptions = productTypes.map(element => {
+    return { label: element.name, value: element.id };
+    
+  });
+
+  const sizesOptions = sizes.map(element => {
+    return { label: element.name, value: element.id };
+    
+  });
+  const flavorsOptions = flavors.map(element => {
+    return { label: element.name, value: element.id };
+    
+  });
+  const milksOptions = milks.map(element => {
+    return { label: element.name, value: element.id };
+    
+  });
+  const toppingsOptions = toppingsList.map(element => {
+    return { label: element.name, value: element.id };
+    
+  });
 
   return (
     <div className="max-w-lg mx-auto p-6 bg-white shadow-xl rounded-2xl border border-gray-200">
@@ -55,7 +101,7 @@ const ProductForm: React.FC = () => {
           <input
             type="text"
             name="productName"
-            value={formData.productName}
+            value={formData.name}
             onChange={handleChange}
             required
             className="w-full p-3 border rounded-lg bg-gray-100 focus:ring-2 focus:ring-gray-300 focus:outline-none transition"
@@ -66,7 +112,7 @@ const ProductForm: React.FC = () => {
           <input
             type="number"
             name="basePrice"
-            value={formData.basePrice}
+            value={formData.base_price}
             onChange={handleChange}
             required
             className="w-full p-3 border rounded-lg bg-gray-100 focus:ring-2 focus:ring-gray-300 focus:outline-none transition"
@@ -86,31 +132,36 @@ const ProductForm: React.FC = () => {
           <label className="block text-gray-700 font-medium">Tipo de Producto</label>
           <select
             name="productTypeId"
-            value={formData.productTypeId}
+            value={formData.type}
             onChange={handleChange}
             className="w-full p-3 border rounded-lg bg-gray-100 focus:ring-2 focus:ring-gray-300 focus:outline-none transition"
-          >
-            <option value="1">Bebida</option>
-            <option value="2">Comida</option>
+          >{
+            productTypes.map((type) => (
+              <option key={type.id} value={type.id}>
+                {type.name}
+              </option>
+            ))}
+          
+           
           </select>
         </div>
         <div>
           {/* topings */}
           {/* set data variable onChange */}
           <label className="block text-gray-700 font-medium">Toppings</label>
-          <MultiSelectDropDown content={toppings} onChange={setFormData} />
+          <MultiSelectDropDown content={toppingsOptions} onChange={setFormData} />
         </div>
         <div>
           {/* sizes */}
           {/* set data variable onChange */}
           <label className="block text-gray-700 font-medium">Tamaños</label>
-          <MultiSelectDropDown content={sizes} onChange={setFormData} />
+          <MultiSelectDropDown content={sizesOptions} onChange={setFormData} />
         </div>
         <div>
-          <MultiSelectDropDown content={toppings} onChange={setFormData} />
+          <MultiSelectDropDown content={flavorsOptions} onChange={setFormData} />
         </div>
         <div>
-          <MultiSelectDropDown content={toppings} onChange={setFormData} />
+          <MultiSelectDropDown content={milksOptions} onChange={setFormData} />
         </div>
         <button
           type="submit"

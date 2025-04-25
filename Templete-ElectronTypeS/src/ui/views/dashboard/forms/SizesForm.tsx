@@ -1,13 +1,11 @@
+import { useMutation } from "@tanstack/react-query";
 import React, { useState } from "react";
+import { createSize, SizeCreate } from "../../../services/sizeServices";
 
 const SizesForm: React.FC = () => {
-  const [formData, setFormData] = useState<{
-    name: string;
-    price: string;
-    image: File | null;
-  }>({
+  const [formData, setFormData] = useState<SizeCreate>({
     name: "",
-    price: "",
+    price: 0,
     image: null,
   });
 
@@ -26,11 +24,32 @@ const SizesForm: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
+    const sizeData = new FormData();
+    sizeData.append("name", formData.name);
+    sizeData.append("price", formData.price.toString());
+    if (formData.image) {
+      sizeData.append("image", formData.image);
+    }
+    mutation.mutate(sizeData); // Llama a la mutación con los datos del formulario
+    console.log("Datos del formulario:", sizeData);
   };
+
+  const mutation = useMutation({
+    mutationFn: createSize,
+    onSuccess: (data) => {
+      console.log("Producto creado:", data);
+      setFormData({ name: "", price: 0, image: null }); // limpia el form
+      alert("Producto creado con éxito ✅"); // o usa un toast
+    },
+    onError: (error) => {
+      console.error("Error al crear el tamaño:", error);
+      alert("Error al guardar 😢");
+    },
+  });
 
   return (
     <div className="max-w-lg mx-auto p-6 bg-white shadow-xl rounded-2xl border border-gray-200">
-      <h2 className="text-2xl font-semibold text-gray-800 mb-4 text-center">Agregar Producto</h2>
+      <h2 className="text-2xl font-semibold text-gray-800 mb-4 text-center">Agregar Tamaño</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-gray-700 font-medium">Nombre</label>

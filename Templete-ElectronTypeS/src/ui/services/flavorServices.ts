@@ -5,7 +5,7 @@ export interface Flavor{
     id:number;
     name: string;
     price: number;
-    image: string;
+    image: File | null;
 }
 
 export interface FlavorList{
@@ -48,13 +48,10 @@ export async function getFlavorById(id: number): Promise<Flavor> {
 }
 
 
-export async function createFlavor(flavor: FlavorCreate): Promise<Flavor> {
+export async function createFlavor(flavor: FormData): Promise<Flavor> {
     const response = await fetch(`${FLAVOR_API}/create`, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(flavor),
+        body: flavor
     });
     if (!response.ok) {
         throw new Error('Network response was not ok' + response.statusText);

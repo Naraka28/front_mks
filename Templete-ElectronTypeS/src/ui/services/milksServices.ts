@@ -5,7 +5,7 @@ export interface Milk{
     id:number;
     name: string;
     price: number;
-    image: string;
+    image: File | null;
 }
 
 export interface MilkList{
@@ -64,13 +64,11 @@ export async function getMilkById(id: number): Promise<Milk> {
 }
 
 
-export async function createMilk(Milk: MilkCreate): Promise<Milk> {
+export async function createMilk(Milk: FormData): Promise<Milk> {
     const response = await fetch(`${Milk_API}/create`, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(Milk),
+        body: Milk
+
     });
     if (!response.ok) {
         throw new Error('Network response was not ok' + response.statusText);

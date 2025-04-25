@@ -8,7 +8,7 @@ export interface Topping {
     max_quantity: number;
     free_quantity: number;
     //base_price: number;
-    image: string;
+    image: File | null;
 }
 
 export interface ToppingList {
@@ -47,13 +47,10 @@ export async function getToppingById(id: number): Promise<Topping> {
     return data;
 }
 
-export async function createTopping(topping: ToppingCreate): Promise<Topping> {
+export async function createTopping(topping: FormData): Promise<Topping> {
     const response = await fetch(`${Toppings_API}/create`, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(topping),
+        body: topping,
     });
     if (!response.ok) {
         throw new Error('Network response was not ok' + response.statusText);
