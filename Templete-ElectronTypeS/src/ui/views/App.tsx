@@ -55,11 +55,11 @@ function App() {
         <Route path="/toppings" element={<Toppings />} />
         <Route path="/productos" element={<Products />} />
   
-        <Route path="/dashboard/add-item-products" element={<CreateProductRegister />} />
-        <Route path="/dashboard/add-item-flavour" element={<CreateFlavourRegister />} />
-        <Route path="/dashboard/add-item-size" element={<CreateSizeRegister />} />
-        <Route path="/dashboard/add-item-milk" element={<CreateMilkRegister />} />
-        <Route path="/dashboard/add-item-topping" element={<CreateToppingRegister />} />
+        <Route path="/productos/agregar-producto" element={<CreateProductRegister />} />
+        <Route path="/sabores/agregar-sabor" element={<CreateFlavourRegister />} />
+        <Route path="/tamanos/agregar-tamano" element={<CreateSizeRegister />} />
+        <Route path="/leches/agregar-leche" element={<CreateMilkRegister />} />
+        <Route path="/toppings/agregar-topping" element={<CreateToppingRegister />} />
 
         <Route path="/dashboard/add-item-cat" element={<CreateCatRegister />} />
 

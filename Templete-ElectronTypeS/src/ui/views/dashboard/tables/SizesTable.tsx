@@ -1,5 +1,3 @@
-// src/components/Inventory/SizesTable.tsx
-
 import { useState } from 'react';
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
 import { ListBulletIcon } from '@heroicons/react/24/outline';
@@ -132,7 +130,7 @@ const SizesTable = () => {
               <td className="p-4 border-b border-blue-gray-50">{row.name}</td>
               <td className="p-4 border-b border-blue-gray-50">
                 <div className="flex items-center gap-3">
-                  <img src={row.product?.image || '/placeholder.png'} alt="null img" className="inline-block object-cover rounded-full w-9 h-9" />
+                  <img src={row.image} alt="null img" className="inline-block object-cover rounded-full w-9 h-9" />
                 </div>
               </td>
               <td className="p-4 border-b border-blue-gray-50">${row.price}</td>
