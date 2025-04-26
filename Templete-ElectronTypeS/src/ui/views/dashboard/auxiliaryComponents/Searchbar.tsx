@@ -14,13 +14,13 @@ const SearchbarProducts: React.FC<SearchbarProps> = ({ placeholder = "Buscar un 
     const currentPath = location.pathname;
 
     if (currentPath.includes("/sabores")) {
-      navigate("/dashboard/add-item-flavour");
+      navigate("/sabores/agregar-sabor");
     } else if (currentPath.includes("/tamanos")) {
-      navigate("/dashboard/add-item-size");
+      navigate("/tamanos/agregar-tamano");
     } else if (currentPath.includes("/leches")) {
-      navigate("/dashboard/add-item-milk");
+      navigate("/leches/agregar-leche");
     } else if (currentPath.includes("/toppings")) {
-      navigate("/dashboard/add-item-topping");
+      navigate("/toppings/agregar-topping");
     }
   };
 

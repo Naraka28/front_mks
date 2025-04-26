@@ -10,7 +10,7 @@ const SearchbarProducts: React.FC<SearchbarProps> = ({ placeholder = "Buscar un 
   const navigate = useNavigate();
 
   const handleAddClick = () => {
-    navigate("/dashboard/add-item-products");
+    navigate("/productos/agregar-producto");
   };
 
   return (
