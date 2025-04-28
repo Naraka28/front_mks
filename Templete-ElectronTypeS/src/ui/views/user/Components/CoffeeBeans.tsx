@@ -12,7 +12,7 @@ interface CoffeeBeansProps {
 
 const CoffeeBeans: React.FC<CoffeeBeansProps> = ({ onSelectCoffeeBeans }) => {
     return (
-        <div className="grid grid-cols-2 gap-4 p-6 font-[Poppins] ">
+        <div className="grid grid-cols-2 md:grid-cols-[repeat(auto-fit,_minmax(150px,_1fr))] gap-4 p-6 font-[Poppins] ">
             {CoffeeBeansOptions.map((CoffeeBeans) => (
                 <Button
                     key={CoffeeBeans.id}

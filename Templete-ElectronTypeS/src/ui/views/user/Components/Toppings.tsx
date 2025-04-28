@@ -58,9 +58,9 @@ const Toppings: React.FC<ToppingsProps> = ({ onSelectionChange }) => {
         }
     };
     
-    return (
-        <div className=" max-w-3xl mx-auto rounded-3xl shadow-2xl">
-            <div className="grid grid-cols-2 gap-2 p-4">
+ return (
+        <div className="max-w-4xl mx-auto rounded-3xl bg-white shadow-lg border border-gray-100">
+            <div className="grid grid-cols-2 gap-4 p-6">
                 {toppingOptions.map(topping => (
                     <CounterButton
                         key={topping.id}
