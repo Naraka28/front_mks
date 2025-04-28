@@ -21,7 +21,7 @@ const Flavours: React.FC<FlavoursProps> = ({ onSelectFlavour, productId }) => {
 
 
     return (
-        <div className="grid grid-cols-4 gap-4 p-4 font-[Poppins]">
+        <div className="grid grid-cols-4  md:grid-cols-[repeat(auto-fit,_minmax(150px,_1fr))] gap-4 p-4 font-[Poppins]">
             {flavourOptions?.map((flavour) => (
                 <Button
                     key={flavour.id}

@@ -22,7 +22,7 @@ const Temperature: React.FC<TemperatureProps> = ({ onSelectTemp, productId }) =>
 
 
     return (
-        <div className="grid grid-cols-3 gap-6 p-6">
+        <div className="grid grid-cols-3 md:grid-cols-[repeat(auto-fit,_minmax(150px,_1fr))] gap-6 p-6">
             {tempsOptions?.map(temp => (
                 <Button
                     key={temp.id}

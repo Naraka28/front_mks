@@ -192,31 +192,31 @@ const MenuSelected: React.FC = () => {
                 <div className="shadow-lg border-2 border-[#E8E8E8] rounded-2xl row-span-7 col-span-6 relative flex">
                     <div className="w-full overflow-y-auto flex items-center justify-center p-4">
                         {!tempId ? (
-                            <div className="max-w-5xl w-full">
+                            <div className="max-w-5xl w-full mx-auto">
                                 <Temperature onSelectTemp={handleTempSelect} productId={Number(itemId)} />
                             </div>
                         ) : !sizeId ? (
-                            <div className="max-w-2xl w-full">
+                            <div className="max-w-5xl w-full mx-auto">
                                 <Sizes onSelectSize={handleSizeSelect} productId={Number(itemId)} />
                             </div>
                         ) : !flavourId ? (
-                            <div className="max-w-6xl w-full">
+                            <div className="max-w-5xl w-full mx-auto">
                                 <Flavours onSelectFlavour={handleFlavourSelect} productId={Number(itemId)} />
                             </div>
                         ) : !coffeeBeansId ? (
-                            <div className="max-w-2xl w-full">
+                            <div className="max-w-5xl w-full mx-auto">
                                 <CoffeeBeans onSelectCoffeeBeans={handleCoffeeBeansSelect} />
                             </div>
                         ) : !milkId ? (
-                            <div className="max-w-5xl w-full">
-                                <Milks onSelectMilk={handleMilkSelect}  productId={Number(itemId)} />
+                            <div className="max-w-5xl w-full mx-auto">
+                                <Milks onSelectMilk={handleMilkSelect} productId={Number(itemId)} />
                             </div>
                         ) : !showOrderActions ? (
-                            <div className="max-w-3xl w-full">
-                                <Toppings onSelectionChange={handleToppingsChange} productId={Number(itemId)}/>
+                            <div className="max-w-5xl w-full mx-auto">
+                                <Toppings onSelectionChange={handleToppingsChange} productId={Number(itemId)} />
                             </div>
                         ) : (
-                            <div className="max-w-6xl w-full">
+                            <div className="max-w-5xl w-full mx-auto">
                                 <OrderActions
                                     itemId={itemId}
                                     tempId={tempId}
@@ -237,7 +237,7 @@ const MenuSelected: React.FC = () => {
                                 texto="Terminar pedido"
                                 tipo="terminar"
                                 onClick={handleFinishSelection}
-                                className="w-48 h-12 text-lg font-bold shadow-lg"
+                                className="size-full text-lg font-bold shadow-lg bg-white rounded-xl border-2 border-[#E8E8E8] hover:bg-[#F7F2F2] transition duration-300 ease-in-out flex items-center justify-center"
                             />
                         </div>
                     )}

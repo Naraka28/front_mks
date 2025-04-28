@@ -23,7 +23,7 @@ const Sizes: React.FC<SizesProps> = ({ productId, onSelectSize }) => {
     // Filtramos solo los items de tipo 'size' por si acaso
   
     return (
-        <div className="grid grid-cols-2 gap-4 p-4 font-[Poppins]">
+        <div className="grid grid-cols-2  md:grid-cols-[repeat(auto-fit,_minmax(150px,_1fr))] gap-4 p-4 font-[Poppins]">
             {sizeOptions?.map((size) => (
                 <Button
                     key={size.id}
