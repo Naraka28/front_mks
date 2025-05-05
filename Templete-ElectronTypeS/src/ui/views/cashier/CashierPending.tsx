@@ -8,7 +8,7 @@ const CashierPending = () => {
       <div className="sticky top-0 h-screen">
         <CashierSidebar />
       </div>
-      <BodyCashier orderStatus='completed' />
+      <BodyCashier orderStatus='Pendiente' />
     </div>
 
   )

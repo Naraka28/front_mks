@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.ENV_API_URL as string;
+const API_URL = import.meta.env.VITE_ENV_API_URL as string;
 const ORDERS_API = `${API_URL}/orders`;
 
 export interface Order {

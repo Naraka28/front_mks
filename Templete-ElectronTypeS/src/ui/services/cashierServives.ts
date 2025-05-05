@@ -1,24 +1,24 @@
 // Tipos reutilizables
-interface ItemName {
+export interface ItemName {
   name: string;
 }
 
-interface Cashier {
+export interface Cashier {
   id: number;
   name: string;
 }
 
-interface ErrorResponse {
+export interface ErrorResponse {
   message: string;
   status: number;
   error: string;
 }
 
-interface CompletedResponse {
+export interface CompletedResponse {
   message: string;
 }
 
-interface Order {
+export interface Order {
   id: number;
   product: ItemName;
   price: number;
@@ -29,7 +29,7 @@ interface Order {
   temp: ItemName;
 }
 
-interface TicketsResponse {
+export interface TicketsResponse {
   id: number;
   ticket_date: string;
   ticket_time: string;
@@ -40,30 +40,35 @@ interface TicketsResponse {
   orders: Order[];
 }
 
-async function getPendingTickets(): Promise<TicketsResponse> {
-  const response = await fetch(
-    `${process.env.VITE_ENV_API_URL}/tickets/pending`
-  );
-  if (!response.ok) {
-    const error: ErrorResponse = await response.json();
-    throw new Error(error.message);
-  }
-  return response.json();
-}
-async function getCompletedTickets(): Promise<TicketsResponse> {
-  const response = await fetch(
-    `${process.env.VITE_ENV_API_URL}/tickets/completed`
-  );
-  if (!response.ok) {
-    const error: ErrorResponse = await response.json();
-    throw new Error(error.message);
-  }
-  return response.json();
+export interface TicketsResponseAll{
+  tickets: TicketsResponse[];
 }
 
-async function cancelTicket(id: number): Promise<CompletedResponse> {
+export async function getPendingTickets(): Promise<TicketsResponse> {
   const response = await fetch(
-    `${process.env.VITE_ENV_API_URL}/tickets/cancel`,
+    `${import.meta.env.VITE_ENV_API_URL}/tickets/pending`
+  );
+  if (!response.ok) {
+    const error: ErrorResponse = await response.json();
+    throw new Error(error.message);
+  }
+  return await response.json();
+}
+
+export async function getCompletedTickets(): Promise<TicketsResponse> {
+  const response = await fetch(
+    `${import.meta.env.VITE_ENV_API_URL}/tickets/completed`
+  );
+  if (!response.ok) {
+    const error: ErrorResponse = await response.json();
+    throw new Error(error.message);
+  }
+  return await response.json();
+}
+
+export async function cancelTicket(id: number): Promise<CompletedResponse> {
+  const response = await fetch(
+    `${import.meta.env.VITE_ENV_API_URL}/tickets/cancel`,
     {
       method: "PATCH",
       headers: {
@@ -79,8 +84,8 @@ async function cancelTicket(id: number): Promise<CompletedResponse> {
   }
   return await response.json();
 }
-async function payTicket(id: number): Promise<CompletedResponse> {
-  const response = await fetch(`${process.env.VITE_ENV_API_URL}/tickets/pay`, {
+export async function payTicket(id: number): Promise<CompletedResponse> {
+  const response = await fetch(`${import.meta.env.VITE_ENV_API_URL}/tickets/pay`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",

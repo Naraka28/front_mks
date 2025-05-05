@@ -2,14 +2,23 @@ import React, { useState } from "react";
 import { IconType } from "react-icons";
 import { FiDollarSign, FiTag, FiChevronDown, FiClock, FiList } from "react-icons/fi";
 import { Link, useLocation } from 'react-router-dom';
-import { useTickets, Ticket } from '../CashierData/useTickets';
+import { getPendingTickets} from './../../../services/cashierServives';
+import { useQuery } from "@tanstack/react-query";
 
 export const CashierRouteSelect: React.FC = () => {
   const location = useLocation();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const tickets: Ticket[] = useTickets();
 
-  const pendingTickets = tickets.filter(ticket => ticket.status === 'pending');
+  const TicketsPending = useQuery({
+    queryKey: ["ticketsPending"],
+    queryFn: getPendingTickets, 
+  });
+
+  const formatTime = (timeString: string) => {
+    const [timePart] = timeString.split('.');
+    const [hours, minutes] = timePart.split(':');
+    return `${hours}:${minutes}`;
+  };
 
   return (
     <div className="space-y-1.5 p-2">
@@ -43,30 +52,36 @@ export const CashierRouteSelect: React.FC = () => {
               Ver todos
             </Link>
 
-            {pendingTickets.map((ticket) => (
-              <Link
-                key={ticket.id}
-                to={`/cashier/${ticket.id}`}
-                className="flex items-center justify-between px-3 py-2 text-sm rounded-lg bg-white
-                  hover:bg-violet-50 text-stone-600 transition-all duration-200 border border-stone-100
-                  hover:border-violet-200 shadow-sm group"
-              >
-                <div className="flex items-center gap-2">
-                  <span className="font-medium text-stone-700 group-hover:text-violet-600">
-                    Ticket #{ticket.id}
-                  </span>
-                </div>
-                <div className="flex items-center gap-1.5 text-stone-400 group-hover:text-stone-600">
-                  <FiClock className="shrink-0" />
-                  <span className="text-xs">
-                    {new Date(ticket.ticket_date).toLocaleTimeString([], {
-                      hour: '2-digit',
-                      minute: '2-digit'
-                    })}
-                  </span>
-                </div>
-              </Link>
-            ))}
+            {TicketsPending.isLoading ? (
+              <div className="px-3 py-2 text-sm text-stone-400">Cargando tickets...</div>
+            ) : TicketsPending.error ? (
+              <div className="px-3 py-2 text-sm text-red-500">
+                {TicketsPending.error.message}
+              </div>
+            ) : (
+              Array.isArray(TicketsPending.data) && TicketsPending.data.map((ticket) => (
+                <Link
+                  key={ticket.id}
+                  to={`/cashier/${ticket.id}`}
+                  className="flex items-center justify-between px-3 py-2 text-sm rounded-lg bg-white
+        hover:bg-violet-50 text-stone-600 transition-all duration-200 border border-stone-100
+        hover:border-violet-200 shadow-sm group"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium text-stone-700 group-hover:text-violet-600">
+                      Ticket #{ticket.id}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-stone-400 group-hover:text-stone-600">
+                    <FiClock className="shrink-0" />
+                    <span className="text-xs">
+                      {formatTime(ticket.ticket_time)}
+                    </span>
+                  </div>
+                </Link>
+              ))
+            )}
+
           </div>
         )}
       </div>
@@ -89,17 +104,17 @@ interface RouteProps {
 }
 
 const Route: React.FC<RouteProps> = ({ selected, Icon, title, path }) => (
-  <Link to={path}>
-    <button
-      className={`flex items-center gap-3 w-full rounded-lg px-3 py-2.5 text-sm transition-all duration-300
-        ${selected
-          ? "bg-violet-50 border-2 border-violet-200 text-violet-900 shadow-sm hover:border-violet-300"
-          : "hover:bg-stone-50 text-stone-600 hover:text-stone-800 border-2 border-transparent"
-        } focus:outline-none focus:ring-2 focus:ring-violet-300 focus:border-violet-400 group`}
-    >
-      <Icon className={`shrink-0 ${selected ? "text-violet-600" : "text-stone-500 group-hover:text-violet-500"}`} />
-      <span className="font-medium">{title}</span>
-    </button>
+  <Link
+    to={path}
+    className={`flex items-center gap-3 w-full rounded-lg px-3 py-2.5 text-sm transition-all duration-300
+      ${selected
+        ? "bg-violet-50 border-2 border-violet-200 text-violet-900 shadow-sm hover:border-violet-300"
+        : "hover:bg-stone-50 text-stone-600 hover:text-stone-800 border-2 border-transparent"
+      } focus:outline-none focus:ring-2 focus:ring-violet-300 focus:border-violet-400 group`}
+    role="button"
+  >
+    <Icon className={`shrink-0 ${selected ? "text-violet-600" : "text-stone-500 group-hover:text-violet-500"}`} />
+    <span className="font-medium">{title}</span>
   </Link>
 );
 
