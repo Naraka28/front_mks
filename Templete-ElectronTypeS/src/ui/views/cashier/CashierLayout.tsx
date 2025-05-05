@@ -16,22 +16,22 @@ export const CashierLayout: React.FC = () => {
                 <Routes>
                     <Route
                         index
-                        element={<BodyCashier orderStatus="pending" />}
+                        element={<BodyCashier orderStatus="Pendiente" />}
                     />
 
                     <Route
                         path="/:ticketId"
-                        element={<BodyCashier orderStatus="pending" />}
+                        element={<BodyCashier orderStatus="Pendiente" />}
                     />
 
                     <Route
                         path="completados"
-                        element={<BodyCashier orderStatus="completed" />}
+                        element={<BodyCashier orderStatus="Completado" />}
                     />
 
                     <Route
                         path="completados/:ticketId"
-                        element={<BodyCashier orderStatus="completed" />}
+                        element={<BodyCashier orderStatus="Completado" />}
                     />
                 </Routes>
             </main>
