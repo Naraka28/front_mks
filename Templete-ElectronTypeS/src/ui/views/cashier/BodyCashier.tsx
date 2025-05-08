@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { UniversalTopBar } from './auxiliaryComponents/UniversalTopBar';
 import TicketComponent from './TicketComponent';
-import OrderComponent from './OrderComponent';
+import OrderComponent from './orderComponent';
 import {
   getPendingTickets,
   getCompletedTickets,
