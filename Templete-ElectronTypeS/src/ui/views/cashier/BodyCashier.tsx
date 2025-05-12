@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { UniversalTopBar } from './auxiliaryComponents/UniversalTopBar';
 import TicketComponent from './TicketComponent';
 import OrderComponent from './orderComponent';
+import TicketActions from './auxiliaryComponents/TicketActions';
 import {
   getPendingTickets,
   getCompletedTickets,
@@ -49,7 +50,15 @@ const BodyCashier: React.FC<BodyCashierProps> = ({ orderStatus }) => {
         <div className="w-full px-4 grid gap-3 grid-cols-12">
           <div className="col-span-12 p-4">
             <UniversalTopBar />
+            <TicketActions
+              onPay={() => { }}
+              onCancel={() => { }}
+              ticketNumber={12}
+              total={58}
+              disabled={false}
+            />
           </div>
+          <div></div>
           <div className="col-span-12 p-4">
             <div className="flex justify-between items-center mb-4">
               <p className="text-xl font-bold">
@@ -98,11 +107,12 @@ const BodyCashier: React.FC<BodyCashierProps> = ({ orderStatus }) => {
           </div>
           <div>
             {ticketId && filteredTickets.length === 1 ? (
-              // Mostrar las órdenes del ticket seleccionado
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredTickets[0].orders.map((order: Order) => (
-                  <OrderComponent key={order.id} order={order} />
-                ))}
+              <div>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {filteredTickets[0].orders.map((order: Order) => (
+                    <OrderComponent key={order.id} order={order} />
+                  ))}
+                </div>
               </div>
             ) : (
               // Mostrar la lista de tickets
