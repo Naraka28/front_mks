@@ -27,9 +27,16 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
     if (!item) return null;
 
     return (
-        <div className="flex justify-between items-center p-3 bg-white rounded-lg shadow-sm">
-            <span className="text-lg font-medium">{item.name}</span>
-            <span className="text-lg font-bold">${order.total?.toFixed(2) || "0.00"}</span>
+        <div className="flex items-center justify-between gap-3 p-3 bg-white/90 rounded-xl shadow border border-stone-100 hover:shadow-md transition-all">
+            <div className="flex items-center gap-3">
+                <img
+                    src={item.icon}
+                    alt={item.name}
+                    className="w-10 h-10 object-contain rounded-lg bg-white border border-stone-100 shadow-sm"
+                />
+                <span className="text-base font-semibold text-stone-700">{item.name}</span>
+            </div>
+            <span className="text-lg font-bold text-stone-700">${order.total?.toFixed(2) || "0.00"}</span>
         </div>
     );
 };

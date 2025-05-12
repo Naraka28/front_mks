@@ -10,7 +10,7 @@ import Button from "./auxiliaryComponents/Button";
 function Menu() {
   const [selectedType, setselectedType] = useState<string | null>(null);
   const navigate = useNavigate();
-  const { orders } = useOrders(); // Obtén las órdenes del contexto
+  const { orders } = useOrders();
 
   const handleSelectProduct = (id: number) => {
     navigate(`/selected/${id}`);
@@ -21,7 +21,7 @@ function Menu() {
   };
 
   return (
-    <div className="h-screen w-screen manrope-500 bg-[#F7F2F2]">
+    <div className="h-screen w-screen manrope-500 bg-gradient-to-b from-white via-stone-100 to-stone-200 overflow-hidden">
       <style>{`
           .scrollbar-hide::-webkit-scrollbar {
             display: none;
@@ -32,35 +32,35 @@ function Menu() {
           }
         `}</style>
 
-      <div className="relative grid grid-cols-9 grid-rows-8 gap-3 p-5 min-h-screen">
+      <div className="relative grid grid-cols-9 grid-rows-8 gap-4 h-full p-4">
         {/* Sidebar */}
-        <div className="shadow-lg border-2 border-[#E8E8E8] rounded-2xl row-span-8 flex">
+        <div className="shadow-lg border border-stone-100 rounded-2xl row-span-8 flex bg-white/90">
           <Sidebar onSelectCategory={setselectedType} />
         </div>
 
-        {/* Contenido */}
-        <div className="col-span-6 rounded-2xl flex justify-start items-center text-5xl font-[Poppins] font-extrabold p-4">
-          <h1>
+        {/* Título */}
+        <div className="col-span-6 rounded-2xl flex justify-start items-center text-4xl font-[Poppins] font-extrabold p-6 bg-white/80  mb-2">
+          <h1 className="text-stone-700 truncate">
             {selectedType ? `Categoría: ${selectedType}` : "¿Qué se te antoja hoy?"}
           </h1>
         </div>
 
         {/* Nueva Orden */}
-        <div className="shadow-lg border-2 border-[#E8E8E8] rounded-2xl row-span-8 col-span-2 flex flex-col p-4 overflow-y-auto">
-          <h2 className="text-3xl font-bold mb-4 font-[poppins]">Tu Pedido</h2>
-          <div className="space-y-3 font-bold font-[poppins]">
+        <div className="shadow-lg border border-stone-100 rounded-2xl row-span-8 col-span-2 flex flex-col p-6 bg-white/90 min-h-0 max-h-full overflow-y-auto">
+          <h2 className="text-2xl font-bold mb-4 font-[Poppins] text-stone-700">Tu Pedido</h2>
+          <div className="space-y-3 font-bold font-[Poppins] flex-1 min-h-0 overflow-y-auto">
             {orders.length > 0 ? (
               orders.map((order, index) => (
                 <OrderCard key={index} order={order} />
               ))
             ) : (
-                <p className="text-xl font-bold text-gray-500">No hay productos añadidos</p>
+              <p className="text-lg font-bold text-stone-400">No hay productos añadidos</p>
             )}
           </div>
           {orders.length > 0 && (
-            <div className="mt-auto pt-4 border-t border-gray-200">
-              <div className="flex justify-between font-bold text-2xl font-[poppins]">
-                <span className="">Total:</span>
+            <div className="pt-4 border-t border-stone-200">
+              <div className="flex justify-between font-bold text-xl font-[Poppins] text-stone-700">
+                <span>Total:</span>
                 <span>
                   ${orders.reduce((sum, order) => sum + (order.total || 0), 0).toFixed(2)}
                 </span>
@@ -75,7 +75,9 @@ function Menu() {
           )}
         </div>
 
-        <div className="shadow-lg border-2 border-[#E8E8E8] rounded-2xl row-span-7 col-span-6 overflow-y-auto p-4 scrollbar-hide" style={{ maxHeight: 'calc(106vh - 200px)' }}>
+        {/* Menú de productos */}
+        <div className="shadow-lg border border-stone-100 rounded-2xl row-span-7 col-span-6 overflow-y-auto p-6 scrollbar-hide bg-white/90 min-h-0 max-h-full"
+          style={{ maxHeight: '100%' }}>
           <MenuItems category={selectedType} onSelectItem={handleSelectProduct} />
         </div>
       </div>

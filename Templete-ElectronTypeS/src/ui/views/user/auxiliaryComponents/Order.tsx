@@ -138,9 +138,7 @@ const calculateTotal = (order: OrderProps["order"]) => {
 };
 
 
-const Order: React.FC<OrderProps> = ({ order,compact = false }) => {
-
-
+const Order: React.FC<OrderProps> = ({ order, compact = false }) => {
     if (!order) {
         return (
             <h1 className="text-3xl font-[Poppins] font-extrabold text-center">
@@ -149,10 +147,9 @@ const Order: React.FC<OrderProps> = ({ order,compact = false }) => {
         );
     }
 
-    if (compact){
+    if (compact) {
         return <OrderCard order={order} />;
     }
-
 
     const { basePrice, subtotal, toppingsTotal, total, iva } = calculateTotal(order);
 
@@ -168,57 +165,51 @@ const Order: React.FC<OrderProps> = ({ order,compact = false }) => {
     const milkPrice = `$${(milksOptions.find(milk => milk.id === Number(order.milkId))?.price || 0).toFixed(2)}`;
 
     return (
-
-        <div className=" p-6 rounded-2xl w-full mx-auto h-full ">
+        <div className="bg-white/90 rounded-2xl w-full mx-auto h-full shadow-lg border border-stone-100 p-6 flex flex-col">
             <style>{`
-          .scrollbar-hide::-webkit-scrollbar {
-            display: none;
-          }
-
-          .scrollbar-hide {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-          }
-        `}</style>
-            <h1 className="text-3xl font-[Poppins] font-extrabold text-center mb-4">
+                .scrollbar-hide::-webkit-scrollbar {
+                    display: none;
+                }
+                .scrollbar-hide {
+                    -ms-overflow-style: none;
+                    scrollbar-width: none;
+                }
+            `}</style>
+            <h1 className="text-2xl font-[Poppins] font-extrabold text-stone-700 text-center mb-4">
                 Nueva Orden
             </h1>
 
-            <div className="bg-[#FAF9F6] p-4 rounded-xl shadow-md">
-                <div className="flex items-center justify-center mb-2">
+            <div className="bg-white rounded-xl shadow p-4 mb-4 border border-stone-100">
+                <div className="flex flex-col items-center mb-2">
                     <img
                         src={menuItems.find(item => item.id === Number(order.itemId))?.icon}
                         alt=""
-                        className="w-32 h-32 object-contain bg-[#FAF9F6] p-3 rounded-xl shadow-md"
+                        className="w-24 h-24 object-contain bg-white rounded-xl shadow border border-stone-100 mb-2"
                     />
+                    <span className="text-xl font-semibold text-stone-700">{itemName}</span>
+                    <p className="text-base text-stone-700 font-bold">${basePrice.toFixed(2)}</p>
                 </div>
-                <div className="flex justify-center items-center mb-4 ">
-                    <div className="grid grid-cols-2 gap-2">
-                        <div>
-                            <p className="text-xl font-semibold">{itemName}</p>
-                            <p className="text-lg text-gray-700">{tempName}</p>
-                            <p className="text-lg text-gray-700">{sizeName}</p>
-                            <p className="text-lg text-gray-700">{flavourName}</p>
-                            <p className="text-lg text-gray-700">{coffeeBeansName}</p>
-                            <p className="text-lg text-gray-700">{milkName}</p>
-                        </div>
-                        <div className="text-right">
-                            <p className="text-xl font-bold">${basePrice.toFixed(2)}</p>
-                            {tempName && <p className="text-lg text-gray-700">$0.00</p>}
-                            {sizeName && <p className="text-lg text-gray-700">{sizePrice}</p>}
-                            {flavourName && <p className="text-lg text-gray-700">{flavourPrice}</p>}
-                            {coffeeBeansName && <p className="text-lg text-gray-700">$0.00</p>}
-                            {milkName && <p className="text-lg text-gray-700">{milkPrice}</p>}
-                        </div>
+                <div className="grid grid-cols-2 gap-2 mb-2">
+                    <div className="space-y-1">
+                        {tempName && <p className="text-base text-stone-600">{tempName}</p>}
+                        {sizeName && <p className="text-base text-stone-600">{sizeName}</p>}
+                        {flavourName && <p className="text-base text-stone-600">{flavourName}</p>}
+                        {coffeeBeansName && <p className="text-base text-stone-600">{coffeeBeansName}</p>}
+                        {milkName && <p className="text-base text-stone-600">{milkName}</p>}
                     </div>
-
-
+                    <div className="text-right space-y-1">
+                        {tempName && <p className="text-base text-stone-500">$0.00</p>}
+                        {sizeName && <p className="text-base text-stone-500">{sizePrice}</p>}
+                        {flavourName && <p className="text-base text-stone-500">{flavourPrice}</p>}
+                        {coffeeBeansName && <p className="text-base text-stone-500">$0.00</p>}
+                        {milkName && <p className="text-base text-stone-500">{milkPrice}</p>}
+                    </div>
                 </div>
 
                 {milkName && order.toppings && Object.keys(order.toppings).length > 0 && (
-                    <>
-                        <h3 className="text-xl font-semibold">Toppings:</h3>
-                        <ul className="text-lg text-gray-800">
+                    <div className="mt-2">
+                        <h3 className="text-lg font-semibold text-stone-700 mb-1">Toppings:</h3>
+                        <ul className="text-base text-stone-600">
                             {Object.entries(order.toppings).map(([key, value]) => {
                                 if (value === 0) return null;
                                 const toppingName = toppingOptions.find(t => t.id === Number(key))?.name;
@@ -234,26 +225,22 @@ const Order: React.FC<OrderProps> = ({ order,compact = false }) => {
                             })}
                         </ul>
                         {toppingsTotal > 0 && (
-                            <p className="border-t mt-2 pt-2 border-gray-300 text-lg text-right font-semibold">+${toppingsTotal.toFixed(2)}</p>
+                            <p className="border-t mt-2 pt-2 border-stone-200 text-base text-right font-semibold text-stone-700">+${toppingsTotal.toFixed(2)}</p>
                         )}
-                    </>
+                    </div>
                 )}
+            </div>
 
-
-                <div className="bg-[#FAF9F6] p-3 rounded-xl shadow-md ">
-                    <div className="mt-4 text-lg">
-                        <p>IVA: <span className="float-right">${iva.toFixed(2)}</span></p>
-                        <p>Subtotal: <span className="float-right">${subtotal.toFixed(2)}</span></p>
-                    </div>
-
-                    <div className="border-t border-gray-300 mt-2 pt-2">
-                        <p className="text-xl font-bold">
-                            Total: <span className="float-right">${total.toFixed(2)}</span>
-                        </p>
-                    </div>
-
+            <div className="bg-white rounded-xl shadow p-4 border border-stone-100 mt-auto">
+                <div className="text-base mb-2">
+                    <p className="flex justify-between">IVA: <span className="font-semibold">${iva.toFixed(2)}</span></p>
+                    <p className="flex justify-between">Subtotal: <span className="font-semibold">${subtotal.toFixed(2)}</span></p>
                 </div>
-
+                <div className="border-t border-stone-200 pt-2 mt-2">
+                    <p className="text-xl font-bold flex justify-between text-stone-700">
+                        Total: <span>${total.toFixed(2)}</span>
+                    </p>
+                </div>
             </div>
         </div>
     );
