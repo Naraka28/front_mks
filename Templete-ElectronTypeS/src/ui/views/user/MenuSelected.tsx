@@ -151,20 +151,31 @@ const MenuSelected: React.FC = () => {
     }
 
     return (
-        <div className="h-screen w-screen manrope-500 bg-[#F7F2F2] overflow-hidden">
-            <div className="relative grid grid-cols-8 grid-rows-8 gap-3 p-5 min-h-screen">
+        <div className="h-screen w-screen manrope-500 bg-gradient-to-b from-white via-stone-100 to-stone-200 overflow-hidden">
+            <style>{`
+            .scrollbar-hide::-webkit-scrollbar {
+                display: none;
+            }
+            .scrollbar-hide {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+        `}</style>
+            <div className="relative grid grid-cols-8 grid-rows-8 gap-4 h-full p-4">
                 {/* Header */}
-                <div className="col-span-6 row-span-1 rounded-2xl flex justify-start items-center font-[Poppins] font-extrabold p-4">
-                    <div className="text-2xl top-5 left-5 z-10">
+                <div className="col-span-6 row-span-1 rounded-2xl flex items-center font-[Poppins] font-extrabold px-8 py-5 bg-white/90 mb-4">
+                    <div className="text-4xl z-10 mr-4">
                         <Boton
                             texto=""
                             tipo="regresar"
-                            icono={<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-left"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 12l14 0" /><path d="M5 12l6 6" /><path d="M5 12l6 -6" /></svg>}
+                            icono={
+                                <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 12l14 0" /><path d="M5 12l6 6" /><path d="M5 12l6 -6" /></svg>
+                            }
                             onClick={goBack}
                             className="pl-3 pr-4 py-2"
                         />
                     </div>
-                    <h1 className="px-10 text-4xl">
+                    <h1 className="px-6 text-3xl text-stone-700 truncate">
                         {showOrderActions
                             ? "¿Qué deseas hacer con tu pedido?"
                             : milkId
@@ -182,15 +193,13 @@ const MenuSelected: React.FC = () => {
                 </div>
 
                 {/* Panel de Nueva Orden */}
-                <div className="shadow-lg border-2 border-[#E8E8E8] rounded-2xl row-span-8 col-span-2 flex flex-col justify-start items-center p-4 overflow-y-auto scrollbar-hide" style={{ maxHeight: 'calc(125vh - 255px)' }}>
-
+                <div className="shadow-lg border border-stone-100 rounded-2xl row-span-8 col-span-2 flex flex-col justify-start items-center p-6 bg-white/90 min-h-0 max-h-full overflow-y-auto scrollbar-hide">
                     <Order order={order} />
-
                 </div>
 
                 {/* Contenedor de selección */}
-                <div className="shadow-lg border-2 border-[#E8E8E8] rounded-2xl row-span-7 col-span-6 relative flex">
-                    <div className="w-full overflow-y-auto flex items-center justify-center p-4">
+                <div className="shadow-lg border border-stone-100 rounded-2xl row-span-7 col-span-6 relative flex bg-white/90 min-h-0 max-h-full">
+                    <div className="w-full overflow-y-auto flex items-center justify-center p-6 scrollbar-hide">
                         {!tempId ? (
                             <div className="max-w-5xl w-full mx-auto">
                                 <Temperature onSelectTemp={handleTempSelect} productId={Number(itemId)} />
