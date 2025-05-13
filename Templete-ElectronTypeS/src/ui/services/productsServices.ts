@@ -1,8 +1,8 @@
-import { Flavor, FlavorList } from "./flavorServices";
-import { Milk, MilkList } from "./milksServices";
-import { Size, SizeList } from "./sizeServices";
-import { Temp, TempList } from "./tempsServices";
-import { Topping, ToppingList } from "./toppingsServices";
+import { Flavor,  } from "./flavorServices";
+import { Milk,  } from "./milksServices";
+import { Size,  } from "./sizeServices";
+import { Temp,  } from "./tempsServices";
+import { Topping,  } from "./toppingsServices";
 
 const API_URL = import.meta.env.VITE_ENV_API_URL as string;
 const Products_API = `${API_URL}/products`;
@@ -32,8 +32,7 @@ export type ProductCreatePartial = Partial<ProductCreate>;
 export type ProductUpdate = Partial<Product>;
 
 export async function getProducts(): Promise<Product[]> {
-    // console.log('API_URL:', API_URL);
-    // console.log('Products_API:', Products_API);
+   
     const response = await fetch(Products_API, {
         method: 'GET',
         headers: {

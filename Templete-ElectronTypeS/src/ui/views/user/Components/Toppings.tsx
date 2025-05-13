@@ -1,64 +1,60 @@
 import { useState } from 'react';
 import CounterButton from '../auxiliaryComponents/CounterButton.tsx';
-
-const toppingOptions = [
-    { id: 1, name: "Azúcar", price: 2, freecuantity: 1, maxcuantity: 10 },
-    { id: 2, name: "Canela", price: 1, freecuantity: 2, maxcuantity: 10 },
-    { id: 3, name: "Mascabado", price: 3, freecuantity: 3, maxcuantity: 10 },
-    { id: 4, name: "Svetia", price: 2.5, freecuantity: 3, maxcuantity: 10 },
-    { id: 5, name: "Fruta", price: 1, freecuantity: 1, maxcuantity: 10 },
-    { id: 6, name: "Nutella", price: 6, freecuantity: 1, maxcuantity: 10 },
-    { id: 7, name: "Shot", price: 3, freecuantity: 1, maxcuantity: 10 },
-    { id: 8, name: "Splenda", price: 1, freecuantity: 1, maxcuantity: 10 }
-];
+import { useQuery } from '@tanstack/react-query';
+import { getAllowedToppings } from '../../../services/productsServices.ts';
+import { Topping } from '../../../services/toppingsServices.ts';
 
 interface ToppingsProps {
     onSelectionChange: (selectedToppings: Record<number, number>) => void;
-    productId: number; // ID del producto para el que se seleccionan los toppings (opcional)
+    productId: number;
 }
 
-const Toppings: React.FC<ToppingsProps> = ({ onSelectionChange }) => {
+
+const Toppings: React.FC<ToppingsProps> = ({ onSelectionChange, productId }) => {
     const [counters, setCounters] = useState<Record<number, number>>({});
 
-    // Removed duplicate handleIncrement function
+    const { data: toppingOptions = [], isLoading, error } = useQuery<Topping[]>({
+        queryKey: ["toppings", productId],
+        queryFn: () => getAllowedToppings(productId),
+    });
+
+    console.log("Toppings data:", toppingOptions);
+    
+
+    if (isLoading) return <p>Loading toppings...</p>;
+    if (error) return <p>Error loading toppings</p>;
 
     const handleDecrement = (id: number) => {
-        const newCounters = {
-            ...counters,
-            [id]: Math.max((counters[id] || 0) - 1, 0)
-        };
+        const newCount = Math.max((counters[id] || 0) - 1, 0);
+        const newCounters = { ...counters, [id]: newCount };
         setCounters(newCounters);
         onSelectionChange(newCounters);
     };
 
-    const calculatePrice = (id: number) => {
-        const quantity = counters[id] || 0;
-        const topping = toppingOptions.find(topping => topping.id === id);
-        if (!topping) return 0;
-
-        const freeQuantity = topping.freecuantity || 0;
-        const pricePerUnit = topping.price || 0;
-
-        if (quantity <= freeQuantity) {
-            return 0;
-        } else {
-            return (quantity - freeQuantity) * pricePerUnit;
-        }
-    };
-
     const handleIncrement = (id: number) => {
-        const topping = toppingOptions.find(topping => topping.id === id);
+        const topping = toppingOptions.find(t => t.id === id);
         if (!topping) return;
 
         const currentCount = counters[id] || 0;
-        if (currentCount < topping.maxcuantity) {
+        if (currentCount < topping.max_quantity) {
             const newCounters = { ...counters, [id]: currentCount + 1 };
             setCounters(newCounters);
             onSelectionChange(newCounters);
         }
     };
-    
- return (
+
+    const calculatePrice = (id: number) => {
+        const quantity = counters[id] || 0;
+        const topping = toppingOptions.find(t => t.id === id);
+        if (!topping) return 0;
+
+        const freeQuantity = topping.free_quantity || 0;
+        const pricePerUnit = topping.price || 0;
+
+        return quantity <= freeQuantity ? 0 : (quantity - freeQuantity) * pricePerUnit;
+    };
+
+    return (
         <div className="max-w-4xl mx-auto rounded-3xl bg-white shadow-lg border border-gray-100">
             <div className="grid grid-cols-2 gap-4 p-6">
                 {toppingOptions.map(topping => (

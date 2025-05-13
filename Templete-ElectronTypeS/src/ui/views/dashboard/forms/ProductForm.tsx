@@ -60,7 +60,6 @@ const { data: productTypes =[], isLoading: loadingTypes, error:errorTypes } = us
 
 
 
-
   if (loadingToppings || loadingSizes || loadingFlavors || loadingMilks || loadingTypes) {
     return <div>Loading...</div>;
   }
@@ -71,8 +70,7 @@ const { data: productTypes =[], isLoading: loadingTypes, error:errorTypes } = us
   
 
   const productTypesOptions = productTypes.map(element => {
-    return { label: element.name, value: element.id };
-    
+    return { label: element.type, value: element.id };
   });
 
   const sizesOptions = sizes.map(element => {
@@ -131,14 +129,15 @@ const { data: productTypes =[], isLoading: loadingTypes, error:errorTypes } = us
         <div>
           <label className="block text-gray-700 font-medium">Tipo de Producto</label>
           <select
-            name="productTypeId"
+            name="type"
             value={formData.type}
             onChange={handleChange}
             className="w-full p-3 border rounded-lg bg-gray-100 focus:ring-2 focus:ring-gray-300 focus:outline-none transition"
           >{
-            productTypes.map((type) => (
-              <option key={type.id} value={type.id}>
-                {type.name}
+            productTypesOptions.map((type) => (
+
+              <option key={type.value} value={type.value}>
+                {type.label} 
               </option>
             ))}
           

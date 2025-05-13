@@ -87,11 +87,11 @@ export default function MultiSelectDropDown({ content, onChange }: MultiSelectDr
                 <div className="flex flex-col border-t-2 border-violet-400 py-4 max-h-[300px] overflow-y-auto">
                     {filterOptions.map(option => (
                         <div key={option.value} className="flex items-center gap-2 hover:bg-violet-100 cursor-pointer p-2" 
-                            onClick={(e) => { e.stopPropagation(); setOption(option.value); }}>
+                            onClick={(e) => { e.stopPropagation(); setOption(option.label); }}>
                             <input 
                                 type="checkbox" 
                                 className="accent-violet-800" 
-                                checked={selectedOptions.includes(option.value)} 
+                                checked={selectedOptions.includes(option.label)} 
                                 readOnly
                             />
                             {option.label}
