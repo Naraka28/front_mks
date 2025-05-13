@@ -1,16 +1,16 @@
-import SmallSizeIcon from "./../../../assets/Prueba1.png";
-import TallSizeIcon from "./../../../assets/Prueba1.png";
-import GrandeSizeIcon from "./../../../assets/Prueba1.png";
-import VentiSizeIcon from "./../../../assets/Prueba1.png";
-import Prueba1 from "./../../../assets/Prueba1.png";
-import Prueba2 from "./../../../assets/Prueba2.png";
-import Prueba3 from "./../../../assets/Prueba3.png";
-import Prueba4 from "./../../../assets/Prueba4.png";
 import OrderCard from "./OrderCard";
-
+import { getProducts } from "../../../services/productsServices";
+import { getToppings } from "../../../services/toppingsServices";
+import { getMilks } from "../../../services/milksServices";
+import { getFlavors } from "../../../services/flavorServices";
+import { getSizes } from "../../../services/sizeServices";
+import { getTemps } from "../../../services/tempsServices";
+import { useQuery } from "@tanstack/react-query";
+import { calculateTotal } from "./orderUtils";
 
 interface OrderProps {
     order: {
+        id?: string;
         itemId?: string;
         tempId?: string;
         sizeId?: string;
@@ -19,126 +19,28 @@ interface OrderProps {
         milkId?: string;
         toppings?: Record<number, number>;
         toppingsTotal?: number;
-        subtotal?: number;
-        iva?: number;
         total?: number;
     };
-    compact?: boolean; 
+    compact?: boolean;
 }
 
 
+const useOrderData = () => {
+    const { data: menuItems = [] } = useQuery({ queryKey: ["products"], queryFn: getProducts });
+    const { data: toppingOptions = [] } = useQuery({ queryKey: ["toppings"], queryFn: getToppings });
+    const { data: milksOptions = [] } = useQuery({ queryKey: ["milks"], queryFn: getMilks });
+    const { data: flavourOptions = [] } = useQuery({ queryKey: ["flavors"], queryFn: getFlavors });
+    const { data: sizeItems = [] } = useQuery({ queryKey: ["sizes"], queryFn: getSizes });
+    const { data: tempOptions = [] } = useQuery({ queryKey: ["temps"], queryFn: getTemps });
 
-const menuItems = [
-    { id: 1, name: "Té caliente", category: "Bebida Caliente", icon: Prueba3, basePrice: 20 },
-    { id: 2, name: "Espresso", category: "Cafés", icon: Prueba1, basePrice: 25 },
-    { id: 3, name: "Latte", category: "Cafés", icon: Prueba1, basePrice: 30 },
-    { id: 4, name: "Cappuccino", category: "Cafés", icon: Prueba1, basePrice: 35 },
-    { id: 5, name: "Americano", category: "Cafés", icon: Prueba1, basePrice: 20 },
-    { id: 6, name: "Frappé de Chocolate", category: "Bebida Fría", icon: Prueba2, basePrice: 40 },
-    { id: 7, name: "Galleta", category: "Postre", icon: Prueba4, basePrice: 15 },
-];
-
-const toppingOptions = [
-    { id: 1, name: "Azúcar", price: 2, freecuantity: 1, maxcuantity: 10 },
-    { id: 2, name: "Canela", price: 1, freecuantity: 2, maxcuantity: 10 },
-    { id: 3, name: "Mascabado", price: 3, freecuantity: 3, maxcuantity: 10 },
-    { id: 4, name: "Svetia", price: 2.5, freecuantity: 3, maxcuantity: 10 },
-    { id: 5, name: "Fruta", price: 1, freecuantity: 1, maxcuantity: 10 },
-    { id: 6, name: "Nutella", price: 6, freecuantity: 1, maxcuantity: 10 },
-    { id: 7, name: "Shot", price: 3, freecuantity: 1, maxcuantity: 10 },
-    { id: 8, name: "Splenda", price: 1, freecuantity: 1, maxcuantity: 10 }
-];
-
-const tempOptions = [
-    { id: 1, name: "Caliente", icon: "/icons/hot.png" },
-    { id: 2, name: "Tibio", icon: "/icons/warm.png" },
-    { id: 3, name: "Frío", icon: "/icons/cold.png" }
-];
-
-const sizeItems = [
-    { id: 1, name: "Short", category: "size", icon: SmallSizeIcon, price: 0 },
-    { id: 2, name: "Tall", category: "size", icon: TallSizeIcon, price: 5 },
-    { id: 3, name: "Grande", category: "size", icon: GrandeSizeIcon, price: 10 },
-    { id: 4, name: "Venti", category: "size", icon: VentiSizeIcon, price: 15 },
-];
-
-const flavourOptions = [
-    { id: 1, name: "Vainilla", icon: Prueba1, price: 0 },
-    { id: 2, name: "Chocolate", icon: Prueba1, price: 15 },
-    { id: 3, name: "Caramelo", icon: Prueba1, price: 0 },
-    { id: 4, name: "Avellana", icon: Prueba1, price: 0 },
-    { id: 5, name: "Moka", icon: Prueba1, price: 0 },
-    { id: 6, name: "Café", icon: Prueba1, price: 12 },
-    { id: 7, name: "Coco", icon: Prueba1, price: 0 },
-    { id: 8, name: "Almendra", icon: Prueba1, price: 18 }
-];
-
-
-const CoffeeBeansOptions = [
-    { id: 1, name: "Regular", icon: Prueba1 },
-    { id: 2, name: "Descafeinado", icon: Prueba1 },
-];
-
-const milksOptions = [
-    { id: 1, name: "Entera", icon: "/icons/whole-milk.png", price: 1.5 },
-    { id: 2, name: "Deslactosada", icon: "/icons/lactose-free.png" },
-    { id: 3, name: "Almendras", icon: "/icons/almond-milk.png", price: 2.0 },
-    { id: 4, name: "Avena", icon: "/icons/oat-milk.png" }
-];
-
-
-const calculateTotal = (order: OrderProps["order"]) => {
-    if (!order?.itemId) return { subtotal: 0, toppingsTotal: 0, total: 0, iva: 0, basePrice: 0 };
-
-    const product = menuItems.find(item => item.id === Number(order.itemId));
-    if (!product) return { subtotal: 0, toppingsTotal: 0, total: 0, iva: 0, basePrice: 0 };
-
-    const milk = milksOptions.find(m => m.id === Number(order.milkId));
-    const milkPrice = milk?.price || 0;
-
-    let toppingsTotal = 0;
-    if (order.toppings) {
-        Object.entries(order.toppings).forEach(([id, quantity]) => {
-            const topping = toppingOptions.find(t => t.id === Number(id));
-            if (topping) {
-                const chargeableQuantity = Math.max(quantity - topping.freecuantity, 0);
-                toppingsTotal += chargeableQuantity * topping.price;
-            }
-        });
-    }
-
-
-    if (!milk) {
-        toppingsTotal = 0;
-        order.toppings = {};
-    }
-
-    const size = sizeItems.find(s => s.id === Number(order.sizeId));
-    const sizePrice = size?.price || 0;
-
-    const flavour = flavourOptions.find(f => f.id === Number(order.flavourId));
-    const flavourPrice = flavour?.price || 0;
-
-    const basePrice = product.basePrice;
-
-    const subtotal = basePrice + sizePrice + flavourPrice + milkPrice + toppingsTotal;
-
-    const iva = subtotal * 0.16;
-
-    const total = subtotal + iva;
-
-    return {
-        basePrice: parseFloat(basePrice.toFixed(2)),
-        milkPrice: parseFloat(milkPrice.toFixed(2)),
-        toppingsTotal: parseFloat(toppingsTotal.toFixed(2)),
-        subtotal: parseFloat(subtotal.toFixed(2)),
-        iva: parseFloat(iva.toFixed(2)),
-        total: parseFloat(total.toFixed(2))
-    };
+    return { menuItems, toppingOptions, milksOptions, flavourOptions, sizeItems, tempOptions };
 };
 
 
 const Order: React.FC<OrderProps> = ({ order, compact = false }) => {
+    const { menuItems, toppingOptions, milksOptions, flavourOptions, sizeItems, tempOptions } = useOrderData();
+
+
     if (!order) {
         return (
             <h1 className="text-3xl font-[Poppins] font-extrabold text-center">
@@ -151,21 +53,35 @@ const Order: React.FC<OrderProps> = ({ order, compact = false }) => {
         return <OrderCard order={order} />;
     }
 
-    const { basePrice, subtotal, toppingsTotal, total, iva } = calculateTotal(order);
+    const { basePrice, toppingsTotal, total, milkPrice } = calculateTotal(
+        order,
+        menuItems,
+        toppingOptions,
+        milksOptions,
+        flavourOptions,
+        sizeItems
+    );
 
     const itemName = menuItems.find(item => item.id === Number(order.itemId))?.name;
     const sizeName = sizeItems.find(size => size.id === Number(order.sizeId))?.name;
     const flavourName = flavourOptions.find(flavour => flavour.id === Number(order.flavourId))?.name;
     const tempName = tempOptions.find(temp => temp.id === Number(order.tempId))?.name;
-    const coffeeBeansName = CoffeeBeansOptions.find(bean => bean.id === Number(order.coffeeBeansId))?.name;
+
+    // Si tienes CoffeeBeansOptions, asegúrate de importarlo o definirlo
+    const coffeeBeansName = undefined; // Ajusta según tu lógica
     const milkName = milksOptions.find(milk => milk.id === Number(order.milkId))?.name;
 
     const sizePrice = `$${(sizeItems.find(size => size.id === Number(order.sizeId))?.price || 0).toFixed(2)}`;
     const flavourPrice = `$${(flavourOptions.find(flavour => flavour.id === Number(order.flavourId))?.price || 0).toFixed(2)}`;
-    const milkPrice = `$${(milksOptions.find(milk => milk.id === Number(order.milkId))?.price || 0).toFixed(2)}`;
+    const milkPriceStr = `$${milkPrice.toFixed(2)}`;
+
+    const personalizationTotal =
+        parseFloat(sizePrice.replace('$', '')) +
+        parseFloat(flavourPrice.replace('$', '')) +
+        parseFloat(milkPriceStr.replace('$', ''));
 
     return (
-        <div className="bg-white/90 rounded-2xl w-full mx-auto h-full shadow-lg border border-stone-100 p-6 flex flex-col">
+        <div className=" rounded-2xl w-full mx-auto h-full flex flex-col ">
             <style>{`
                 .scrollbar-hide::-webkit-scrollbar {
                     display: none;
@@ -175,69 +91,95 @@ const Order: React.FC<OrderProps> = ({ order, compact = false }) => {
                     scrollbar-width: none;
                 }
             `}</style>
-            <h1 className="text-2xl font-[Poppins] font-extrabold text-stone-700 text-center mb-4">
-                Nueva Orden
+            <h1 className="text-3xl font-[Poppins] font-extrabold text-stone-800 text-center mb-6">
+                Detalles de tu producto
             </h1>
 
-            <div className="bg-white rounded-xl shadow p-4 mb-4 border border-stone-100">
-                <div className="flex flex-col items-center mb-2">
-                    <img
-                        src={menuItems.find(item => item.id === Number(order.itemId))?.icon}
-                        alt=""
-                        className="w-24 h-24 object-contain bg-white rounded-xl shadow border border-stone-100 mb-2"
-                    />
-                    <span className="text-xl font-semibold text-stone-700">{itemName}</span>
-                    <p className="text-base text-stone-700 font-bold">${basePrice.toFixed(2)}</p>
-                </div>
-                <div className="grid grid-cols-2 gap-2 mb-2">
-                    <div className="space-y-1">
-                        {tempName && <p className="text-base text-stone-600">{tempName}</p>}
-                        {sizeName && <p className="text-base text-stone-600">{sizeName}</p>}
-                        {flavourName && <p className="text-base text-stone-600">{flavourName}</p>}
-                        {coffeeBeansName && <p className="text-base text-stone-600">{coffeeBeansName}</p>}
-                        {milkName && <p className="text-base text-stone-600">{milkName}</p>}
-                    </div>
-                    <div className="text-right space-y-1">
-                        {tempName && <p className="text-base text-stone-500">$0.00</p>}
-                        {sizeName && <p className="text-base text-stone-500">{sizePrice}</p>}
-                        {flavourName && <p className="text-base text-stone-500">{flavourPrice}</p>}
-                        {coffeeBeansName && <p className="text-base text-stone-500">$0.00</p>}
-                        {milkName && <p className="text-base text-stone-500">{milkPrice}</p>}
-                    </div>
-                </div>
-
-                {milkName && order.toppings && Object.keys(order.toppings).length > 0 && (
-                    <div className="mt-2">
-                        <h3 className="text-lg font-semibold text-stone-700 mb-1">Toppings:</h3>
-                        <ul className="text-base text-stone-600">
-                            {Object.entries(order.toppings).map(([key, value]) => {
-                                if (value === 0) return null;
-                                const toppingName = toppingOptions.find(t => t.id === Number(key))?.name;
-                                const toppingPrice = toppingOptions.find(t => t.id === Number(key))?.price || 0;
-                                const toppingChargeableQuantity = Math.max(value - (toppingOptions.find(t => t.id === Number(key))?.freecuantity || 0), 0);
-                                const toppingTotal = toppingChargeableQuantity * toppingPrice;
-                                return (
-                                    <li key={key} className="flex justify-between">
-                                        <span>{toppingName} ({value})</span>
-                                        <span>${toppingTotal.toFixed(2)}</span>
-                                    </li>
-                                );
-                            })}
-                        </ul>
-                        {toppingsTotal > 0 && (
-                            <p className="border-t mt-2 pt-2 border-stone-200 text-base text-right font-semibold text-stone-700">+${toppingsTotal.toFixed(2)}</p>
-                        )}
-                    </div>
-                )}
+            <div className="bg-white rounded-2xl shadow-md p-6 mb-4 border border-stone-100 flex flex-col items-center">
+                <img
+                    src={menuItems.find(item => item.id === Number(order.itemId))?.image}
+                    alt={itemName}
+                    className="w-28 h-28 object-contain bg-white rounded-2xl shadow border border-stone-100 mb-3"
+                />
+                <span className="text-2xl font-bold text-stone-800">{itemName}</span>
+                <p className="text-lg text-stone-600 font-semibold">Base: <span className="text-stone-800">${basePrice}</span></p>
             </div>
 
-            <div className="bg-white rounded-xl shadow p-4 border border-stone-100 mt-auto">
-                <div className="text-base mb-2">
-                    <p className="flex justify-between">IVA: <span className="font-semibold">${iva.toFixed(2)}</span></p>
-                    <p className="flex justify-between">Subtotal: <span className="font-semibold">${subtotal.toFixed(2)}</span></p>
+            <div className="bg-white rounded-xl shadow p-4 border border-stone-100 mb-2">
+                <h2 className="text-lg font-semibold text-stone-700 mb-2">Personalización</h2>
+                <div className="grid grid-cols-3 gap-2">
+                    <div className="col-span-2 space-y-1">
+                        {tempName && <p className="text-base text-stone-600">- {tempName}</p>}
+                        {sizeName && <p className="text-base text-stone-600">- {sizeName}</p>}
+                        {flavourName && <p className="text-base text-stone-600">- {flavourName}</p>}
+                        {coffeeBeansName && <p className="text-base text-stone-600">- {coffeeBeansName}</p>}
+                        {milkName && <p className="text-base text-stone-600">- {milkName}</p>}
+                    </div>
+                    <div className="text-right space-y-1">
+                        {tempName && (
+                            <p className="text-base text-stone-500">
+                                {tempName ? '-' : `$0.00`}
+                            </p>
+                        )}
+                        {sizeName && (
+                            <p className="text-base text-stone-500">
+                                {parseFloat(sizePrice.replace('$', '')) === 0 ? '-' : sizePrice}
+                            </p>
+                        )}
+                        {flavourName && (
+                            <p className="text-base text-stone-500">
+                                {parseFloat(flavourPrice.replace('$', '')) === 0 ? '-' : flavourPrice}
+                            </p>
+                        )}
+                        {coffeeBeansName && (
+                            <p className="text-base text-stone-500">
+                                {'-'}
+                            </p>
+                        )}
+                        {milkName && (
+                            <p className="text-base text-stone-500">
+                                {parseFloat(milkPriceStr.replace('$', '')) === 0 ? '-' : milkPriceStr}
+                            </p>
+                        )}
+                    </div>
                 </div>
-                <div className="border-t border-stone-200 pt-2 mt-2">
-                    <p className="text-xl font-bold flex justify-between text-stone-700">
+                <div className="border-t border-stone-200 mt-2 pt-2 flex justify-between">
+                    <span></span>
+                    <span className="border-stone-200 text-base text-right font-semibold text-stone-700">+${personalizationTotal.toFixed(2)}</span>
+                </div>
+            </div>
+
+            {milkName && order.toppings && Object.keys(order.toppings).length > 0 && (
+                <div className="bg-white rounded-xl shadow p-4 border border-stone-100">
+                    <h3 className="text-lg font-semibold text-stone-700 mb-2">Toppings</h3>
+                    <ul className="text-base text-stone-600 divide-y divide-stone-100">
+                        {Object.entries(order.toppings).map(([key, value]) => {
+                            if (value === 0) return null;
+                            const toppingName = toppingOptions.find(t => t.id === Number(key))?.name;
+                            const toppingPrice = toppingOptions.find(t => t.id === Number(key))?.price || 0;
+                            const toppingChargeableQuantity = Math.max(value - (toppingOptions.find(t => t.id === Number(key))?.free_quantity || 0), 0);
+                            const toppingTotal = toppingChargeableQuantity * toppingPrice;
+                            return (
+                                <li key={key} className="flex justify-between py-1">
+                                    <span>{toppingName} <span className="text-xs text-stone-400">({value})</span></span>
+                                    <span>
+                                        {toppingTotal === 0 ? '-' : `$${toppingTotal.toFixed(2)}`}
+                                    </span>
+                                </li>
+                            );
+                        })}
+                    </ul>
+                    {toppingsTotal > 0 && (
+                        <p className="border-t mt-2 pt-2 border-stone-200 text-base text-right font-semibold text-stone-700">
+                            +${toppingsTotal.toFixed(2)}
+                        </p>
+                    )}
+                </div>
+            )}
+
+            <div className="bg-white rounded-xl shadow p-4 border border-stone-100 mt-2">
+                <div className="">
+                    <p className="text-xl font-bold flex justify-between text-stone-800">
                         Total: <span>${total.toFixed(2)}</span>
                     </p>
                 </div>

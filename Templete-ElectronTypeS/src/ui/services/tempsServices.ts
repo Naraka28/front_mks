@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.ENV_API_URL as string;
+const API_URL = import.meta.env.VITE_ENV_API_URL as string;
 const Temps_API = `${API_URL}/temps`;
 
 export interface Temp {
@@ -26,8 +26,8 @@ export async function getTemps(): Promise<Temp[]> {
     if (!response.ok) {
         throw new Error('Network response was not ok' + response.statusText);
     }
-    const data: TempList = await response.json();
-    return data.temps;
+    const data: Temp[] = await response.json();
+    return data;
 }
 
 export async function getTempById(id: number): Promise<Temp> {

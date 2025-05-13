@@ -19,7 +19,6 @@ export type FlavorUpdate = Partial<Flavor>;
 
 
 export async function getFlavors(): Promise<Flavor[]> {
-    console.log('Flavors_API:', FLAVOR_API);
     const response = await fetch(FLAVOR_API, {
         method: 'GET',
         headers: {

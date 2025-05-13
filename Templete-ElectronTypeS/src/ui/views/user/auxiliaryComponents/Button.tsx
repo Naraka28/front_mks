@@ -32,7 +32,7 @@ const Boton: React.FC<BotonProps> = ({
     const baseStyles = "rounded-2xl px-4 py-2 transition-all flex items-center justify-center gap-2 font-[Poppins]";
 
     const tipoStyles = {
-        terminar: "size-full text-xl font-bold shadow-lg bg-white rounded-xl border-2 border-[#E8E8E8] hover:bg-[#F7F2F2] transition duration-300 ease-in-out flex items-center justify-center",
+        terminar: "text-stone-800 font-bold text-lg shadow-lg bg-white rounded-xl border-2 border-[#E8E8E8] hover:bg-[#F7F2F2] transition duration-300 ease-in-out flex items-center justify-center",
         regresar: "bg-[#FAF9F6] text-[#333333] border border-[#E8E8E8] hover:bg-[#E8E8E8] ",
     };
 
