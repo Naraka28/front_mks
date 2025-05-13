@@ -1,6 +1,4 @@
-import { useState } from "react";
-import mokkaSoftLogo from "./../assets/coffee-icon.svg";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Dashboard from "./dashboard/Dashboard";
 import Trabajadores from './dashboard/Employees';
 import Reportes from './dashboard/Reports';
@@ -21,17 +19,11 @@ import CreateMilkRegister from "./dashboard/createRegisters/CreateMilkRegister";
 import CreateToppingRegister from "./dashboard/createRegisters/CreateToppingsRegister";
 import CreateCatRegister from "./dashboard/createRegisters/CreateCatRegister";
 import { OrderProvider } from './user/auxiliaryComponents/OrderContext';
-import CashierPending from "./cashier/CashierPending";
-import CashierCompleted from "./cashier/CashierCompleted";
 import Login from "./Login";
 import CashierLayout from "./cashier/CashierLayout";
 
 
-
-// import "./tailwind.css";
-
 function App() {
-  const [count, setCount] = useState(0);
 
   return (
     <OrderProvider>
@@ -41,7 +33,7 @@ function App() {
             path="/"
             element={
               <>
-              <Login />
+                <Login />
               </>
             }
           />
@@ -50,28 +42,28 @@ function App() {
           <Route path="/reportes" element={<Reportes />} />
           <Route path="/ventas" element={<Ventas />} />
           <Route path="/sabores" element={<Flavours />} />
-        <Route path="/tamanos" element={<Sizes />} />
-        <Route path="/leches" element={<Milks />} />
-        <Route path="/toppings" element={<Toppings />} />
-        <Route path="/productos" element={<Products />} />
-  
-        <Route path="/productos/agregar-producto" element={<CreateProductRegister />} />
-        <Route path="/sabores/agregar-sabor" element={<CreateFlavourRegister />} />
-        <Route path="/tamanos/agregar-tamano" element={<CreateSizeRegister />} />
-        <Route path="/leches/agregar-leche" element={<CreateMilkRegister />} />
-        <Route path="/toppings/agregar-topping" element={<CreateToppingRegister />} />
+          <Route path="/tamanos" element={<Sizes />} />
+          <Route path="/leches" element={<Milks />} />
+          <Route path="/toppings" element={<Toppings />} />
+          <Route path="/productos" element={<Products />} />
 
-        <Route path="/dashboard/add-item-cat" element={<CreateCatRegister />} />
+          <Route path="/productos/agregar-producto" element={<CreateProductRegister />} />
+          <Route path="/sabores/agregar-sabor" element={<CreateFlavourRegister />} />
+          <Route path="/tamanos/agregar-tamano" element={<CreateSizeRegister />} />
+          <Route path="/leches/agregar-leche" element={<CreateMilkRegister />} />
+          <Route path="/toppings/agregar-topping" element={<CreateToppingRegister />} />
 
-        <Route path="/userhome" element={<UserHome />} />
+          <Route path="/dashboard/add-item-cat" element={<CreateCatRegister />} />
+
+          <Route path="/userhome" element={<UserHome />} />
           <Route path="/menu" element={<Menu />} />
-          <Route path="/selected/:itemId" element={<MenuSelected />} />
           <Route path="/menu/:itemId" element={<MenuSelected />} />
           <Route path="/menu/:itemId/temp/:tempId" element={<MenuSelected />} />
           <Route path="/menu/:itemId/temp/:tempId/size/:sizeId" element={<MenuSelected />} />
           <Route path="/menu/:itemId/temp/:tempId/size/:sizeId/flavour/:flavourId" element={<MenuSelected />} />
           <Route path="/menu/:itemId/temp/:tempId/size/:sizeId/flavour/:flavourId/coffeeBeans/:coffeeBeansId" element={<MenuSelected />} />
           <Route path="/menu/:itemId/temp/:tempId/size/:sizeId/flavour/:flavourId/coffeeBeans/:coffeeBeansId/milk/:milkId" element={<MenuSelected />} />
+          <Route path="/menu/:itemId/temp/:tempId/size/:sizeId/flavour/:flavourId/coffeeBeans/:coffeeBeansId/milk/:milkId/topping/:toppingId" element={<MenuSelected />} />
           <Route path="/order-actions" element={<MenuSelected />} />
           <Route path="/order/confirm" element={< OrderConfirmation />} />
 

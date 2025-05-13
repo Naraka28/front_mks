@@ -10,7 +10,7 @@ import Temperature from "./Components/Temperature";
 import Milks from "./Components/Milks";
 import Order from "./auxiliaryComponents/Order";
 import { useOrders } from "./auxiliaryComponents/OrderContext";
-
+import Button from "./auxiliaryComponents/Button";
 
 // Mock or import toppingOptions
 const toppingOptions = [
@@ -94,6 +94,7 @@ const MenuSelected: React.FC = () => {
         navigate(`/menu/${itemId}/temp/${tempId}/size/${sizeId}/flavour/${flavourId}/coffeeBeans/${selectedCoffeeBeansId}`);
     };
 
+
     const handleToppingsChange = (selectedToppings: Record<number, number>) => {
         setCurrentToppings(selectedToppings);
 
@@ -134,8 +135,31 @@ const MenuSelected: React.FC = () => {
         setShowOrderActions(true);
     };
 
+    const handleCancelCurrentOrder = () => {
+        // Limpia el estado local de la orden en construcción
+        setOrder({
+            itemId: undefined,
+            tempId: undefined,
+            sizeId: undefined,
+            flavourId: undefined,
+            coffeeBeansId: undefined,
+            milkId: undefined,
+            toppings: {},
+            toppingsTotal: 0,
+            subtotal: 0,
+            iva: 0,
+            descuento: 0,
+            total: 0,
+        });
+        // Redirige al menú principal
+        navigate("/menu");
+    };
+
     function goBack(): void {
-        if (milkId) {
+        if (showOrderActions && milkId) {
+            // Solo cambia el estado, no la URL, para mostrar toppings de nuevo
+            setShowOrderActions(false);
+        } else if (milkId) {
             navigate(`/menu/${itemId}/temp/${tempId}/size/${sizeId}/flavour/${flavourId}/coffeeBeans/${coffeeBeansId}`);
         } else if (coffeeBeansId) {
             navigate(`/menu/${itemId}/temp/${tempId}/size/${sizeId}/flavour/${flavourId}`);
@@ -175,7 +199,7 @@ const MenuSelected: React.FC = () => {
                             className="pl-3 pr-4 py-2"
                         />
                     </div>
-                    <h1 className="px-6 text-3xl text-stone-700 truncate">
+                    <h1 className="px-6 text-3xl text-stone-700 truncate flex-1">
                         {showOrderActions
                             ? "¿Qué deseas hacer con tu pedido?"
                             : milkId
@@ -190,6 +214,11 @@ const MenuSelected: React.FC = () => {
                                                 ? "Selecciona tamaño"
                                                 : `Selecciona temperatura para ID: ${itemId}`}
                     </h1>
+                    {/* Botón cancelar al lado del título */}
+                    <Button
+                        texto="Cancelar este producto"
+                        onClick={handleCancelCurrentOrder}
+                    />
                 </div>
 
                 {/* Panel de Nueva Orden */}
