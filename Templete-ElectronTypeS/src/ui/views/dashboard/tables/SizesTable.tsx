@@ -141,7 +141,7 @@ const SizesTable = () => {
               </td>
               <td className="p-4 border-b border-blue-gray-50">${row.price}</td>
               <td className="p-4 border-b border-blue-gray-50 items-center space-x-4">
-              <Link to={`/sabores/editar-sabor/${row.id}`}>
+              <Link to={`/tamanos/editar-tamano/${row.id}`}>
                 <button type="button">
                   <span className="">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="h-4 w-4">
