@@ -16,10 +16,7 @@ const Toppings: React.FC<ToppingsProps> = ({ onSelectionChange, productId }) => 
     const { data: toppingOptions = [], isLoading, error } = useQuery<Topping[]>({
         queryKey: ["toppings", productId],
         queryFn: () => getAllowedToppings(productId),
-    });
-
-    console.log("Toppings data:", toppingOptions);
-    
+    });    
 
     if (isLoading) return <p>Loading toppings...</p>;
     if (error) return <p>Error loading toppings</p>;

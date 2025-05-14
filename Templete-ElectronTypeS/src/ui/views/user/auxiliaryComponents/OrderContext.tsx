@@ -1,15 +1,10 @@
 // OrderContext.tsx
+import { Order } from "../../../services/cashierServives";
+
 import React, { createContext, useContext, useState } from 'react';
 
 interface OrderItem {
-    itemId?: string;
-    tempId?: string;
-    sizeId?: string;
-    flavourId?: string;
-    coffeeBeansId?: string;
-    milkId?: string;
-    toppings?: Record<number, number>;
-    total?: number;
+    order: Order;
 }
 
 interface OrderContextType {

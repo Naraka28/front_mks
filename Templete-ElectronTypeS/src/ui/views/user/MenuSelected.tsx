@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Sizes from "./Components/Sizes";
 import Flavours from "./Components/Flavours";
 import CoffeeBeans from "./Components/CoffeeBeans";
@@ -8,21 +8,10 @@ import Boton from "./auxiliaryComponents/Button";
 import OrderActions from "./Components/OrderActions";
 import Temperature from "./Components/Temperature";
 import Milks from "./Components/Milks";
-import Order from "./auxiliaryComponents/Order";
+import OrderComponent from "./auxiliaryComponents/Order";
 import { useOrders } from "./auxiliaryComponents/OrderContext";
 import Button from "./auxiliaryComponents/Button";
-
-// Mock or import toppingOptions
-const toppingOptions = [
-    { id: 1, name: "Azúcar", price: 2, freecuantity: 1, maxcuantity: 10 },
-    { id: 2, name: "Canela", price: 1, freecuantity: 2, maxcuantity: 10 },
-    { id: 3, name: "Mascabado", price: 3, freecuantity: 3, maxcuantity: 10 },
-    { id: 4, name: "Svetia", price: 2.5, freecuantity: 3, maxcuantity: 10 },
-    { id: 5, name: "Fruta", price: 1, freecuantity: 1, maxcuantity: 10 },
-    { id: 6, name: "Nutella", price: 6, freecuantity: 1, maxcuantity: 10 },
-    { id: 7, name: "Shot", price: 3, freecuantity: 1, maxcuantity: 10 },
-    { id: 8, name: "Splenda", price: 1, freecuantity: 1, maxcuantity: 10 }
-];
+import { Order } from "../../../ui/services/ordersServices";
 
 const MenuSelected: React.FC = () => {
     const { addOrder } = useOrders();
@@ -32,47 +21,88 @@ const MenuSelected: React.FC = () => {
     const [currentToppings, setCurrentToppings] = useState<Record<number, number>>({});
     const [showOrderActions, setShowOrderActions] = useState(false);
 
-    // Estado para manejar toda la orden
-    const [order, setOrder] = useState({
-        itemId,
-        tempId,
-        sizeId,
-        flavourId,
-        coffeeBeansId,
-        milkId,
-        toppings: currentToppings,
-        toppingsTotal: 0,
-        subtotal: 0,
-        iva: 0,
-        descuento: 0,
-        total: 0,
+    // Estado para manejar toda la orden con la estructura del backend
+    const [order, setOrder] = useState<Order>({
+        id: itemId ? Number(itemId) : 0,
+        productId: itemId ? Number(itemId) : 0,
+        price: 0, // Default price, update as needed
+        flavour: flavourId ? Number(flavourId) : 0,
+        milk: milkId ? Number(milkId) : 0,
+        size: sizeId ? Number(sizeId) : 0,
+        orderToppings: [],
+        temp: tempId ? Number(tempId) : 0,
+        ticketId: 0, // Default ticketId, update as needed
     });
 
-    // Recalcular el total cada vez que cambia un dato
     useEffect(() => {
-        const basePrice = 50; // Precio base
-        const toppingPrice = Object.values(currentToppings).reduce((acc, count) => acc + count * 5, 0);
-        const toppingsTotal = toppingPrice; // Initialize toppingsTotal
-        const subtotal = basePrice + toppingPrice;
-        const iva = subtotal * 0.16;
-        const descuento = subtotal * 0.10;
-        const total = subtotal + iva - descuento;
+        // Calcula el arreglo de toppings con id y cantidad
+        const toppingsArr = Object.entries(currentToppings).map(([id, quantity]) => ({
+            topping: { id: Number(id), name: `Topping ${id}` }, // Ensure 'name' is included
+            quantity,
+        }));
 
-        setOrder((prevOrder) => ({
-            ...prevOrder,
-            itemId,
-            tempId,
-            sizeId,
-            flavourId,
-            coffeeBeansId,
-            milkId,
-            toppingsTotal,
-            subtotal,
-            iva,
-            descuento,
-            total
+        setOrder(prev => ({
+            ...prev,
+            id: itemId ? Number(itemId) : 0,
+            productId: itemId ? Number(itemId) : 0,
+            flavour: flavourId ? Number(flavourId) : 0,
+            milk: milkId ? Number(milkId) : 0,
+            size: sizeId ? Number(sizeId) : 0,
+            temp: tempId ? Number(tempId) : 0,
+            orderToppings: toppingsArr,
+            ticketId: prev.ticketId ?? 0,
+            price: prev.price ?? 0,
         }));
     }, [itemId, tempId, sizeId, flavourId, coffeeBeansId, milkId, currentToppings]);
+
+
+    // Cuando cambian los toppings
+    const handleToppingsChange = (selectedToppings: Record<number, number>) => {
+        setCurrentToppings(selectedToppings);
+        // No actualices el estado de order aquí
+    };
+
+    // Cuando el usuario termina la selección
+    const handleFinishSelection = () => {
+        // Calcula el arreglo de toppings con id y cantidad
+        const toppingsArr = Object.entries(currentToppings).map(([id, quantity]) => ({
+            topping: { id: Number(id), name: `Topping ${id}` },
+            quantity,
+        }));
+
+        // Actualiza el estado de order solo aquí
+        const finalOrder = {
+            ...order,
+            orderToppings: toppingsArr,
+        };
+        setOrder(finalOrder);
+        addOrder(finalOrder);
+        setShowOrderActions(true);
+    };
+
+    const handleCancelCurrentOrder = () => {
+        setOrder({});
+        navigate("/menu");
+    };
+
+    function goBack(): void {
+        if (showOrderActions && milkId) {
+            setShowOrderActions(false);
+        } else if (milkId) {
+            setCurrentToppings({}); // Limpia los toppings al regresar
+            navigate(`/menu/${itemId}/temp/${tempId}/size/${sizeId}/flavour/${flavourId}/coffeeBeans/${coffeeBeansId}`);
+        } else if (coffeeBeansId) {
+            navigate(`/menu/${itemId}/temp/${tempId}/size/${sizeId}/flavour/${flavourId}`);
+        } else if (flavourId) {
+            navigate(`/menu/${itemId}/temp/${tempId}/size/${sizeId}`);
+        } else if (sizeId) {
+            navigate(`/menu/${itemId}/temp/${tempId}`);
+        } else if (tempId) {
+            navigate(`/menu/${itemId}`);
+        } else {
+            navigate("/menu");
+        }
+    }
 
     const handleTempSelect = (selectedTempId: number) => {
         navigate(`/menu/${itemId}/temp/${selectedTempId}`);
@@ -93,86 +123,6 @@ const MenuSelected: React.FC = () => {
     const handleCoffeeBeansSelect = (selectedCoffeeBeansId: number) => {
         navigate(`/menu/${itemId}/temp/${tempId}/size/${sizeId}/flavour/${flavourId}/coffeeBeans/${selectedCoffeeBeansId}`);
     };
-
-
-    const handleToppingsChange = (selectedToppings: Record<number, number>) => {
-        setCurrentToppings(selectedToppings);
-
-        // Calcular el precio total de los toppings considerando la cantidad gratuita
-        let toppingsTotal = 0;
-
-        for (const [id, quantity] of Object.entries(selectedToppings)) {
-            const topping = toppingOptions.find(t => t.id === Number(id));
-            if (topping) {
-                const paidQuantity = Math.max(quantity - topping.freecuantity, 0);
-                toppingsTotal += paidQuantity * topping.price;
-            }
-        }
-
-        setOrder((prevOrder) => ({
-            ...prevOrder,
-            toppings: selectedToppings,
-            toppingsTotal,
-            subtotal: 50 + toppingsTotal, // Precio base + toppings
-            iva: (50 + toppingsTotal) * 0.16,
-            descuento: (50 + toppingsTotal) * 0.10,
-            total: (50 + toppingsTotal) * 1.06 - (50 + toppingsTotal) * 0.10,
-        }));
-    };
-
-
-    const handleFinishSelection = () => {
-        addOrder({
-            itemId: order.itemId,
-            tempId: order.tempId,
-            sizeId: order.sizeId,
-            flavourId: order.flavourId,
-            coffeeBeansId: order.coffeeBeansId,
-            milkId: order.milkId,
-            toppings: order.toppings,
-            total: order.total
-        });
-        setShowOrderActions(true);
-    };
-
-    const handleCancelCurrentOrder = () => {
-        // Limpia el estado local de la orden en construcción
-        setOrder({
-            itemId: undefined,
-            tempId: undefined,
-            sizeId: undefined,
-            flavourId: undefined,
-            coffeeBeansId: undefined,
-            milkId: undefined,
-            toppings: {},
-            toppingsTotal: 0,
-            subtotal: 0,
-            iva: 0,
-            descuento: 0,
-            total: 0,
-        });
-        // Redirige al menú principal
-        navigate("/menu");
-    };
-
-    function goBack(): void {
-        if (showOrderActions && milkId) {
-            // Solo cambia el estado, no la URL, para mostrar toppings de nuevo
-            setShowOrderActions(false);
-        } else if (milkId) {
-            navigate(`/menu/${itemId}/temp/${tempId}/size/${sizeId}/flavour/${flavourId}/coffeeBeans/${coffeeBeansId}`);
-        } else if (coffeeBeansId) {
-            navigate(`/menu/${itemId}/temp/${tempId}/size/${sizeId}/flavour/${flavourId}`);
-        } else if (flavourId) {
-            navigate(`/menu/${itemId}/temp/${tempId}/size/${sizeId}`);
-        } else if (sizeId) {
-            navigate(`/menu/${itemId}/temp/${tempId}`);
-        } else if (tempId) {
-            navigate(`/menu/${itemId}`);
-        } else {
-            navigate("/menu");
-        }
-    }
 
     return (
         <div className="h-screen w-screen manrope-500 bg-gradient-to-b from-white via-stone-100 to-stone-200 overflow-hidden">
@@ -223,7 +173,12 @@ const MenuSelected: React.FC = () => {
 
                 {/* Panel de Nueva Orden */}
                 <div className="shadow-lg border border-stone-100 rounded-2xl row-span-8 col-span-2 flex flex-col justify-start items-center p-6 bg-white/90 min-h-0 max-h-full overflow-y-auto scrollbar-hide">
-                    <Order order={order} />
+                    <OrderComponent order={{
+                        ...order, orderToppings: Object.entries(currentToppings).map(([id, quantity]) => ({
+                            topping: { id: Number(id), name: `Topping ${id}` },
+                            quantity,
+                        }))
+                    }} />
                 </div>
 
                 {/* Contenedor de selección */}

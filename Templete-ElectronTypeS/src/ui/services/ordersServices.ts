@@ -1,6 +1,16 @@
 const API_URL = import.meta.env.VITE_ENV_API_URL as string;
 const ORDERS_API = `${API_URL}/orders`;
 
+
+export interface ItemName {
+    name: string;
+}
+
+interface OrderTopping {
+    topping: ItemName;
+    quantity: number;
+}
+
 export interface Order {
     id: number;
     productId: number;
@@ -8,7 +18,7 @@ export interface Order {
     flavour: number;
     milk: number;
     size: number;
-    toppings: number[];
+    orderToppings: OrderTopping[];
     temp: number;
     ticketId: number;
 }
