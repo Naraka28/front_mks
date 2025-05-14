@@ -7,7 +7,7 @@ export interface ItemName {
 }
 
 interface OrderTopping {
-    topping: ItemName;
+    topping: number;
     quantity: number;
 }
 
@@ -18,7 +18,7 @@ export interface Order {
     flavour: number;
     milk: number;
     size: number;
-    orderToppings: OrderTopping[];
+    toppings: OrderTopping[];
     temp: number;
     ticketId: number;
 }

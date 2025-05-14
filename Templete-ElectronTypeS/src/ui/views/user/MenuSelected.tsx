@@ -28,7 +28,7 @@ const MenuSelected: React.FC = () => {
         flavour: flavourId ? Number(flavourId) : 0,
         milk: milkId ? Number(milkId) : 0,
         size: sizeId ? Number(sizeId) : 0,
-        orderToppings: [],
+        toppings: [],
         temp: tempId ? Number(tempId) : 0,
     });
 

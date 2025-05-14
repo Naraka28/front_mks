@@ -100,12 +100,12 @@ function Menu() {
                       sum +
                       calculateTotal(
                         {
-                          itemId: order.productId || order.id,
+                          itemId: order.productId ,
                           milkId: order.milk,
                           sizeId: order.size,
                           flavourId: order.flavour,
                           toppings: Object.fromEntries(
-                            (order.orderToppings || []).map(ot => [ot.topping.id, ot.quantity])
+                            (order.toppings || []).map(ot => [ot.topping, ot.quantity])
                           ),
                         },
                         menuItems,

@@ -21,7 +21,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
     const { data: milksOptions = [] } = useQuery({ queryKey: ["milks"], queryFn: getMilks });
 
 
-    const item = menuItems.find(item => item.id === Number(order.productId || order.id));
+    const item = menuItems.find(item => item.id === Number(order.productId));
     const size = sizeItems.find(size => size.id === Number(order.size));
     const flavour = flavourOptions.find(flavour => flavour.id === Number(order.flavour));
 
@@ -32,7 +32,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
         sizeId: order.size,
         flavourId: order.flavour,
         toppings: Object.fromEntries(
-            (order.orderToppings || []).map(ot => [ot.topping.id, ot.quantity])
+            (order.toppings || []).map(ot => [ot.topping, ot.quantity])
         ),
     };
     const { total } = calculateTotal(
