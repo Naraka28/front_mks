@@ -5,11 +5,11 @@ import { getSizes } from "../../../services/sizeServices";
 import { getToppings } from "../../../services/toppingsServices";
 import { getMilks } from "../../../services/milksServices";
 import { useQuery } from "@tanstack/react-query";
-import type { Order } from "../../../services/ordersServices";
+import type { OrderCreate} from "../../../services/ordersServices";
 import { calculateTotal } from "./orderUtils";
 
 interface OrderCardProps {
-    order: Order;
+    order: OrderCreate;
     compact?: boolean;
 }
 
@@ -20,20 +20,19 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
     const { data: toppingOptions = [] } = useQuery({ queryKey: ["toppings"], queryFn: getToppings });
     const { data: milksOptions = [] } = useQuery({ queryKey: ["milks"], queryFn: getMilks });
 
-    if (!order?.id) return null;
 
-    const item = menuItems.find(item => item.id === Number(order.productId || order.id));
+    const item = menuItems.find(item => item.id === Number(order.productId));
     const size = sizeItems.find(size => size.id === Number(order.size));
     const flavour = flavourOptions.find(flavour => flavour.id === Number(order.flavour));
 
     // Calcular el total usando calculateTotal
     const orderForCalc = {
-        itemId: order.productId || order.id,
+        itemId: order.productId,
         milkId: order.milk,
         sizeId: order.size,
         flavourId: order.flavour,
         toppings: Object.fromEntries(
-            (order.orderToppings || []).map(ot => [ot.topping.id, ot.quantity])
+            (order.toppings || []).map(ot => [ot.topping, ot.quantity])
         ),
     };
     const { total } = calculateTotal(

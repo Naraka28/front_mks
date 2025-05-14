@@ -1,14 +1,14 @@
 // OrderContext.tsx
-import { Order } from "../../../services/cashierServives";
+import { OrderCreate } from "../../../services/ordersServices";
 
 import React, { createContext, useContext, useState } from 'react';
 
 interface OrderItem {
-    order: Order;
+    order: OrderCreate;
 }
 
 interface OrderContextType {
-    orders: OrderItem[];
+    orders: OrderCreate[];
     addOrder: (order: OrderItem) => void;
     clearOrders: () => void;
 }
