@@ -1,7 +1,12 @@
-import React, { useState } from "react";
-import { createTopping, ToppingCreate } from "../../../services/toppingsServices";
-import { useMutation } from "@tanstack/react-query";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  createTopping,
+  getToppingById,
+  updateTopping,
+  ToppingCreate,
+} from "../../../services/toppingsServices";
 
 const ToppingsForm: React.FC = () => {
   const [formData, setFormData] = useState<ToppingCreate>({
@@ -12,12 +17,37 @@ const ToppingsForm: React.FC = () => {
     max_quantity: 0,
   });
 
+  const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
+  const isEditing = Boolean(id);
+
+  const { data: existingTopping, isLoading } = useQuery({
+    queryKey: ["topping", id],
+    queryFn: () => getToppingById(Number(id)),
+    enabled: isEditing,
+  });
+
+  useEffect(() => {
+    if (existingTopping) {
+      setFormData({
+        name: existingTopping.name,
+        price: existingTopping.price,
+        free_quantity: existingTopping.free_quantity,
+        max_quantity: existingTopping.max_quantity,
+        image: null, // La imagen no se carga por seguridad
+      });
+    }
+  }, [existingTopping]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({
+      ...prev,
+      [name]: name === "price" || name === "free_quantity" || name === "max_quantity"
+        ? parseFloat(value)
+        : value,
+    }));
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,59 +57,73 @@ const ToppingsForm: React.FC = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Form submitted:", formData);
-    const toppingData = new FormData();
-    toppingData.append("name", formData.name);
-    toppingData.append("price", formData.price.toString());
-    toppingData.append("free_quantity", formData.free_quantity.toString());
-    toppingData.append("max_quantity", formData.max_quantity.toString());
-    if (formData.image) {
-      toppingData.append("image", formData.image);
-    }
-    console.log("📦 FormData contents:");
-    for (let [key, value] of toppingData.entries()) {
-      console.log(`${key}:`, value);
-    }
-    mutation.mutate(toppingData); // Llama a la mutación con los datos del formulario
-  };
-
-  const mutation = useMutation({
+  const createMutation = useMutation({
     mutationFn: createTopping,
-    onSuccess: (data) => {
-      console.log("Producto creado:", data);
-      setFormData({ name: "", price: 0, free_quantity:0, max_quantity:0, image: null }); // limpia el form
-      alert("Producto creado con éxito ✅"); // o usa un toast
+    onSuccess: () => {
+      alert("Topping creado exitosamente");
+      navigate("/toppings");
     },
-    onError: (error) => {
-      console.error("Error al crear el producto:", error);
-      alert("Error al guardar 😢");
+    onError: () => {
+      alert("Error al crear el topping");
     },
   });
 
-  const handleAddClick = () => {
-    const currentPath = location.pathname;
+  const updateMutation = useMutation({
+    mutationFn: ({ id, data }: { id: number; data: Omit<ToppingCreate, "image"> }) =>
+      updateTopping({ id, data }),
+    onSuccess: () => {
+      alert("Topping actualizado exitosamente");
+      navigate("/toppings");
+    },
+    onError: () => {
+      alert("Error al actualizar el topping");
+    },
+  });
 
-    if (currentPath.includes("/sabores")) {
-      navigate("/sabores/");
-    } else if (currentPath.includes("/tamanos")) {
-      navigate("/tamanos/");
-    } else if (currentPath.includes("/leches")) {
-      navigate("/leches/");
-    } else if (currentPath.includes("/toppings")) {
-      navigate("/toppings/");
-    } else if (currentPath.includes("/productos")) {
-      navigate("/productos/");
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (isEditing) {
+      updateMutation.mutate({
+        id: Number(id),
+        data: {
+          name: formData.name,
+          price: formData.price,
+          free_quantity: formData.free_quantity,
+          max_quantity: formData.max_quantity,
+        },
+      });
+    } else {
+      const toppingData = new FormData();
+      toppingData.append("name", formData.name);
+      toppingData.append("price", formData.price.toString());
+      toppingData.append("free_quantity", formData.free_quantity.toString());
+      toppingData.append("max_quantity", formData.max_quantity.toString());
+      if (formData.image) {
+        toppingData.append("image", formData.image);
+      }
+      createMutation.mutate(toppingData);
     }
   };
+
+  const handleBack = () => {
+    navigate("/toppings");
+  };
+
+  if (isEditing && isLoading) {
+    return <p className="text-center">Cargando topping...</p>;
+  }
 
   return (
     <div className="max-w-lg mx-auto p-6 bg-white shadow-xl rounded-2xl border border-gray-200">
       <div className="flex justify-end">
-        <button onClick={handleAddClick} className="px-2 py-2 bg-red-700 rounded-full hover:bg-red-900 transition duration-200 ease-in-out"></button>
+        <button
+          onClick={handleBack}
+          className="px-2 py-2 bg-red-700 rounded-full hover:bg-red-900 transition duration-200 ease-in-out"
+        />
       </div>
-      <h2 className="text-2xl font-semibold text-gray-800 mb-4 text-center">Agregar Producto</h2>
+      <h2 className="text-2xl font-semibold text-gray-800 mb-4 text-center">
+        {isEditing ? "Editar Topping" : "Agregar Topping"}
+      </h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-gray-700 font-medium">Nombre</label>
@@ -104,17 +148,7 @@ const ToppingsForm: React.FC = () => {
           />
         </div>
         <div>
-          <label className="block text-gray-700 font-medium">Imagen</label>
-          <input
-            type="file"
-            name="image"
-            accept="image/*"
-            onChange={handleFileChange}
-            className="w-full p-3 border rounded-lg bg-gray-100 focus:ring-2 focus:ring-gray-300 focus:outline-none transition"
-          />
-        </div>
-        <div>
-          <label className="block text-gray-700 font-medium">Cantidad gratuita de toppings</label>
+          <label className="block text-gray-700 font-medium">Cantidad gratuita</label>
           <input
             type="number"
             name="free_quantity"
@@ -126,7 +160,7 @@ const ToppingsForm: React.FC = () => {
           />
         </div>
         <div>
-          <label className="block text-gray-700 font-medium">Cantidad máxima de toppings</label>
+          <label className="block text-gray-700 font-medium">Cantidad máxima</label>
           <input
             type="number"
             name="max_quantity"
@@ -137,11 +171,21 @@ const ToppingsForm: React.FC = () => {
             className="w-full p-3 border rounded-lg bg-gray-100 focus:ring-2 focus:ring-gray-300 focus:outline-none transition"
           />
         </div>
+        <div>
+          <label className="block text-gray-700 font-medium">Imagen</label>
+          <input
+            type="file"
+            name="image"
+            accept="image/*"
+            onChange={handleFileChange}
+            className="w-full p-3 border rounded-lg bg-gray-100 focus:ring-2 focus:ring-gray-300 focus:outline-none transition"
+          />
+        </div>
         <button
           type="submit"
           className="w-full p-3 bg-violet-600 text-white rounded-lg shadow-md hover:bg-violet-700 transition"
         >
-          Guardar Producto
+          {isEditing ? "Actualizar Topping" : "Guardar Topping"}
         </button>
       </form>
     </div>

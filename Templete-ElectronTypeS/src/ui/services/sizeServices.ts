@@ -1,88 +1,88 @@
 const API_URL = import.meta.env.VITE_ENV_API_URL as string;
 const Size_API = `${API_URL}/sizes`;
 
-export interface Size{
-    id:number;
-    name: string;
-    price: number;
-    image: File | null;
+export interface Size {
+  id: number;
+  name: string;
+  price: number;
+  image: File | null;
 }
 
-export interface SizeList{
-    sizes: Size[];
+export interface SizeList {
+  sizes: Size[];
 }
 
 export type SizeCreate = Omit<Size, 'id'>;
+export type SizeUpdate = Partial<Size> & { id: number };
 
-export type SizeUpdate = Partial<Size>;
-
-
-
+// Obtener todos los tamaños
 export async function getSizes(): Promise<Size[]> {
-    const response = await fetch(Size_API, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
-    if (!response.ok) {
-        throw new Error('Network response was not ok' + response.statusText);
-    }
-    const data: Size[] = await response.json();
-    return data;
+  const response = await fetch(Size_API, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  if (!response.ok) {
+    throw new Error('Error al obtener tamaños: ' + response.statusText);
+  }
+  return await response.json();
 }
 
 export async function getSizeById(id: number): Promise<Size> {
     const response = await fetch(`${Size_API}/${id}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     });
     if (!response.ok) {
-        throw new Error('Network response was not ok' + response.statusText);
+      throw new Error('Error al obtener tamaño: ' + response.statusText);
     }
-    const data: Size = await response.json();
+  
+    const data = await response.json();
+  
+    // ✅ Solo regresa `data`, no `data.size`
     return data;
+  }
+
+// Crear tamaño (con imagen)
+export async function createSize(size: FormData): Promise<Size> {
+  const response = await fetch(`${Size_API}/create`, {
+    method: 'POST',
+    body: size,
+  });
+  if (!response.ok) {
+    throw new Error('Error al crear tamaño: ' + response.statusText);
+  }
+  return await response.json();
 }
 
-
-export async function createSize(Size: FormData): Promise<Size> {
-    const response = await fetch(`${Size_API}/create`, {
-        method: 'POST',
-        body:Size
-    });
-    if (!response.ok) {
-        throw new Error('Network response was not ok' + response.statusText);
-    }
-    const data: Size = await response.json();
-    return data;
+// Actualizar tamaño (sin imagen, JSON puro)
+export async function updateSize(size: SizeUpdate): Promise<Size> {
+  const { id, ...data } = size;
+  const response = await fetch(`${Size_API}/update/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) {
+    throw new Error('Error al actualizar tamaño: ' + response.statusText);
+  }
+  return await response.json();
 }
 
-
-export async function updateSize(Size: SizeUpdate): Promise<Size> {
-    const response = await fetch(`${Size_API}/update/${Size.id}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(Size),
-    });
-    if (!response.ok) {
-        throw new Error('Network response was not ok' + response.statusText);
-    }
-    const data: Size = await response.json();
-    return data;
-}
-
+// Eliminar tamaño
 export async function deleteSize(id: number): Promise<void> {
-    const response = await fetch(`${Size_API}/delete/${id}`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
-    if (!response.ok) {
-        throw new Error('Network response was not ok' + response.statusText);
-    }
+  const response = await fetch(`${Size_API}/delete/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  if (!response.ok) {
+    throw new Error('Error al eliminar tamaño: ' + response.statusText);
+  }
 }

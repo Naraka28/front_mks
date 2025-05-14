@@ -54,6 +54,12 @@ function App() {
 
           <Route path="/dashboard/add-item-cat" element={<CreateCatRegister />} />
 
+          <Route path="/productos/editar-producto/:id" element={<CreateProductRegister />} />
+          <Route path="/sabores/editar-sabor/:id" element={<CreateFlavourRegister />} />
+          <Route path="/tamanos/editar-tamano/:id" element={<CreateSizeRegister />} />
+          <Route path="/leches/editar-leche/:id" element={<CreateMilkRegister />} />
+          <Route path="/toppings/editar-topping/:id" element={<CreateToppingRegister />} />
+
           <Route path="/userhome" element={<UserHome />} />
           <Route path="/menu" element={<Menu />} />
           <Route path="/menu/:itemId" element={<MenuSelected />} />

@@ -5,6 +5,7 @@ import { FaEye } from 'react-icons/fa6';
 import { IoTrashSharp } from 'react-icons/io5';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { deleteMilk, getMilks } from '../../../services/milksServices';
+import { Link } from 'react-router-dom';
 
 const ModalDetails = ({ open, onClose, milk }) => {
   if (!milk) return null;
@@ -140,6 +141,7 @@ const MilksTable = () => {
               </td>
               <td className="p-4 border-b border-blue-gray-50">${row.price}</td>
               <td className="p-4 border-b border-blue-gray-50 items-center space-x-4">
+              <Link to={`/leches/editar-leche/${row.id}`}>
                 <button type="button">
                   <span className="">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="h-4 w-4">
@@ -147,6 +149,7 @@ const MilksTable = () => {
                     </svg>
                   </span>
                 </button>
+                </Link>
                 <button onClick={() => openModal(row)} className="">
                   <span className="">
                     <FaEye />

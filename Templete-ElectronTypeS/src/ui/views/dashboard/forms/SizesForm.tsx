@@ -1,7 +1,13 @@
-import { useMutation } from "@tanstack/react-query";
-import React, { useState } from "react";
-import { createSize, SizeCreate } from "../../../services/sizeServices";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  createSize,
+  getSizeById,
+  updateSize,
+  SizeCreate,
+  SizeUpdate,
+} from "../../../services/sizeServices";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 
 const SizesForm: React.FC = () => {
   const [formData, setFormData] = useState<SizeCreate>({
@@ -12,10 +18,29 @@ const SizesForm: React.FC = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
+  const { id } = useParams();
+  const isEditing = Boolean(id);
+
+  // Cargar datos si estamos en modo edición
+  const { data: existingSize, isLoading } = useQuery({
+    queryKey: ["size", id],
+    queryFn: () => getSizeById(Number(id)),
+    enabled: isEditing,
+  });
+
+  useEffect(() => {
+    if (existingSize) {
+      setFormData({
+        name: existingSize.name,
+        price: existingSize.price,
+        image: null, // no pre-cargamos imagen
+      });
+    }
+  }, [existingSize]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: name === "price" ? Number(value) : value }));
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,33 +50,53 @@ const SizesForm: React.FC = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Form submitted:", formData);
-    const sizeData = new FormData();
-    sizeData.append("name", formData.name);
-    sizeData.append("price", formData.price.toString());
-    if (formData.image) {
-      sizeData.append("image", formData.image);
-    }
-    mutation.mutate(sizeData); // Llama a la mutación con los datos del formulario
-    console.log("Datos del formulario:", sizeData);
-  };
-
-  const mutation = useMutation({
+  const createMutation = useMutation({
     mutationFn: createSize,
-    onSuccess: (data) => {
-      console.log("Producto creado:", data);
-      setFormData({ name: "", price: 0, image: null }); // limpia el form
-      alert("Producto creado con éxito ✅"); // o usa un toast
+    onSuccess: () => {
+      alert("Tamaño creado con éxito ✅");
+      setFormData({ name: "", price: 0, image: null });
+      navigate("/tamanos");
     },
     onError: (error) => {
-      console.error("Error al crear el tamaño:", error);
+      console.error("Error al crear tamaño:", error);
       alert("Error al guardar 😢");
     },
   });
 
-  const handleAddClick = () => {
+  const updateMutation = useMutation({
+    mutationFn: updateSize,
+    onSuccess: () => {
+      alert("Tamaño actualizado correctamente ✅");
+      navigate("/tamanos");
+    },
+    onError: (error) => {
+      console.error("Error al actualizar tamaño:", error);
+      alert("Error al actualizar 😢");
+    },
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (isEditing) {
+      const updateData: SizeUpdate = {
+        id: Number(id),
+        name: formData.name,
+        price: formData.price,
+      };
+      updateMutation.mutate(updateData);
+    } else {
+      const sizeData = new FormData();
+      sizeData.append("name", formData.name);
+      sizeData.append("price", formData.price.toString());
+      if (formData.image) {
+        sizeData.append("image", formData.image);
+      }
+      createMutation.mutate(sizeData);
+    }
+  };
+
+  const handleBack = () => {
     const currentPath = location.pathname;
 
     if (currentPath.includes("/sabores")) {
@@ -67,12 +112,16 @@ const SizesForm: React.FC = () => {
     }
   };
 
+  if (isEditing && isLoading) return <p className="text-center">Cargando datos...</p>;
+
   return (
     <div className="max-w-lg mx-auto p-6 bg-white shadow-xl rounded-2xl border border-gray-200">
       <div className="flex justify-end">
-        <button onClick={handleAddClick} className="px-2 py-2 bg-red-700 rounded-full hover:bg-red-900 transition duration-200 ease-in-out"></button>
+        <button onClick={handleBack} className="px-2 py-2 bg-red-700 rounded-full hover:bg-red-900 transition duration-200 ease-in-out"></button>
       </div>
-      <h2 className="text-2xl font-semibold text-gray-800 mb-4 text-center">Agregar Tamaño</h2>
+      <h2 className="text-2xl font-semibold text-gray-800 mb-4 text-center">
+        {isEditing ? "Editar Tamaño" : "Agregar Tamaño"}
+      </h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-gray-700 font-medium">Nombre</label>
@@ -97,20 +146,21 @@ const SizesForm: React.FC = () => {
           />
         </div>
         <div>
-          <label className="block text-gray-700 font-medium">Imagen</label>
-          <input
-            type="file"
-            name="image"
-            accept="image/*"
-            onChange={handleFileChange}
-            className="w-full p-3 border rounded-lg bg-gray-100 focus:ring-2 focus:ring-gray-300 focus:outline-none transition"
-          />
-        </div>
+            <label className="block text-gray-700 font-medium">Imagen</label>
+            <input
+              type="file"
+              name="image"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="w-full p-3 border rounded-lg bg-gray-100 focus:ring-2 focus:ring-gray-300 focus:outline-none transition"
+            />
+          </div>
+
         <button
           type="submit"
           className="w-full p-3 bg-violet-600 text-white rounded-lg shadow-md hover:bg-violet-700 transition"
         >
-          Guardar Producto
+          {isEditing ? "Actualizar Tamaño" : "Guardar Tamaño"}
         </button>
       </form>
     </div>
