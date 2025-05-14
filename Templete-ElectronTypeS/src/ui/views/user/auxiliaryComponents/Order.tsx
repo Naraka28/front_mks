@@ -51,7 +51,7 @@ const OrderComponent: React.FC<OrderProps> = ({ order, compact = false }) => {
         sizeId: order.size,
         flavourId: order.flavour,
         toppings: Object.fromEntries(
-            (order.orderToppings || []).map(ot => [ot.topping.id, ot.quantity])
+            (order.toppings || []).map(ot => [ot.id, ot.quantity])
         ),
     };
 
@@ -67,7 +67,7 @@ const OrderComponent: React.FC<OrderProps> = ({ order, compact = false }) => {
 
     console.log("OrderComponent", order);
 
-    const itemName = menuItems.find(item => item.id === Number(order.id))?.name;
+    const itemName = menuItems.find(item => item.id === Number(order.productId))?.name;
     const sizeName = sizeItems.find(size => size.id === Number(order.size))?.name;
     const flavourName = flavourOptions.find(flavour => flavour.id === Number(order.flavour))?.name;
     const tempName = tempOptions.find(temp => temp.id === Number(order.temp))?.name;
@@ -154,13 +154,13 @@ const OrderComponent: React.FC<OrderProps> = ({ order, compact = false }) => {
                 </div>
             </div>
 
-            {milkName && order.orderToppings && order.orderToppings.length > 0 && (
+            {milkName && order.toppings && order.toppings.length > 0 && (
                 <div className="bg-white rounded-xl shadow p-4 border border-stone-100">
                     <h3 className="text-lg font-semibold text-stone-700 mb-2">Toppings</h3>
                     <ul className="text-base text-stone-600 divide-y divide-stone-100">
-                        {order.orderToppings.map((ot, idx) => {
+                        {order.toppings.map((ot, idx) => {
                             if (Number(ot.quantity) === 0) return null;
-                            const topping = toppingOptions.find(t => t.id === Number(ot.topping.id));
+                            const topping = toppingOptions.find(t => t.id === Number(ot.topping));
                             const toppingName = topping?.name || '';
                             const toppingPrice = topping?.price || 0;
                             const toppingChargeableQuantity = Math.max(Number(ot.quantity) - (topping?.free_quantity || 0), 0);

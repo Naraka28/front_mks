@@ -26,9 +26,37 @@ function Menu() {
 
   const handleSendOrder = async () => {
     try {
-      // Envía la orden al backend
-      await createOrderWithTicket(orders);
-      navigate("/order/confirm");
+      // Envía la orden al backend y recibe la respuesta con el número de orden
+      const response = await createOrderWithTicket(orders);
+      // Calcula el total
+      const total = orders.reduce(
+        (sum, order) =>
+          sum +
+          calculateTotal(
+            {
+              itemId: order.productId,
+              milkId: order.milk,
+              sizeId: order.size,
+              flavourId: order.flavour,
+              toppings: Object.fromEntries(
+                (order.toppings || []).map(ot => [ot.id, ot.quantity])
+              ),
+            },
+            menuItems,
+            toppingOptions,
+            milksOptions,
+            flavourOptions,
+            sizeItems
+          ).total,
+        0
+      );
+      // Navega pasando los datos
+      navigate("/order/confirm", {
+        state: {
+          orderNumber: response.ticketId, 
+          total: total.toFixed(2),
+        },
+      });
       alert("¡La orden se envió correctamente!");
     } catch (e: any) {
       alert("Error al enviar la orden");
@@ -46,6 +74,10 @@ function Menu() {
   const { data: flavourOptions = [] } = useQuery({ queryKey: ["flavors"], queryFn: getFlavors });
   const { data: sizeItems = [] } = useQuery({ queryKey: ["sizes"], queryFn: getSizes });
 
+  // Agrega el console.log para order.toppings
+  orders.forEach(orders => {
+    console.log("order.toppings:", orders.toppings);
+  });
   return (
     <div className="h-screen w-screen manrope-500 bg-gradient-to-b from-white via-stone-100 to-stone-200 overflow-hidden">
       <style>{`
@@ -100,7 +132,7 @@ function Menu() {
                       sum +
                       calculateTotal(
                         {
-                          itemId: order.productId ,
+                          itemId: order.productId,
                           milkId: order.milk,
                           sizeId: order.size,
                           flavourId: order.flavour,
