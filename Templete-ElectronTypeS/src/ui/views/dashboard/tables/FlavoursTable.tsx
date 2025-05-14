@@ -55,8 +55,8 @@ const DeleteConfirmationModal = ({ open, onClose, product, onConfirm }) => {
           <div className="text-center mb-4">
             <p className="text-xl text-gray-700 mb-2">¿Estás seguro que deseas eliminar este sabor?</p>
             <p className="text-2xl font-bold text-gray-800">"{product.name}"</p>
-            <div className="p-2 bg-purple-100 rounded-full mt-2 flex justify-center">
-              <img src={product.image} alt="" height="100" width="100" />
+            <div className="p-2 bg-purple-100 flex justify-center items-center rounded-full mt-2">
+              <img src={product.image} alt="" className="max-w-full h-auto object-contain max-h-60 rounded-md"/>
             </div>
             <p className="text-xl text-red-600 font-semibold mt-4">Esta acción no se puede deshacer</p>
           </div>
