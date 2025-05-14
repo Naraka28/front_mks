@@ -6,6 +6,7 @@ interface OrderProps {
 }
 
 const OrderComponent: React.FC<OrderProps> = ({ order }) => {
+
     return (
         <div className="p-5 bg-white rounded-2xl shadow-md hover:shadow-xl transition-all border border-stone-100">
             <div className="mb-4">
@@ -33,13 +34,16 @@ const OrderComponent: React.FC<OrderProps> = ({ order }) => {
                     </div>
                 )}
 
-                {order.toppings && order.toppings.length > 0 && (
+
+
+                {order.orderToppings && order.orderToppings.length > 0 && (
                     <div className="pt-3">
                         <h4 className="text-sm font-medium text-stone-700 mb-2">Toppings:</h4>
                         <ul className="space-y-1">
-                            {order.toppings.map((topping, idx) => (
-                                <li key={idx} className="flex justify-between text-xs text-stone-600">
-                                    <span>{topping.name}</span>
+                            {order.orderToppings.map((topping, index) => (
+                                <li key={index} className="flex justify-between">
+                                    <span className="text-stone-600">{topping.topping.name}</span>
+                                    <span>{topping.quantity}</span>
                                 </li>
                             ))}
                         </ul>

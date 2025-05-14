@@ -16,24 +16,25 @@ const TicketActions: React.FC<TicketActionsProps> = ({
     total = 0,
 }) => {
     const [modal, setModal] = useState<null | "pay" | "cancel">(null);
-    const [payment, setPayment] = useState<number>(0);
+    const [payment, setPayment] = useState<string>("");
 
-    const cambio = payment > total ? payment - total : 0;
+    const paymentNumber = Number(payment) || 0;
+    const cambio = paymentNumber > total ? paymentNumber - total : 0;
 
     const handleConfirm = () => {
-        if (modal === "pay") onPay(payment);
+        if (modal === "pay") onPay(paymentNumber);
         if (modal === "cancel") onCancel();
         setModal(null);
-        setPayment(0);
+        setPayment("");
     };
 
     // Estilos de botón reutilizables
     const btnPay =
-        "px-5 py-2 border border-green-500 text-green-700 rounded-lg font-semibold bg-white hover:bg-green-50 hover:border-green-700 transition disabled:opacity-50 shadow-sm";
+        "px-7 py-3 border border-green-400 text-green-700 rounded-xl font-semibold bg-white shadow-md hover:bg-green-50 hover:border-green-600 transition disabled:opacity-50";
     const btnCancel =
-        "px-5 py-2 border border-red-500 text-red-600 rounded-lg font-semibold bg-white hover:bg-red-50 hover:border-red-700 transition disabled:opacity-50 shadow-sm";
+        "px-7 py-3 border border-red-400 text-red-600 rounded-xl font-semibold bg-white shadow-md hover:bg-red-50 hover:border-red-600 transition disabled:opacity-50";
     const btnGray =
-        "px-5 py-2 border border-stone-300 text-stone-700 rounded-lg font-semibold bg-white hover:bg-stone-100 transition shadow-sm";
+        "px-7 py-3 border border-stone-300 text-stone-700 rounded-xl font-semibold bg-white shadow-md hover:bg-stone-100 transition";
 
     return (
         <div className="flex gap-4 mt-4">
@@ -84,7 +85,7 @@ const TicketActions: React.FC<TicketActionsProps> = ({
                                     min={0}
                                     step={0.01}
                                     value={payment}
-                                    onChange={(e) => setPayment(Number(e.target.value))}
+                                    onChange={(e) => setPayment(e.target.value)}
                                     className="border border-green-200 rounded-md px-2 py-1 w-24 text-right focus:outline-none focus:ring-2 focus:ring-green-300 font-mono bg-stone-50"
                                     placeholder="0.00"
                                     autoFocus
@@ -106,7 +107,7 @@ const TicketActions: React.FC<TicketActionsProps> = ({
                         <div className="flex gap-2 mt-2">
                             <button
                                 onClick={handleConfirm}
-                                disabled={payment < total}
+                                disabled={paymentNumber < total}
                                 className={btnPay + " flex-1"}
                             >
                                 Confirmar
@@ -118,7 +119,7 @@ const TicketActions: React.FC<TicketActionsProps> = ({
                                 Cancelar
                             </button>
                         </div>
-                        {payment < total && (
+                        {paymentNumber < total && (
                             <div className="text-red-500 text-xs mt-1 text-center">
                                 El monto debe ser igual o mayor al total.
                             </div>

@@ -1,4 +1,5 @@
-// Tipos reutilizables
+const API_URL = import.meta.env.VITE_ENV_API_URL as string;
+
 export interface ItemName {
   name: string;
 }
@@ -18,11 +19,16 @@ export interface CompletedResponse {
   message: string;
 }
 
+interface OrderTopping {
+  topping: ItemName;
+  quantity: number;
+}
+
 export interface Order {
   id: number;
   product: ItemName;
   price: number;
-  toppings: ItemName[];
+  orderToppings: OrderTopping[];
   flavour: ItemName;
   size: ItemName;
   milk: ItemName;
@@ -46,7 +52,7 @@ export interface TicketsResponseAll{
 
 export async function getPendingTickets(): Promise<TicketsResponse> {
   const response = await fetch(
-    `${import.meta.env.VITE_ENV_API_URL}/tickets/pending`
+    `${API_URL}/tickets/pending`
   );
   if (!response.ok) {
     const error: ErrorResponse = await response.json();
@@ -57,7 +63,7 @@ export async function getPendingTickets(): Promise<TicketsResponse> {
 
 export async function getCompletedTickets(): Promise<TicketsResponse> {
   const response = await fetch(
-    `${import.meta.env.VITE_ENV_API_URL}/tickets/completed`
+    `${API_URL}/tickets/completed`
   );
   if (!response.ok) {
     const error: ErrorResponse = await response.json();
@@ -68,13 +74,13 @@ export async function getCompletedTickets(): Promise<TicketsResponse> {
 
 export async function cancelTicket(id: number): Promise<CompletedResponse> {
   const response = await fetch(
-    `${import.meta.env.VITE_ENV_API_URL}/tickets/cancel`,
+    `${API_URL }/tickets/cancel`,
     {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(id),
+      body: JSON.stringify({ id }),
     }
   );
 
@@ -84,15 +90,27 @@ export async function cancelTicket(id: number): Promise<CompletedResponse> {
   }
   return await response.json();
 }
+
 export async function payTicket(id: number): Promise<CompletedResponse> {
-  const response = await fetch(`${import.meta.env.VITE_ENV_API_URL}/tickets/pay`, {
+  const response = await fetch(`${API_URL}/tickets/pay`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(id),
+    body: JSON.stringify({ id }),
   });
 
+  if (!response.ok) {
+    const error: ErrorResponse = await response.json();
+    throw new Error(error.message);
+  }
+  return await response.json();
+}
+
+export async function getAllTickets(): Promise<TicketsResponseAll> {
+  const response = await fetch(
+    `${API_URL}/tickets`
+  );
   if (!response.ok) {
     const error: ErrorResponse = await response.json();
     throw new Error(error.message);

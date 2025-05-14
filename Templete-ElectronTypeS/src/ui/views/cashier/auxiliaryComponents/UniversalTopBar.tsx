@@ -15,7 +15,6 @@ const getFormattedDate = () => {
 const getCajaStatus = () => {
   const now = new Date();
   const hour = now.getHours();
-  // Caja abierta de 7:00 a 21:59, cerrada de 22:00 a 6:59
   if (hour >= 7 && hour < 22) {
     return { status: "Caja abierta", color: "text-green-600" };
   } else {
