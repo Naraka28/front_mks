@@ -61,6 +61,17 @@ export async function getPendingTickets(): Promise<TicketsResponse> {
   return await response.json();
 }
 
+export async function getCanceledTickets(): Promise<TicketsResponse> {
+  const response = await fetch(
+    `${API_URL}/tickets/cancelledTickets`
+  );
+  if (!response.ok) {
+    const error: ErrorResponse = await response.json();
+    throw new Error(error.message);
+  }
+  return await response.json();
+}
+
 export async function getCompletedTickets(): Promise<TicketsResponse> {
   const response = await fetch(
     `${API_URL}/tickets/completed`
