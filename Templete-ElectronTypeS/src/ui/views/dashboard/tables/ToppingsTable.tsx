@@ -3,8 +3,9 @@ import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/re
 import { ListBulletIcon } from '@heroicons/react/24/outline';
 import { FaEye } from 'react-icons/fa6';
 import { IoTrashSharp } from "react-icons/io5";
-import { useQuery } from '@tanstack/react-query';
-import { getToppings, Topping } from '../../../services/toppingsServices';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { getToppings, deleteTopping } from '../../../services/toppingsServices';
+
 const ModalDetails = ({ open, onClose, product }) => {
   if (!product) return null;
 
@@ -86,6 +87,7 @@ const DeleteConfirmationModal = ({ open, onClose, product, onConfirm }) => {
 
 
 const ToppingsTable = () => {
+  const queryClient = useQueryClient();
   const [isModalDetailsOpen, setIsModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -102,10 +104,13 @@ const ToppingsTable = () => {
     console.log(error);
   }
 
-  const handleDeleteProduct = (productId) => {
-    // Aquí implementarías la lógica para eliminar el producto
-    //deleteProduct(productId).then(() => refetch());
-    // Donde refetch sería una función para actualizar la lista de productos
+  const handleDeleteTopping = async (toppingId: string) => {
+    try {
+      await deleteTopping(toppingId);
+      queryClient.invalidateQueries(['toppings']);
+    } catch (err) {
+      console.error("Error al eliminar el Topping:", err);
+    }
   };
 
   const openModal = (product) => {
@@ -200,7 +205,7 @@ const ToppingsTable = () => {
         open={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
         product={selectedProduct}
-        onConfirm={handleDeleteProduct}
+        onConfirm={handleDeleteTopping}
       />
     </div>
   );
