@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
+import { SyncLoader } from "react-spinners";
 import {
   createMilk,
   getMilkById,
@@ -115,7 +116,7 @@ const MilksForm: React.FC = () => {
     }
   };
 
-  if (isEditing && isLoading) return <p className="text-center">Cargando datos...</p>;
+  if (isEditing && isLoading) return <div className="flex mt-32 items-center justify-center w-full h-full"><SyncLoader color="#5d1abc" margin={8} size={36} speedMultiplier={1}/></div>;
 
   return (
     <div className="max-w-lg mx-auto p-6 bg-white shadow-xl rounded-2xl border border-gray-200">

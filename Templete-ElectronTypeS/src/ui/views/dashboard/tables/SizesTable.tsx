@@ -6,6 +6,7 @@ import { IoTrashSharp } from 'react-icons/io5';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getSizes, deleteSize } from '../../../services/sizeServices';
 import { Link } from 'react-router-dom';
+import { SyncLoader } from 'react-spinners';
 
 const ModalDetails = ({ open, onClose, product }) => {
   if (!product) return null;
@@ -113,7 +114,7 @@ const SizesTable = () => {
     setIsDeleteModalOpen(true);
   };
 
-  if (isLoading) return <div>Cargando Tamaños...</div>;
+  if (isLoading) return <div className='flex mt-32 items-center justify-center w-full h-full'><SyncLoader color="#5d1abc" margin={8} size={36} speedMultiplier={1}/></div>;
   if (error) return <div>Error al cargar Tamaños: {error.message}</div>;
 
   return (

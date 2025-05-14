@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
 import { getTickets } from "../../../services/ticketsServices";
 import { TicketsResponse } from "../../../services/cashierServives";
+import { SyncLoader } from 'react-spinners';
 
 
 const ModalDetails = ({ open, onClose, sale }) => {
@@ -59,7 +60,7 @@ export const SalesTable = () => {
     setIsModalOpen(true);
   };
 
-  if (isLoading) return <div>Cargando Tamaños...</div>;
+  if (isLoading) return <div className='flex mt-32 items-center justify-center w-full h-full'><SyncLoader color="#5d1abc" margin={8} size={36} speedMultiplier={1}/></div>;
   if (error) return <div>Error al cargar Tamaños: {error.message}</div>;
 
   return (

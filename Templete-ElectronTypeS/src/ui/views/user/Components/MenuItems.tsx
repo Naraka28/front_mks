@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import ButtonCard from "../auxiliaryComponents/ButtonCard.tsx";
 import { useQuery } from "@tanstack/react-query";
 import { getProducts, getProductsByType } from "../../../services/productsServices.ts";
+import { SyncLoader } from "react-spinners";
 
 
 
@@ -12,14 +13,14 @@ interface MenuItemsProps {
     selectedProductId?: number; // ID del producto seleccionado (opcional)
 }
 
-const MenuItems: React.FC<MenuItemsProps> = ({  onSelectItem }) => {
+const MenuItems: React.FC<MenuItemsProps> = ({ onSelectItem }) => {
 
     const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
 
 
-    const { data: menuItems =[], isLoading, error } = useQuery({
+    const { data: menuItems = [], isLoading, error } = useQuery({
         queryKey: ["products"],
-        queryFn: ()=> getProducts(),   
+        queryFn: () => getProducts(),
     });
     console.log(menuItems);
 
@@ -28,13 +29,14 @@ const MenuItems: React.FC<MenuItemsProps> = ({  onSelectItem }) => {
         onSelectItem(id); // Llamar la función externa si es necesario
     };
 
-    if (isLoading) return <p>Cargando productos...</p>;
+    if (isLoading) return <div className='flex mt-32 items-center justify-center w-full h-full'><SyncLoader color="#5d1abc" margin={8} size={36} speedMultiplier={1} /></div>;
+
     if (error) {
         console.log(error);
-      
+
         return <p>Error al cargar los productos</p>;
-      }
-    
+    }
+
 
 
     return (

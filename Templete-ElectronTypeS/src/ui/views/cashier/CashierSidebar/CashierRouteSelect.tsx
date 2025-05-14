@@ -4,6 +4,7 @@ import { FiDollarSign, FiTag, FiChevronDown, FiClock, FiList } from "react-icons
 import { Link, useLocation } from 'react-router-dom';
 import { getPendingTickets} from './../../../services/cashierServives';
 import { useQuery } from "@tanstack/react-query";
+import { SyncLoader } from "react-spinners";
 
 export const CashierRouteSelect: React.FC = () => {
   const location = useLocation();
@@ -53,7 +54,9 @@ export const CashierRouteSelect: React.FC = () => {
             </Link>
 
             {TicketsPending.isLoading ? (
-              <div className="px-3 py-2 text-sm text-stone-400">Cargando tickets...</div>
+              <div className="flex items-center justify-center px-3 py-2 text-sm text-stone-500">
+                <SyncLoader color="#5d1abc" margin={8} size={12} speedMultiplier={1} />
+              </div>
             ) : TicketsPending.error ? (
               <div className="px-3 py-2 text-sm text-red-500">
                 {TicketsPending.error.message}

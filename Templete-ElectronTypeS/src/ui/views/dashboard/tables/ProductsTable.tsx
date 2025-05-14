@@ -7,6 +7,7 @@ import { getProducts } from '../../../services/productsServices';
 import { deleteProduct } from '../../../services/productsServices';
 import { IoTrashSharp } from "react-icons/io5";
 import { Link } from 'react-router-dom';
+import { SyncLoader } from 'react-spinners';
 
 const ModalDetails = ({ open, onClose, product }) => {
   if (!product) return null;
@@ -115,7 +116,7 @@ const InventoryTable = () => {
 
   console.log(productList);
 
-  if (isLoading) return <p>Cargando productos...</p>;
+  if (isLoading) return <div className='flex mt-32 items-center justify-center w-full h-full'><SyncLoader color="#5d1abc" margin={8} size={36} speedMultiplier={1}/></div>;
   if (error) {
     console.log(error);
   }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { UniversalTopBar } from './auxiliaryComponents/UniversalTopBar';
+import { SyncLoader } from 'react-spinners';
 import TicketComponent from './TicketComponent';
 import OrderComponent from './orderComponent';
 import TicketActions from './auxiliaryComponents/TicketActions';
@@ -69,9 +70,7 @@ const BodyCashier: React.FC<BodyCashierProps> = ({ orderStatus }) => {
           </div>
           <div className="col-span-12 p-4">
             <div className="flex justify-between items-center mb-4">
-              <p className="text-xl font-bold">
-                Cargando tickets...
-              </p>
+                <SyncLoader color="#5d1abc" margin={8} size={36} speedMultiplier={1}/>;
             </div>
           </div>
         </div>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { SyncLoader } from "react-spinners";
 import {
   createTopping,
   getToppingById,
@@ -110,7 +111,7 @@ const ToppingsForm: React.FC = () => {
   };
 
   if (isEditing && isLoading) {
-    return <p className="text-center">Cargando topping...</p>;
+    if (isLoading) return <div className='flex mt-32 items-center justify-center w-full h-full'><SyncLoader color="#5d1abc" margin={8} size={36} speedMultiplier={1}/></div>;
   }
 
   return (

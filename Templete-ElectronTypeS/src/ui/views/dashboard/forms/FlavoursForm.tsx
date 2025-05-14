@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { SyncLoader } from "react-spinners";
 import {
   createFlavor,
   updateFlavor,
@@ -104,7 +105,8 @@ const FlavoursForm: React.FC = () => {
   };
 
   if (isEditing && isLoading) {
-    return <p className="text-center">Cargando sabor...</p>;
+    return <div className='flex mt-32 items-center justify-center w-full h-full'><SyncLoader color="#5d1abc" margin={8} size={36} speedMultiplier={1}/></div>;
+
   }
 
   return (
