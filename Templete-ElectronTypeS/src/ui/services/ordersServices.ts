@@ -7,7 +7,7 @@ export interface ItemName {
 }
 
 interface OrderTopping {
-    topping: number;
+    id: number;
     quantity: number;
 }
 

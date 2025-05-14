@@ -11,7 +11,8 @@ import Milks from "./Components/Milks";
 import OrderComponent from "./auxiliaryComponents/Order";
 import { useOrders } from "./auxiliaryComponents/OrderContext";
 import Button from "./auxiliaryComponents/Button";
-import { Order, OrderCreate } from "../../../ui/services/ordersServices";
+import { OrderCreate, createOrderWithTicket } from "../../../ui/services/ordersServices";
+
 
 const MenuSelected: React.FC = () => {
     const { addOrder } = useOrders();
@@ -35,9 +36,11 @@ const MenuSelected: React.FC = () => {
     useEffect(() => {
         // Calcula el arreglo de toppings con id y cantidad
         const toppingsArr = Object.entries(currentToppings).map(([id, quantity]) => ({
-            topping: { id: Number(id), name: `Topping ${id}` }, // Ensure 'name' is included
-            quantity,
+            id: Number(id),
+            quantity
         }));
+
+        console.log("Toppings Array:", toppingsArr);
 
         setOrder(prev => ({
             ...prev,
@@ -46,7 +49,7 @@ const MenuSelected: React.FC = () => {
             milk: milkId ? Number(milkId) : 0,
             size: sizeId ? Number(sizeId) : 0,
             temp: tempId ? Number(tempId) : 0,
-            orderToppings: toppingsArr,
+            toppings: toppingsArr,
             price: prev.price ?? 0,
         }));
     }, [itemId, tempId, sizeId, flavourId, coffeeBeansId, milkId, currentToppings]);
@@ -61,18 +64,19 @@ const MenuSelected: React.FC = () => {
     // Cuando el usuario termina la selección
     const handleFinishSelection = () => {
         // Calcula el arreglo de toppings con id y cantidad
-        const toppingsArr = Object.entries(currentToppings).map(([id, quantity]) => ({
-            topping: { id: Number(id), name: `Topping ${id}` },
-            quantity,
-        }));
+        // const toppingsArr = Object.entries(currentToppings).map(([id, quantity]) => ({
+        //     id,
+        //     quantity
+        // }));
 
-        // Actualiza el estado de order solo aquí
-        const finalOrder = {
-            ...order,
-            orderToppings: toppingsArr,
-        };
-        setOrder(finalOrder);
-        addOrder(finalOrder);
+        // // Actualiza el estado de order solo aquí
+        // const finalOrder = {
+        //     ...order,
+        //     // toppignsasdawsdsd: toppingsArr,
+        // };
+
+        setOrder(order);
+        addOrder(order);
         setShowOrderActions(true);
     };
 
@@ -170,9 +174,9 @@ const MenuSelected: React.FC = () => {
                 {/* Panel de Nueva Orden */}
                 <div className="shadow-lg border border-stone-100 rounded-2xl row-span-8 col-span-2 flex flex-col justify-start items-center p-6 bg-white/90 min-h-0 max-h-full overflow-y-auto scrollbar-hide">
                     <OrderComponent order={{
-                        ...order, orderToppings: Object.entries(currentToppings).map(([id, quantity]) => ({
-                            topping: { id: Number(id), name: `Topping ${id}` },
-                            quantity,
+                        ...order, toppings: Object.entries(currentToppings).map(([id, quantity]) => ({
+                            id: Number(id),
+                            quantity
                         }))
                     }} />
                 </div>

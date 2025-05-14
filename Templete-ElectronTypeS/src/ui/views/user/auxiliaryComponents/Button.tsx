@@ -33,7 +33,7 @@ const Boton: React.FC<BotonProps> = ({
 
     const tipoStyles = {
         terminar: "text-stone-800 font-bold text-lg shadow-lg bg-white rounded-xl border-2 border-[#E8E8E8] hover:bg-[#F7F2F2] transition duration-300 ease-in-out flex items-center justify-center",
-        regresar: "bg-[#FAF9F6] text-[#333333] border border-[#E8E8E8] hover:bg-[#E8E8E8] ",
+        regresar: "text-stone-800 font-bold text-lg shadow-lg bg-white rounded-xl border-2 border-[#E8E8E8] hover:bg-[#F7F2F2] transition duration-300 ease-in-out flex items-center justify-center",
     };
 
     const disabledStyles = "opacity-50 cursor-not-allowed";
