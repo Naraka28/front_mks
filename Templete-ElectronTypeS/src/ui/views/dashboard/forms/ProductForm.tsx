@@ -157,9 +157,13 @@ const { data: productTypes =[], isLoading: loadingTypes, error:errorTypes } = us
           <MultiSelectDropDown content={sizesOptions} onChange={setFormData} />
         </div>
         <div>
+                    <label className="block text-gray-700 font-medium">Sabores</label>
+
           <MultiSelectDropDown content={flavorsOptions} onChange={setFormData} />
         </div>
         <div>
+          <label className="block text-gray-700 font-medium">Leches</label>
+
           <MultiSelectDropDown content={milksOptions} onChange={setFormData} />
         </div>
         <button

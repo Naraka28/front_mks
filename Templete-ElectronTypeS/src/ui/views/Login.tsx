@@ -1,8 +1,10 @@
 // components/Login.tsx
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "./../assets/Logo.png";
 import "./../Login.css";
+import { login } from "../services/usersServices";
+import { useMutation } from "@tanstack/react-query";
 
 const Login: React.FC = () => {
     const [username, setUsername] = useState("");
@@ -10,6 +12,33 @@ const Login: React.FC = () => {
     const [usernameFocused, setUsernameFocused] = useState(false);
     const [passwordFocused, setPasswordFocused] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+
+    const navigate= useNavigate();
+
+    const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    loginMutation.mutate({ email: username, password });
+    };
+
+    const loginMutation = useMutation({
+    mutationFn: ({ email, password }: { email: string; password: string }) =>
+        login(email, password),
+    onSuccess: (data) => {
+        console.log("Login successful:", data);
+        if (data.role === "admin") {
+           navigate('/dashboard');
+        } else if (data.role === "client") {
+            navigate('/userhome');
+        } else if (data.role === "cashier") {
+            navigate('/cashier');
+        }
+
+        localStorage.setItem('token', data.access_token); 
+    },
+    onError: (error: Error) => {
+        alert(error.message);
+    },
+    });
 
     return (
         <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-b from-white via-stone-100 to-stone-300">
@@ -22,7 +51,7 @@ const Login: React.FC = () => {
                 </div>
                 <h1 className="text-3xl font-bold mb-2 text-stone-700">Bienvenido a MKS</h1>
                 <p className="text-stone-400 mb-6">Accede a tu cuenta para continuar</p>
-                <form className="w-full">
+                <form className="w-full" onSubmit={handleSubmit}>
                     <div className="flex flex-col space-y-5">
                         {/* Usuario */}
                         <div className="relative">
@@ -75,6 +104,7 @@ const Login: React.FC = () => {
                             </label>
                             <button
                                 type="button"
+                                
                                 tabIndex={-1}
                                 className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 z-10"
                                 onClick={() => setShowPassword(v => !v)}
@@ -95,6 +125,7 @@ const Login: React.FC = () => {
                         </div>
                         <button
                             type="submit"
+                            disabled={loginMutation.isPending}
                             className="w-full py-3 font-semibold text-white bg-stone-400 hover:bg-stone-500 rounded-lg transition shadow flex items-center justify-center gap-2"
                         >
                             <svg
@@ -111,7 +142,8 @@ const Login: React.FC = () => {
                                     d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
                                 />
                             </svg>
-                            Iniciar Sesión
+                              {loginMutation.isPending ? 'Cargando...' : 'Iniciar Sesión'}
+
                         </button>
                     </div>
                 </form>

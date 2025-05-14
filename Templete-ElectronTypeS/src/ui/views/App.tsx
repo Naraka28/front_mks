@@ -32,9 +32,8 @@ function App() {
           <Route
             path="/"
             element={
-              <>
-                <Login />
-              </>
+              <Login />
+            
             }
           />
           <Route path="/dashboard" element={<Dashboard />} />

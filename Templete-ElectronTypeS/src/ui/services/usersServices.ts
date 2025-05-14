@@ -1,5 +1,6 @@
-const API_URL = import.meta.env.ENV_API_URL as string;
+const API_URL = import.meta.env.VITE_ENV_API_URL as string;
 const Users_API = `${API_URL}/users`;
+const Auth_API = `${API_URL}/auth`; 
 
 export interface User {
     id: number;
@@ -8,6 +9,14 @@ export interface User {
     password: string;
     role: string;
     tickets?: number;
+}
+
+export interface Auth{
+    access_token: string;
+    email: string;
+    name: string;
+    role: string;
+
 }
 
 export interface UserList {
@@ -88,8 +97,9 @@ export async function deleteUser(id: number): Promise<void> {
     }
 }
 
-export async function login(email: string, password: string): Promise<User> {
-    const response = await fetch(`${Users_API}/login`, {
+export async function login(email: string, password: string): Promise<Auth> {
+   
+    const response = await fetch(`${Auth_API}/login`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -99,7 +109,7 @@ export async function login(email: string, password: string): Promise<User> {
     if (!response.ok) {
         throw new Error('Network response was not ok' + response.statusText);
     }
-    const data: User = await response.json();
+    const data: Auth = await response.json();
     return data;
 }
 
