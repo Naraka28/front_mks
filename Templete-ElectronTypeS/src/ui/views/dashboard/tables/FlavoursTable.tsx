@@ -3,8 +3,8 @@ import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/re
 import { FaEye } from 'react-icons/fa6';
 import { IoTrashSharp } from 'react-icons/io5';
 import { ListBulletIcon } from '@heroicons/react/24/outline';
-import { useQuery } from '@tanstack/react-query';
-import { getFlavors } from '../../../services/flavorServices';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { deleteFlavor, getFlavors } from '../../../services/flavorServices';
 
 const ModalDetails = ({ open, onClose, product }) => {
   if (!product) return null;
@@ -81,6 +81,7 @@ const DeleteConfirmationModal = ({ open, onClose, product, onConfirm }) => {
 };
 
 const FlavorsTable = () => {
+  const queryClient = useQueryClient();
   const [isModalDetailsOpen, setIsModalDetailsOpen] = useState(false);
   const [selectedFlavor, setSelectedFlavor] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -100,9 +101,13 @@ const FlavorsTable = () => {
     setIsDeleteModalOpen(true);
   };
 
-  const handleDeleteFlavor = (flavorId) => {
-    // deleteFlavor(flavorId).then(() => refetch());
-    // donde refetch es para actualizar la lista después de borrar
+  const handleDeleteFlavor = async (flavorId: string) => {
+    try {
+      await deleteFlavor(flavorId);
+      queryClient.invalidateQueries(['flavors']);
+    } catch (err) {
+      console.error("Error al eliminar el Sabor:", err);
+    }
   };
 
   if (isLoading) return <div>Cargando sabores...</div>;

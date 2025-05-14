@@ -3,8 +3,8 @@ import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/re
 import { ListBulletIcon } from '@heroicons/react/24/outline';
 import { FaEye } from 'react-icons/fa6';
 import { IoTrashSharp } from 'react-icons/io5';
-import { useQuery } from '@tanstack/react-query';
-import { getSizes } from '../../../services/sizeServices';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { getSizes, deleteSize } from '../../../services/sizeServices';
 
 const ModalDetails = ({ open, onClose, product }) => {
   if (!product) return null;
@@ -83,6 +83,7 @@ const DeleteConfirmationModal = ({ open, onClose, product, onConfirm }) => {
 };
 
 const SizesTable = () => {
+  const queryClient = useQueryClient();
   const [isModalDetailsOpen, setIsModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -92,10 +93,14 @@ const SizesTable = () => {
     queryFn: getSizes,
   });
 
-  const handleDeleteProduct = (productId) => {
-    // Aquí deberías poner la lógica real de eliminar tamaño
-    //deleteSize(productId).then(() => refetch());
-  };
+  const handleDeleteSize = async (sizeId: string) => {
+      try {
+        await deleteSize(sizeId);
+        queryClient.invalidateQueries(['sizes']);
+      } catch (err) {
+        console.error("Error al eliminar el tamaño:", err);
+      }
+    };
 
   const openModal = (product) => {
     setSelectedProduct(product);
@@ -167,7 +172,7 @@ const SizesTable = () => {
         open={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
         product={selectedProduct}
-        onConfirm={handleDeleteProduct}
+        onConfirm={handleDeleteSize}
       />
     </div>
   );
