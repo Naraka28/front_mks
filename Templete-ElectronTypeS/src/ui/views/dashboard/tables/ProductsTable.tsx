@@ -6,6 +6,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getProducts } from '../../../services/productsServices';
 import { deleteProduct } from '../../../services/productsServices';
 import { IoTrashSharp } from "react-icons/io5";
+import { Link } from 'react-router-dom';
 
 const ModalDetails = ({ open, onClose, product }) => {
   if (!product) return null;
@@ -163,6 +164,7 @@ const InventoryTable = () => {
               <td className="p-4 border-b border-blue-gray-50">{row.sizes.map((t) => t.name).join(', ')}</td>
               <td className="p-4 border-b border-blue-gray-50">${row.base_price}</td>
               <td className="p-4 border-b border-blue-gray-50 items-center space-x-4">
+              <Link to={`/productos/editar-producto/${row.id}`}>
                 <button type="button">
                   <span className="">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="h-4 w-4">
@@ -170,6 +172,7 @@ const InventoryTable = () => {
                     </svg>
                   </span>
                 </button>
+                </Link>
                 <button onClick={() => openModal(row)} className="">
                   <span className="">
                     <FaEye />

@@ -9,21 +9,21 @@ interface Option {
 
 interface MultiSelectDropDownProps {
     content: Option[];
-    onChange: (selected: string[]) => void;
+    onChange: (selected: number[]) => void;
 }
 
 export default function MultiSelectDropDown({ content, onChange }: MultiSelectDropDownProps) {
     const [searchText, setSearchText] = useState<string>('');
     const [filterOptions, setFilterOptions] = useState<Option[]>([]);
-    const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+    const [selectedOptions, setSelectedOptions] = useState<number[]>([]);
     const [active, setActive] = useState<boolean>(false);
     const selectRef = useRef<HTMLDivElement>(null);
 
-    const setOption = (value: string) => {
+    const setOption = (value: number) => {
         if (selectedOptions.includes(value)) {
             const opts = selectedOptions.filter(item => item !== value);
-            setSelectedOptions([...opts]);
-            onChange([...opts]);
+            setSelectedOptions(opts);
+            onChange(opts);
         } else {
             const newOptions = [...selectedOptions, value];
             setSelectedOptions(newOptions);
@@ -52,15 +52,17 @@ export default function MultiSelectDropDown({ content, onChange }: MultiSelectDr
         <div className="border bg-gray-100 rounded-md m-auto border-gray-300 p-3 relative" ref={selectRef}>
             {/* Contenedor de opciones seleccionadas */}
             <div className="flex flex-wrap gap-2 items-center text-xs">
-                {selectedOptions.map(opt => (
-                    <span key={opt} className="bg-violet-200 rounded-lg px-2 py-1 flex items-center gap-1 font-bold">
-                        {opt}
-                        <span className="cursor-pointer" onClick={(e) => { e.stopPropagation(); setOption(opt); }}>
-                            <IoMdClose />
+                {selectedOptions.map(value => {
+                    const label = content.find(opt => opt.value === value)?.label || value;
+                    return (
+                        <span key={value} className="bg-violet-200 rounded-lg px-2 py-1 flex items-center gap-1 font-bold">
+                            {label}
+                            <span className="cursor-pointer" onClick={(e) => { e.stopPropagation(); setOption(value); }}>
+                                <IoMdClose />
+                            </span>
                         </span>
-                    </span>
-                ))}
-                {/* Botón para abrir el input si hay opciones seleccionadas */}
+                    );
+                })}
                 {selectedOptions.length > 0 && (
                     <a 
                         onClick={(e) => { e.stopPropagation(); setActive(!active); }} 
@@ -71,7 +73,6 @@ export default function MultiSelectDropDown({ content, onChange }: MultiSelectDr
                 )}
             </div>
 
-            {/* Input de búsqueda (solo visible si no hay opciones o está activo) */}
             {(selectedOptions.length === 0 || active) && (
                 <input 
                     type="text" 
@@ -82,16 +83,15 @@ export default function MultiSelectDropDown({ content, onChange }: MultiSelectDr
                 />
             )}
 
-            {/* Dropdown con opciones filtradas */}
             {active && (
                 <div className="flex flex-col border-t-2 border-violet-400 py-4 max-h-[300px] overflow-y-auto">
                     {filterOptions.map(option => (
                         <div key={option.value} className="flex items-center gap-2 hover:bg-violet-100 cursor-pointer p-2" 
-                            onClick={(e) => { e.stopPropagation(); setOption(option.label); }}>
+                            onClick={(e) => { e.stopPropagation(); setOption(option.value); }}>
                             <input 
                                 type="checkbox" 
                                 className="accent-violet-800" 
-                                checked={selectedOptions.includes(option.label)} 
+                                checked={selectedOptions.includes(option.value)} 
                                 readOnly
                             />
                             {option.label}
