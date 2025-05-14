@@ -4,24 +4,26 @@ import { useLocation, useNavigate } from "react-router-dom";
 const OrderConfirmation = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { orderNumber, total } = location.state || {};
+    const { productId, total } = location.state || {};
 
     useEffect(() => {
+
+
         const timer = setTimeout(() => {
             navigate("/userhome");
         }, 5000);
 
         return () => clearTimeout(timer);
-    }, [navigate]);
+    }, [navigate, productId, total]);
 
     return (
         <div>
             <div className="flex flex-col items-center justify-center h-screen text-center p-4 gap-4">
-                <h2 className="text-4xl font-bold">
-                    ¡Tu pedido con numero #{orderNumber ?? "N/A"} se ha enviado!
-                </h2>
+                <h1 className="text-5xl font-bold text-gray-800">
+                    ¡Gracias por tu compra!
+                </h1>
                 <p className="text-3xl text-gray-800 mt-2">
-                    El total de tu compra es de <strong>${total ?? "0.00"} MXN</strong> pesos.
+                    El total de tu pedido es <strong>${total ?? "0.00"} MXN</strong> pesos.
                 </p>
                 <div className="mt-4 bg-[#FAF9F6] p-4 rounded-2xl shadow-lg">
                     <img

@@ -26,9 +26,7 @@ function Menu() {
 
   const handleSendOrder = async () => {
     try {
-      // Envía la orden al backend y recibe la respuesta con el número de orden
       const response = await createOrderWithTicket(orders);
-      // Calcula el total
       const total = orders.reduce(
         (sum, order) =>
           sum +
@@ -50,14 +48,15 @@ function Menu() {
           ).total,
         0
       );
-      // Navega pasando los datos
+      // Guarda el flag
+      localStorage.setItem("orderConfirmed", "true");
       navigate("/order/confirm", {
         state: {
-          orderNumber: response.ticketId, 
+          orderNumber: response.id,
           total: total.toFixed(2),
         },
       });
-      alert("¡La orden se envió correctamente!");
+      clearOrders();
     } catch (e: any) {
       alert("Error al enviar la orden");
     }
