@@ -3,8 +3,8 @@ import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/re
 import { ListBulletIcon } from '@heroicons/react/24/outline';
 import { FaEye } from 'react-icons/fa6';
 import { IoTrashSharp } from 'react-icons/io5';
-import { useQuery } from '@tanstack/react-query';
-import { getMilks } from '../../../services/milksServices';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { deleteMilk, getMilks } from '../../../services/milksServices';
 
 const ModalDetails = ({ open, onClose, milk }) => {
   if (!milk) return null;
@@ -83,6 +83,7 @@ const DeleteConfirmationModal = ({ open, onClose, milk, onConfirm }) => {
 };
 
 const MilksTable = () => {
+  const queryClient = useQueryClient();
   const [isModalDetailsOpen, setIsModalOpen] = useState(false);
   const [selectedMilk, setSelectedMilk] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -92,9 +93,13 @@ const MilksTable = () => {
     queryFn: getMilks,
   });
 
-  const handleDeleteMilk = (milkId) => {
-    // Aquí deberías poner la lógica real de eliminar leche
-    //deleteMilk(milkId).then(() => refetch());
+  const handleDeleteMilk = async (milkId: string) => {
+    try {
+      await deleteMilk(milkId);
+      queryClient.invalidateQueries(['milks']);
+    } catch (err) {
+      console.error("Error al eliminar la leche:", err);
+    }
   };
 
   const openModal = (milk) => {

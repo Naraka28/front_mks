@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
 import { ListBulletIcon } from '@heroicons/react/24/outline';
 import { FaEye } from 'react-icons/fa6';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getProducts } from '../../../services/productsServices';
-import { deleteProducts } from '../../../services/productsServices';
+import { deleteProduct } from '../../../services/productsServices';
 import { IoTrashSharp } from "react-icons/io5";
 
 const ModalDetails = ({ open, onClose, product }) => {
@@ -93,6 +93,7 @@ const DeleteConfirmationModal = ({ open, onClose, product, onConfirm }) => {
 };
 
 const InventoryTable = () => {
+  const queryClient = useQueryClient();
   const [isModalDetailsOpen, setIsModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -102,10 +103,13 @@ const InventoryTable = () => {
     queryFn: () => getProducts(),
   });
 
-  const handleDeleteProduct = (productId) => {
-    // Aquí implementarías la lógica para eliminar el producto
-    //deleteProduct(productId).then(() => refetch());
-    // Donde refetch sería una función para actualizar la lista de productos
+  const handleDeleteProduct = async (productId: string) => {
+    try {
+      await deleteProduct(productId);
+      queryClient.invalidateQueries(['products']);
+    } catch (err) {
+      console.error("Error al eliminar el Producto:", err);
+    }
   };
 
   console.log(productList);

@@ -74,3 +74,14 @@ export async function updateTopping(topping: ToppingUpdate): Promise<Topping> {
     return data;
 }
 
+export async function deleteTopping(id: number): Promise<void> {
+    const response = await fetch(`${Toppings_API}/delete/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    if (!response.ok) {
+        throw new Error('Network response was not ok' + response.statusText);
+    }
+}

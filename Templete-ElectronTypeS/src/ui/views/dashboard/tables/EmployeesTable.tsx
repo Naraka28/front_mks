@@ -3,35 +3,35 @@ import React from "react";
 export const EmployeesTable = () => {
   const customers = [
     {
-      name: "Alex Shatov",
+      name: "Alejandro Fernandez Lopez",
       contact: "6621234567",
       spent: "$2,890.66",
       country: "Activo",
       img: "https://raw.githubusercontent.com/cruip/vuejs-admin-dashboard-template/main/src/images/user-36-05.jpg",
     },
     {
-      name: "Philip Harbach",
+      name: "Felipe Gonzalez",
       contact: "6621234567",
       spent: "$2,767.04",
       country: "Activo",
       img: "https://raw.githubusercontent.com/cruip/vuejs-admin-dashboard-template/main/src/images/user-36-06.jpg",
     },
     {
-      name: "Mirko Fisuk",
+      name: "Gabriel Garcia",
       contact: "6621234567",
       spent: "$2,996.00",
       country: "Baja",
       img: "https://raw.githubusercontent.com/cruip/vuejs-admin-dashboard-template/main/src/images/user-36-07.jpg",
     },
     {
-      name: "Olga Semklo",
+      name: "Olga Martinez",
       contact: "6621234567",
       spent: "$6621234567",
       country: "Activo",
       img: "https://raw.githubusercontent.com/cruip/vuejs-admin-dashboard-template/main/src/images/user-36-08.jpg",
     },
     {
-      name: "Burak Long",
+      name: "Rodrigo Torres",
       contact: "6621234567",
       spent: "$1,890.66",
       country: "Baja",
@@ -63,7 +63,7 @@ const TableHead = () => {
         <th className="p-2 text-left">Nombre</th>
         <th className="p-2 text-left">Contacto</th>
         <th className="p-2 text-left">Nómina</th>
-        <th className="p-2 text-center">Status</th>
+        <th className="p-2 text-center">Estado</th>
       </tr>
     </thead>
   );
