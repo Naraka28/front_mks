@@ -27,7 +27,7 @@ export interface OrderList {
     orders: Order[];
 }
 
-export type OrderCreate = Omit<Order, 'id'>;
+export type OrderCreate = Omit<Order, 'id' | 'ticketId'>;
 
 export type OrderUpdate = Partial<Order>;
 
@@ -61,6 +61,7 @@ export async function getOrderById(id: number): Promise<Order> {
 
 
 export async function createOrderWithTicket(order: OrderCreate): Promise<Order> {
+    console.log('Creating order with ticket:', order);
     const response = await fetch(`${ORDERS_API}/create`, {
         method: 'POST',
         headers: {

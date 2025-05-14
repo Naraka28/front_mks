@@ -6,12 +6,12 @@ import { getFlavors } from "../../../services/flavorServices";
 import { getSizes } from "../../../services/sizeServices";
 import { getTemps } from "../../../services/tempsServices";
 import { useQuery } from "@tanstack/react-query";
-import { Order } from "../../../services/ordersServices";
+import { OrderCreate } from "../../../services/ordersServices";
 import { calculateTotal } from "./orderUtils";
 
 
 interface OrderProps {
-    order: Order;
+    order: OrderCreate;
     compact?: boolean;
 }
 
