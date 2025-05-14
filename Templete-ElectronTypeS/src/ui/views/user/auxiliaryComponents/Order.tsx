@@ -6,21 +6,12 @@ import { getFlavors } from "../../../services/flavorServices";
 import { getSizes } from "../../../services/sizeServices";
 import { getTemps } from "../../../services/tempsServices";
 import { useQuery } from "@tanstack/react-query";
+import { Order } from "../../../services/ordersServices";
 import { calculateTotal } from "./orderUtils";
 
+
 interface OrderProps {
-    order: {
-        id?: string;
-        itemId?: string;
-        tempId?: string;
-        sizeId?: string;
-        flavourId?: string;
-        coffeeBeansId?: string;
-        milkId?: string;
-        toppings?: Record<number, number>;
-        toppingsTotal?: number;
-        total?: number;
-    };
+    order: Order;
     compact?: boolean;
 }
 
@@ -37,7 +28,7 @@ const useOrderData = () => {
 };
 
 
-const Order: React.FC<OrderProps> = ({ order, compact = false }) => {
+const OrderComponent: React.FC<OrderProps> = ({ order, compact = false }) => {
     const { menuItems, toppingOptions, milksOptions, flavourOptions, sizeItems, tempOptions } = useOrderData();
 
 
@@ -53,8 +44,20 @@ const Order: React.FC<OrderProps> = ({ order, compact = false }) => {
         return <OrderCard order={order} />;
     }
 
+    // Mapea el objeto order a la estructura esperada por calculateTotal
+    const orderForCalc = {
+        itemId: order.productId || order.id,
+        milkId: order.milk,
+        sizeId: order.size,
+        flavourId: order.flavour,
+        toppings: Object.fromEntries(
+            (order.orderToppings || []).map(ot => [ot.topping.id, ot.quantity])
+        ),
+    };
+
+    // Llama a calculateTotal con el mapeo correcto
     const { basePrice, toppingsTotal, total, milkPrice } = calculateTotal(
-        order,
+        orderForCalc,
         menuItems,
         toppingOptions,
         milksOptions,
@@ -62,17 +65,19 @@ const Order: React.FC<OrderProps> = ({ order, compact = false }) => {
         sizeItems
     );
 
-    const itemName = menuItems.find(item => item.id === Number(order.itemId))?.name;
-    const sizeName = sizeItems.find(size => size.id === Number(order.sizeId))?.name;
-    const flavourName = flavourOptions.find(flavour => flavour.id === Number(order.flavourId))?.name;
-    const tempName = tempOptions.find(temp => temp.id === Number(order.tempId))?.name;
+    console.log("OrderComponent", order);
+
+    const itemName = menuItems.find(item => item.id === Number(order.id))?.name;
+    const sizeName = sizeItems.find(size => size.id === Number(order.size))?.name;
+    const flavourName = flavourOptions.find(flavour => flavour.id === Number(order.flavour))?.name;
+    const tempName = tempOptions.find(temp => temp.id === Number(order.temp))?.name;
 
     // Si tienes CoffeeBeansOptions, asegúrate de importarlo o definirlo
     const coffeeBeansName = undefined; // Ajusta según tu lógica
-    const milkName = milksOptions.find(milk => milk.id === Number(order.milkId))?.name;
+    const milkName = milksOptions.find(milk => milk.id === Number(order.milk))?.name;
 
-    const sizePrice = `$${(sizeItems.find(size => size.id === Number(order.sizeId))?.price || 0).toFixed(2)}`;
-    const flavourPrice = `$${(flavourOptions.find(flavour => flavour.id === Number(order.flavourId))?.price || 0).toFixed(2)}`;
+    const sizePrice = `$${(sizeItems.find(size => size.id === Number(order.size))?.price || 0).toFixed(2)}`;
+    const flavourPrice = `$${(flavourOptions.find(flavour => flavour.id === Number(order.flavour))?.price || 0).toFixed(2)}`;
     const milkPriceStr = `$${milkPrice.toFixed(2)}`;
 
     const personalizationTotal =
@@ -97,7 +102,7 @@ const Order: React.FC<OrderProps> = ({ order, compact = false }) => {
 
             <div className="bg-white rounded-2xl shadow-md p-6 mb-4 border border-stone-100 flex flex-col items-center">
                 <img
-                    src={menuItems.find(item => item.id === Number(order.itemId))?.image}
+                    src={menuItems.find(item => item.id === Number(order.id))?.image}
                     alt={itemName}
                     className="w-28 h-28 object-contain bg-white rounded-2xl shadow border border-stone-100 mb-3"
                 />
@@ -149,19 +154,20 @@ const Order: React.FC<OrderProps> = ({ order, compact = false }) => {
                 </div>
             </div>
 
-            {milkName && order.toppings && Object.keys(order.toppings).length > 0 && (
+            {milkName && order.orderToppings && order.orderToppings.length > 0 && (
                 <div className="bg-white rounded-xl shadow p-4 border border-stone-100">
                     <h3 className="text-lg font-semibold text-stone-700 mb-2">Toppings</h3>
                     <ul className="text-base text-stone-600 divide-y divide-stone-100">
-                        {Object.entries(order.toppings).map(([key, value]) => {
-                            if (value === 0) return null;
-                            const toppingName = toppingOptions.find(t => t.id === Number(key))?.name;
-                            const toppingPrice = toppingOptions.find(t => t.id === Number(key))?.price || 0;
-                            const toppingChargeableQuantity = Math.max(value - (toppingOptions.find(t => t.id === Number(key))?.free_quantity || 0), 0);
+                        {order.orderToppings.map((ot, idx) => {
+                            if (Number(ot.quantity) === 0) return null;
+                            const topping = toppingOptions.find(t => t.id === Number(ot.topping.id));
+                            const toppingName = topping?.name || '';
+                            const toppingPrice = topping?.price || 0;
+                            const toppingChargeableQuantity = Math.max(Number(ot.quantity) - (topping?.free_quantity || 0), 0);
                             const toppingTotal = toppingChargeableQuantity * toppingPrice;
                             return (
-                                <li key={key} className="flex justify-between py-1">
-                                    <span>{toppingName} <span className="text-xs text-stone-400">({value})</span></span>
+                                <li key={idx} className="flex justify-between py-1">
+                                    <span>{toppingName} <span className="text-xs text-stone-400">({Number(ot.quantity)})</span></span>
                                     <span>
                                         {toppingTotal === 0 ? '-' : `$${toppingTotal.toFixed(2)}`}
                                     </span>
@@ -187,4 +193,4 @@ const Order: React.FC<OrderProps> = ({ order, compact = false }) => {
         </div>
     );
 }
-export default Order;
+export default OrderComponent;

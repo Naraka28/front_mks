@@ -91,7 +91,15 @@ function Menu() {
                     (sum, order) =>
                       sum +
                       calculateTotal(
-                        order,
+                        {
+                          itemId: order.productId || order.id,
+                          milkId: order.milk,
+                          sizeId: order.size,
+                          flavourId: order.flavour,
+                          toppings: Object.fromEntries(
+                            (order.orderToppings || []).map(ot => [ot.topping.id, ot.quantity])
+                          ),
+                        },
                         menuItems,
                         toppingOptions,
                         milksOptions,
