@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { UniversalTopBar } from './auxiliaryComponents/UniversalTopBar';
 import TicketComponent from './TicketComponent';
 import OrderComponent from './orderComponent';
@@ -8,7 +8,10 @@ import {
   getPendingTickets,
   getCompletedTickets,
   TicketsResponse,
-  Order
+  Order,
+  cancelTicket,
+  payTicket
+
 } from './../../services/cashierServives';
 import { useQuery } from '@tanstack/react-query';
 
@@ -18,22 +21,34 @@ interface BodyCashierProps {
 
 const BodyCashier: React.FC<BodyCashierProps> = ({ orderStatus }) => {
   const { ticketId } = useParams<{ ticketId?: string }>();
+  const navigate = useNavigate();
 
-  const { data: ticketsPending, isLoading: isLoadingPending, error: errorPending } = useQuery({
+  const {
+    data: ticketsPending,
+    isLoading: isLoadingPending,
+    error: errorPending,
+    refetch: refetchPending,
+  } = useQuery({
     queryKey: ['ticketsPending'],
     queryFn: getPendingTickets,
     enabled: orderStatus === 'Pendiente',
   });
 
-  const { data: ticketsCompleted, isLoading: isLoadingCompleted, error: errorCompleted } = useQuery({
+  const {
+    data: ticketsCompleted,
+    isLoading: isLoadingCompleted,
+    error: errorCompleted,
+    refetch: refetchCompleted,
+  } = useQuery({
     queryKey: ['ticketsCompleted'],
     queryFn: getCompletedTickets,
     enabled: orderStatus === 'Completado',
   });
+  
 
   const isLoading = orderStatus === 'Pendiente' ? isLoadingPending : isLoadingCompleted;
   const error = orderStatus === 'Pendiente' ? errorPending : errorCompleted;
-  const tickets = orderStatus === 'Pendiente' ? ticketsPending : ticketsCompleted;
+  const tickets = orderStatus === 'Pendiente' ? ticketsPending : ticketsCompleted ;
 
   const ticketsArray = tickets
     ? Array.isArray(tickets)
@@ -44,21 +59,14 @@ const BodyCashier: React.FC<BodyCashierProps> = ({ orderStatus }) => {
   const filteredTickets = ticketId
     ? ticketsArray.filter((ticket: TicketsResponse) => ticket.id === Number(ticketId))
     : ticketsArray;
+
   if (isLoading) {
     return (
       <div className="bg-white rounded-lg pb-4 shadow min-h-screen">
         <div className="w-full px-4 grid gap-3 grid-cols-12">
           <div className="col-span-12 p-4">
             <UniversalTopBar />
-            <TicketActions
-              onPay={() => { }}
-              onCancel={() => { }}
-              ticketNumber={12}
-              total={58}
-              disabled={false}
-            />
           </div>
-          <div></div>
           <div className="col-span-12 p-4">
             <div className="flex justify-between items-center mb-4">
               <p className="text-xl font-bold">
@@ -89,6 +97,33 @@ const BodyCashier: React.FC<BodyCashierProps> = ({ orderStatus }) => {
       </div>
     );
   }
+
+  const handlePay = async () => {
+    if (!filteredTickets[0]) return;
+    try {
+      await payTicket(filteredTickets[0].id);
+      await refetchPending();
+      await refetchCompleted();
+      navigate(`/cashier`);
+      alert("¡El ticket se pagó correctamente!");
+    } catch (e: any) {
+      alert("Error al pagar el ticket");
+    }
+  };
+
+  const handleCancel = async () => {
+    if (!filteredTickets[0]) return;
+    try {
+      await cancelTicket(filteredTickets[0].id);
+      await refetchPending();
+      await refetchCompleted();
+      navigate(`/cashier`);
+      alert("¡El ticket se canceló correctamente!");
+    } catch (e: any) {
+      alert("Error al cancelar el ticket");
+    }
+  };
+
   return (
     <div className="bg-white rounded-lg pb-4 shadow min-h-screen">
       <div className="w-full px-4 grid gap-3 grid-cols-12">
@@ -108,6 +143,23 @@ const BodyCashier: React.FC<BodyCashierProps> = ({ orderStatus }) => {
           <div>
             {ticketId && filteredTickets.length === 1 ? (
               <div>
+                {/* Mostrar botones solo si es pendiente */}
+                {orderStatus === 'Pendiente' && (
+                  <div className='justify-end flex'>
+                    <TicketActions
+                      onPay={handlePay}
+                      onCancel={handleCancel}
+                      ticketNumber={filteredTickets[0].id}
+                      total={
+                        filteredTickets[0].orders.reduce(
+                          (acc: number, order: Order) => acc + (order.price || 0),
+                          0
+                        )
+                      }
+                      disabled={false}
+                    />
+                  </div>
+                )}
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {filteredTickets[0].orders.map((order: Order) => (
                     <OrderComponent key={order.id} order={order} />
