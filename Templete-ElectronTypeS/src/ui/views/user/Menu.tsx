@@ -13,6 +13,7 @@ import { getMilks } from "../../services/milksServices";
 import { getFlavors } from "../../services/flavorServices";
 import { getSizes } from "../../services/sizeServices";
 import { calculateTotal } from "./auxiliaryComponents/orderUtils";
+import { createOrderWithTicket } from "../../services/ordersServices";
 
 function Menu() {
   const [selectedType, setselectedType] = useState<string | null>(null);
@@ -23,8 +24,15 @@ function Menu() {
     navigate(`/menu/${id}`);
   };
 
-  const handleSendOrder = () => {
-    navigate("/order/confirm");
+  const handleSendOrder = async () => {
+    try {
+      // Envía la orden al backend
+      await createOrderWithTicket(orders);
+      navigate("/order/confirm");
+      alert("¡La orden se envió correctamente!");
+    } catch (e: any) {
+      alert("Error al enviar la orden");
+    }
   };
 
   const handleCancelOrder = () => {

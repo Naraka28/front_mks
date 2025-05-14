@@ -11,7 +11,7 @@ import Milks from "./Components/Milks";
 import OrderComponent from "./auxiliaryComponents/Order";
 import { useOrders } from "./auxiliaryComponents/OrderContext";
 import Button from "./auxiliaryComponents/Button";
-import { Order } from "../../../ui/services/ordersServices";
+import { Order, OrderCreate } from "../../../ui/services/ordersServices";
 
 const MenuSelected: React.FC = () => {
     const { addOrder } = useOrders();
@@ -22,8 +22,7 @@ const MenuSelected: React.FC = () => {
     const [showOrderActions, setShowOrderActions] = useState(false);
 
     // Estado para manejar toda la orden con la estructura del backend
-    const [order, setOrder] = useState<Order>({
-        id: itemId ? Number(itemId) : 0,
+    const [order, setOrder] = useState<OrderCreate>({
         productId: itemId ? Number(itemId) : 0,
         price: 0, // Default price, update as needed
         flavour: flavourId ? Number(flavourId) : 0,
@@ -31,7 +30,6 @@ const MenuSelected: React.FC = () => {
         size: sizeId ? Number(sizeId) : 0,
         orderToppings: [],
         temp: tempId ? Number(tempId) : 0,
-        ticketId: 0, // Default ticketId, update as needed
     });
 
     useEffect(() => {
@@ -43,14 +41,12 @@ const MenuSelected: React.FC = () => {
 
         setOrder(prev => ({
             ...prev,
-            id: itemId ? Number(itemId) : 0,
             productId: itemId ? Number(itemId) : 0,
             flavour: flavourId ? Number(flavourId) : 0,
             milk: milkId ? Number(milkId) : 0,
             size: sizeId ? Number(sizeId) : 0,
             temp: tempId ? Number(tempId) : 0,
             orderToppings: toppingsArr,
-            ticketId: prev.ticketId ?? 0,
             price: prev.price ?? 0,
         }));
     }, [itemId, tempId, sizeId, flavourId, coffeeBeansId, milkId, currentToppings]);
