@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { createFlavor, FlavorCreate } from "../../../services/flavorServices";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const FlavoursForm: React.FC = () => {
   const [formData, setFormData] = useState<FlavorCreate>({
@@ -8,6 +9,9 @@ const FlavoursForm: React.FC = () => {
     price: 0,
     image: null,
   });
+
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -22,34 +26,52 @@ const FlavoursForm: React.FC = () => {
   };
 
   const handleSubmit = (e: React.FormEvent) => {
-      e.preventDefault();
-      console.log("Form submitted:", formData);
-      const flavorData = new FormData();
-      flavorData.append("name", formData.name);
-      flavorData.append("price", formData.price.toString());
-      if (formData.image) {
-        flavorData.append("image", formData.image);
-      }
-      mutation.mutate(flavorData); // Llama a la mutación con los datos del formulario
-      console.log("Datos del formulario:", flavorData);
-    };
+    e.preventDefault();
+    console.log("Form submitted:", formData);
+    const flavorData = new FormData();
+    flavorData.append("name", formData.name);
+    flavorData.append("price", formData.price.toString());
+    if (formData.image) {
+      flavorData.append("image", formData.image);
+    }
+    mutation.mutate(flavorData); // Llama a la mutación con los datos del formulario
+    console.log("Datos del formulario:", flavorData);
+  };
 
-    const mutation = useMutation({
-      mutationFn: createFlavor,
-      onSuccess: (data) => {
-        console.log("Producto creado:", data);
-        setFormData({ name: "", price: 0, image: null }); // limpia el form
-        alert("Producto creado con éxito ✅"); // o usa un toast
-      },
-      onError: (error) => {
-        console.error("Error al crear el producto:", error);
-        alert("Error al guardar 😢");
-      },
-    });
-    
+  const mutation = useMutation({
+    mutationFn: createFlavor,
+    onSuccess: (data) => {
+      console.log("Producto creado:", data);
+      setFormData({ name: "", price: 0, image: null }); // limpia el form
+      alert("Producto creado con éxito ✅"); // o usa un toast
+    },
+    onError: (error) => {
+      console.error("Error al crear el producto:", error);
+      alert("Error al guardar 😢");
+    },
+  });
+
+  const handleAddClick = () => {
+    const currentPath = location.pathname;
+
+    if (currentPath.includes("/sabores")) {
+      navigate("/sabores/");
+    } else if (currentPath.includes("/tamanos")) {
+      navigate("/tamanos/");
+    } else if (currentPath.includes("/leches")) {
+      navigate("/leches/");
+    } else if (currentPath.includes("/toppings")) {
+      navigate("/toppings/");
+    } else if (currentPath.includes("/productos")) {
+      navigate("/productos/");
+    }
+  };
 
   return (
     <div className="max-w-lg mx-auto p-6 bg-white shadow-xl rounded-2xl border border-gray-200">
+      <div className="flex justify-end">
+        <button onClick={handleAddClick} className="px-2 py-2 bg-red-700 rounded-full hover:bg-red-900 transition duration-200 ease-in-out"></button>
+      </div>
       <h2 className="text-2xl font-semibold text-gray-800 mb-4 text-center">Agregar Sabor</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>

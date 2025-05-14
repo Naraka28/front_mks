@@ -3,46 +3,46 @@ import React from "react";
 export const EmployeesTable = () => {
   const customers = [
     {
-      name: "Alejandro Fernandez Lopez",
+      name: "Alejandro Fernandez",
       contact: "6621234567",
       spent: "$2,890.66",
-      country: "Activo",
-      img: "https://raw.githubusercontent.com/cruip/vuejs-admin-dashboard-template/main/src/images/user-36-05.jpg",
-    },
-    {
-      name: "Felipe Gonzalez",
-      contact: "6621234567",
-      spent: "$2,767.04",
-      country: "Activo",
-      img: "https://raw.githubusercontent.com/cruip/vuejs-admin-dashboard-template/main/src/images/user-36-06.jpg",
-    },
-    {
-      name: "Gabriel Garcia",
-      contact: "6621234567",
-      spent: "$2,996.00",
-      country: "Baja",
+      status: "Activo",
       img: "https://raw.githubusercontent.com/cruip/vuejs-admin-dashboard-template/main/src/images/user-36-07.jpg",
     },
     {
+      name: "Felipe Gonzalez",
+      contact: "6623234668",
+      spent: "$2,767.04",
+      status: "Activo",
+      img: "https://xsgames.co/randomusers/assets/avatars/male/6.jpg",
+    },
+    {
+      name: "Gabriel Garcia",
+      contact: "6624254866",
+      spent: "$2,996.00",
+      status: "Baja",
+      img: "https://xsgames.co/randomusers/assets/avatars/male/71.jpg",
+    },
+    {
       name: "Olga Martinez",
-      contact: "6621234567",
-      spent: "$6621234567",
-      country: "Activo",
-      img: "https://raw.githubusercontent.com/cruip/vuejs-admin-dashboard-template/main/src/images/user-36-08.jpg",
+      contact: "6622254764",
+      spent: "$3,654.00",
+      status: "Activo",
+      img: "https://xsgames.co/randomusers/assets/avatars/female/22.jpg",
     },
     {
       name: "Rodrigo Torres",
-      contact: "6621234567",
+      contact: "6623274668",
       spent: "$1,890.66",
-      country: "Baja",
-      img: "https://raw.githubusercontent.com/cruip/vuejs-admin-dashboard-template/main/src/images/user-36-09.jpg",
+      status: "Baja",
+      img: "https://xsgames.co/randomusers/assets/avatars/male/73.jpg",
     },
   ];
 
   return (
     <div className="col-span-12 p-4 rounded border border-gray-300 bg-white shadow-lg">
       <div className="mb-4 flex items-center justify-between px-5 py-4 border-b border-gray-100">
-        <h3 className="font-semibold text-gray-800">Customers</h3>
+        <h3 className="font-bold text-gray-800 text-2xl">Trabajadores</h3>
       </div>
       <table className="w-full table-auto">
         <TableHead />
@@ -73,14 +73,14 @@ const TableRow = ({
   name,
   contact,
   spent,
-  country,
+  status,
   img,
 }: {
+  img: string;
   name: string;
   contact: string;
   spent: string;
-  country: string;
-  img: string;
+  status: string;
 }) => {
   return (
     <tr className="text-gray-600">
@@ -94,9 +94,9 @@ const TableRow = ({
           <span className="font-medium text-gray-800">{name}</span>
         </div>
       </td>
-      <td className="p-2 whitespace-nowrap">{contact}</td>
-      <td className="p-2 whitespace-nowrap font-medium text-green-500">{spent}</td>
-      <td className="p-2 text-lg text-center">{country}</td>
+      <td className="p-2 whitespace-nowrap font-medium">{contact}</td>
+      <td className="p-2 whitespace-nowrap font-medium text-green-600">{spent}</td>
+      <td className={`relative grid items-center font-sans font-bold uppercase whitespace-nowrap select-none ${status === "Activo" ? "bg-green-500/20 text-green-900" : status === "Baja" ? "bg-red-500/20 text-red-900" : "bg-amber-500/20 text-amber-900" } justify-center mt-2.5 py-2 px-1 text-s rounded-md`}>{status}</td>
     </tr>
   );
 };

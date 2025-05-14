@@ -57,8 +57,8 @@ const DeleteConfirmationModal = ({ open, onClose, product, onConfirm }) => {
           <div className="text-center mb-4">
             <p className="text-xl text-gray-700 mb-2">¿Estás seguro que deseas eliminar el topping?</p>
             <p className="text-2xl font-bold text-gray-800">"{product.name}"</p>
-            <div className="p-2 bg-purple-100 items-center justify-center rounded-full mt-2">
-              <img src={product.image} alt="" height="100rem" width="100rem" />
+            <div className="p-2 bg-purple-100 flex justify-center items-center rounded-full mt-2">
+              <img src={product.image} alt="" className="max-w-full h-auto object-contain max-h-60 rounded-md"/>
             </div>
             <p className="text-xl text-red-600 font-semibold mt-2">Esta acción no se puede deshacer</p>
           </div>

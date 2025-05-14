@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { createMilk } from "../../../services/milksServices";
+import { useNavigate, useLocation } from "react-router-dom";
 
 
 const CatForm: React.FC = () => {
@@ -12,6 +13,9 @@ const CatForm: React.FC = () => {
     price: "",
     image: null,
   });
+
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -50,9 +54,25 @@ const CatForm: React.FC = () => {
     }
   };
   
+  const handleAddClick = () => {
+    const currentPath = location.pathname;
+
+    if (currentPath.includes("/sabores")) {
+      navigate("/sabores/");
+    } else if (currentPath.includes("/tamanos")) {
+      navigate("/tamanos/");
+    } else if (currentPath.includes("/leches")) {
+      navigate("/leches/");
+    } else if (currentPath.includes("/toppings")) {
+      navigate("/toppings/");
+    }
+  };
 
   return (
     <div className="max-w-lg mx-auto p-6 bg-white shadow-xl rounded-2xl border border-gray-200">
+      <div className="flex justify-end">
+        <button onClick={handleAddClick} className="px-2 py-2 bg-red-700 rounded-full hover:bg-red-900 transition duration-200 ease-in-out"></button>
+      </div>
       <h2 className="text-2xl font-semibold text-gray-800 mb-4 text-center">Agregar Producto</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>

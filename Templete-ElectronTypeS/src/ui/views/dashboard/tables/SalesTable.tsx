@@ -12,11 +12,101 @@ export const SalesTable = () => {
               id="#91883"
               quantity="7"
               date="4 de Agosto"
-              price="$354.25"
+              price="$68.25"
               order={1}
               status="Pagado"
-              account="visa"
-              image="https://centrosantafe.com.mx/cdn/shop/files/255.png?v=10504390230999457819"
+              account="Efectivo"
+              image="src/ui/assets/logo.svg"
+            />
+            <TableRow
+              id="#91882"
+              quantity="1"
+              date="4 de Agosto"
+              price="$62.99"
+              order={2}
+              status="Pagado"
+              account="Efectivo"
+              image="src/ui/assets/logo.svg"
+            />
+            <TableRow
+              id="#91881"
+              quantity="3"
+              date="3 de Agosto"
+              price="$89.50"
+              order={3}
+              status="Pendiente"
+              account="Efectivo"
+              image="src/ui/assets/logo.svg"
+            />
+            <TableRow
+              id="#91883"
+              quantity="7"
+              date="4 de Agosto"
+              price="$54.25"
+              order={1}
+              status="Pagado"
+              account="Efectivo"
+              image="src/ui/assets/logo.svg"
+            />
+            <TableRow
+              id="#91882"
+              quantity="1"
+              date="4 de Agosto"
+              price="$62.99"
+              order={2}
+              status="Pagado"
+              account="Efectivo"
+              image="src/ui/assets/logo.svg"
+            />
+            <TableRow
+              id="#91881"
+              quantity="3"
+              date="3 de Agosto"
+              price="$126.50"
+              order={3}
+              status="Pendiente"
+              account="Efectivo"
+              image="src/ui/assets/logo.svg"
+            />
+            <TableRow
+              id="#91883"
+              quantity="7"
+              date="4 de Agosto"
+              price="$68.25"
+              order={1}
+              status="Pagado"
+              account="Efectivo"
+              image="src/ui/assets/logo.svg"
+            />
+            <TableRow
+              id="#91882"
+              quantity="1"
+              date="4 de Agosto"
+              price="$62.99"
+              order={2}
+              status="Pagado"
+              account="Efectivo"
+              image="src/ui/assets/logo.svg"
+            />
+            <TableRow
+              id="#91881"
+              quantity="3"
+              date="3 de Agosto"
+              price="$89.50"
+              order={3}
+              status="Pagado"
+              account="Efectivo"
+              image="src/ui/assets/logo.svg"
+            />
+            <TableRow
+              id="#91883"
+              quantity="7"
+              date="4 de Agosto"
+              price="$54.25"
+              order={1}
+              status="Pagado"
+              account="Efectivo"
+              image="src/ui/assets/logo.svg"
             />
             <TableRow
               id="#91882"
@@ -25,18 +115,18 @@ export const SalesTable = () => {
               price="$62.99"
               order={2}
               status="Pendiente"
-              account="mastercard"
-              image="https://centrosantafe.com.mx/cdn/shop/files/255.png?v=10504390230999457819"
+              account="Efectivo"
+              image="src/ui/assets/logo.svg"
             />
             <TableRow
               id="#91881"
               quantity="3"
               date="3 de Agosto"
-              price="$223.50"
+              price="$126.50"
               order={3}
-              status="Pendiente"
-              account="visa"
-              image="https://centrosantafe.com.mx/cdn/shop/files/255.png?v=10504390230999457819"
+              status="Pagado"
+              account="Efectivo"
+              image="src/ui/assets/logo.svg"
             />
           </tbody>
         </table>
@@ -96,7 +186,7 @@ const TableRow = ({
       <td className="p-4 border-b border-blue-gray-50">
         <div className="flex items-center gap-3">
           <img src={image} alt="Logo" className="inline-block relative object-center !rounded-full w-12 h-12 rounded-lg border border-blue-gray-50 bg-blue-gray-50/50 object-contain p-1" />
-          <p className="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-bold">Starbucks Lomas</p>
+          <p className="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-bold">Hermosillo Centro</p>
         </div>
       </td>
       <td className="p-4 border-b border-blue-gray-50">
@@ -115,11 +205,10 @@ const TableRow = ({
       <td className="p-4 border-b border-blue-gray-50">
         <div className="flex items-center gap-3">
           <div className="h-9 w-12 rounded-md border border-blue-gray-50 p-1">
-            <img src={`https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/logos/${account}.png`} alt={account} className="inline-block relative object-center !rounded-none rounded-md h-full w-full object-contain p-1" />
+            <img src={`src/ui/assets/${account}.svg`} alt={account} className="inline-block relative object-center !rounded-none rounded-md h-full w-full"/>
           </div>
           <div className="flex flex-col">
             <p className="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-normal capitalize">{account}</p>
-            <p className="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-normal opacity-70">06/2026</p>
           </div>
         </div>
       </td>
