@@ -1,7 +1,8 @@
+import { TicketsResponse } from "./cashierServives";
 import { Order } from "./ordersServices";
 import { User } from "./usersServices";
 
-const API_URL = import.meta.env.ENV_API_URL as string;
+const API_URL = import.meta.env.VITE_ENV_API_URL as string;
 const TICKETS_API = `${API_URL}/tickets`;
 
 export interface Ticket {
@@ -20,8 +21,7 @@ export type TicketCreate = Omit<Ticket, 'id'>;
 
 export type TicketUpdate = Partial<Ticket>;
 
-
-export async function getTickets(): Promise<Ticket[]> {
+export async function getTickets(): Promise<TicketsResponse[]> {
     const response = await fetch(TICKETS_API, {
         method: 'GET',
         headers: {
@@ -31,8 +31,8 @@ export async function getTickets(): Promise<Ticket[]> {
     if (!response.ok) {
         throw new Error('Network response was not ok' + response.statusText);
     }
-    const data: TicketList = await response.json();
-    return data.tickets;
+    const data: TicketsResponse[] = await response.json();
+    return data;
 }
 
 export async function getTicketByID(id:number): Promise<Ticket> {
