@@ -33,6 +33,16 @@ export const CashierLayout: React.FC = () => {
                         path="completados/:ticketId"
                         element={<BodyCashier orderStatus="Completado" />}
                     />
+
+                    <Route
+                        path="cancelados"
+                        element={<BodyCashier orderStatus="Cancelado" />}
+                    />
+
+                    <Route
+                        path="cancelados/:ticketId"
+                        element={<BodyCashier orderStatus="Cancelado" />}
+                    />
                 </Routes>
             </main>
         </div>

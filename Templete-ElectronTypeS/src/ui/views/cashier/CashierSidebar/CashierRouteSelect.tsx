@@ -89,8 +89,15 @@ export const CashierRouteSelect: React.FC = () => {
       <Route
         Icon={FiTag}
         selected={location.pathname === "/cashier/completados"}
-        title="Historial de Tickets"
+        title="Tickets completados"
         path="/cashier/completados"
+      />
+
+      <Route
+        Icon={FiTag}
+        selected={location.pathname === "/cashier/cancelados"}
+        title="Tickets cancelados"
+        path="/cashier/cancelados"
       />
     </div>
   );

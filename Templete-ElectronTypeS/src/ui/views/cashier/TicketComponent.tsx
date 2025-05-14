@@ -9,6 +9,8 @@ interface TicketProps {
 const TicketComponent: React.FC<TicketProps> = ({ ticket }) => {
     const navigate = useNavigate();
     const isPending = ticket.status === 'Pendiente';
+    const isCompleted = ticket.status === 'Completado';
+    const isCanceled = ticket.status === 'Cancelado';
 
     const formatTime = (timeString: string) => {
         const [timePart] = timeString.split('.');
@@ -17,20 +19,27 @@ const TicketComponent: React.FC<TicketProps> = ({ ticket }) => {
     };
 
     const getStatusColor = () => {
-        return isPending ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800';
+        if (ticket.status === 'Pendiente') {
+            return 'bg-yellow-100 text-yellow-800';
+        } else if (ticket.status === 'Completado') {
+            return 'bg-green-100 text-green-800';
+        } else if (ticket.status === 'Cancelado') {
+            return 'bg-red-100 text-red-800';
+        }
+        return 'bg-gray-100 text-gray-800';
     };
 
     return (
         <div
             className="p-4 bg-white rounded-xl shadow-md hover:shadow-xl transition-all border border-stone-100 cursor-pointer"
-            onClick={() => navigate(isPending ? `/cashier/${ticket.id}` : `/cashier/completados/${ticket.id}`)}
+            onClick={() => navigate(isPending ? `/cashier/${ticket.id}` : isCompleted ? `/cashier/completados/${ticket.id}` : `/cashier/cancelados/${ticket.id}`)}
         >
             {/* Encabezado del ticket */}
             <div className="flex justify-between items-start mb-3">
                 <div>
                     <h3 className="text-base font-semibold">Ticket #{ticket.id}</h3>
                     <span className={`text-xs px-2 py-1 rounded-full ${getStatusColor()}`}>
-                        {isPending ? 'Pendiente' : 'Completado'}
+                        {isPending ? 'Pendiente' : isCompleted ? 'Completado' : isCanceled ? 'Cancelado' : ''}
                     </span>
                 </div>
 
