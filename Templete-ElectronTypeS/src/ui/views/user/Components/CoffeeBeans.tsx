@@ -1,9 +1,10 @@
 import Button from "../auxiliaryComponents/ButtonCard";
-import prueba1 from "./../../../assets/Prueba1.png";
+import decaf from "./../../../assets/decaf.png";
+import cafe from "./../../../assets/cafeine.png";
 
 const CoffeeBeansOptions = [
-    { id: 1, name: "Regular", icon: prueba1 },
-    { id: 2, name: "Descafeinado", icon: prueba1 },
+    { id: 1, name: "Regular", icon: cafe },
+    { id: 2, name: "Descafeinado", icon: decaf },
 ];
 
 interface CoffeeBeansProps {

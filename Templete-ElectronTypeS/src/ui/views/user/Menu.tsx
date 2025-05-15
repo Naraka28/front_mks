@@ -6,7 +6,7 @@ import MenuItems from "../user/Components/MenuItems";
 import OrderCard from "./auxiliaryComponents/OrderCard";
 import { useOrders } from "./auxiliaryComponents/OrderContext";
 import Button from "./auxiliaryComponents/Button";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getProducts } from "../../services/productsServices";
 import { getToppings } from "../../services/toppingsServices";
 import { getMilks } from "../../services/milksServices";
@@ -19,7 +19,8 @@ function Menu() {
   const [selectedType, setselectedType] = useState<string | null>(null);
   const navigate = useNavigate();
   const { orders, clearOrders } = useOrders();
-
+  
+  const queryClient = useQueryClient();
   const handleSelectProduct = (id: number) => {
     navigate(`/menu/${id}`);
   };
@@ -57,6 +58,7 @@ function Menu() {
         },
       });
       clearOrders();
+      queryClient.invalidateQueries({ queryKey: ['todos'] })
     } catch (e: any) {
       alert("Error al enviar la orden");
     }

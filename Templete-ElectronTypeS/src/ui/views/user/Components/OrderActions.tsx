@@ -9,6 +9,8 @@ import { getToppings } from "../../../services/toppingsServices";
 import { getMilks } from "../../../services/milksServices";
 import { getFlavors } from "../../../services/flavorServices";
 import { getSizes } from "../../../services/sizeServices";
+import checkout from "../../../assets/checkout.svg";
+import plus from "../../../assets/plus.png";
 
 
 interface OrderActionsProps {
@@ -75,24 +77,23 @@ const OrderActions: React.FC<OrderActionsProps> = ({ itemId, sizeId, flavourId, 
     };
 
     return (
-        <>
             <div>
                 <div className="grid grid-cols-2 gap-4 p-4 font-[Poppins]">
                     <ButtonCard
                         text="Agregar otro producto"
-                        imageSrc={""}
+                        imageSrc={plus}
                         altText="Agregar otro producto"
                         onClick={handleAddAnotherProduct}
                     />
                     <ButtonCard
                         text="Enviar Orden"
-                        imageSrc={""}
+                        imageSrc={checkout}
                         altText="Enviar Orden"
                         onClick={handleSendOrder}
                     />
                 </div>
             </div>
-        </>
+        
     );
 };
 

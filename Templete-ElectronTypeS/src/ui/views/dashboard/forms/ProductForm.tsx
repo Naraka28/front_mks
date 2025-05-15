@@ -256,8 +256,8 @@ const ProductForm: React.FC = () => {
           <label className="block text-gray-700 font-medium">Temperaturas</label>
           <MultiSelectDropDown
             content={[
-              { label: "Frío", value: 3 },
-              { label: "Caliente", value: 4 },
+              { label: "Frío", value: 11 },
+              { label: "Caliente", value: 12 },
             ]}
             onChange={(selected) => handleMultiSelectChange("temp", selected)}
           />

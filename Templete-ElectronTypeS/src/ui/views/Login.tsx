@@ -153,13 +153,7 @@ const Login: React.FC = () => {
                     </div>
                 </form>
                 <div className="mt-6 flex flex-col items-center w-full">
-                    <div className="flex gap-4 text-sm text-stone-500 font-medium">
-                        <Link to="/dashboard" className="hover:underline">Ir a Dashboard</Link>
-                        <span className="text-stone-300">|</span>
-                        <Link to="/userhome" className="hover:underline">Ir a Userhome</Link>
-                        <span className="text-stone-300">|</span>
-                        <Link to="/cashier" className="hover:underline">Ir a Cashier</Link>
-                    </div>
+                    
                 </div>
             </div>
         </div>
