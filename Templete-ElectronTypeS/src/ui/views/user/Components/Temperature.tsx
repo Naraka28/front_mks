@@ -15,7 +15,7 @@ const Temperature: React.FC<TemperatureProps> = ({ onSelectTemp, productId }) =>
         queryFn: () => getAllowedTemps(productId),
     });
 
-    if (isLoading) return <div className='flex mt-32 items-center justify-center w-full h-full'><SyncLoader color="#5d1abc" margin={8} size={36} speedMultiplier={1} /></div>;
+    if (isLoading) return <div className='flex items-center justify-center w-full h-full'><SyncLoader color="#5d1abc" margin={8} size={36} speedMultiplier={1} /></div>;
     if (error) return <p>Error loading temps</p>;
 
 
