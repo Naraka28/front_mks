@@ -8,12 +8,15 @@ import { getTemps } from "../../../services/tempsServices";
 import { useQuery } from "@tanstack/react-query";
 import { OrderCreate } from "../../../services/ordersServices";
 import { calculateTotal } from "./orderUtils";
+import { useParams } from "react-router-dom";
 
 
 interface OrderProps {
     order: OrderCreate;
     compact?: boolean;
 }
+
+
 
 
 const useOrderData = () => {
@@ -30,6 +33,7 @@ const useOrderData = () => {
 
 const OrderComponent: React.FC<OrderProps> = ({ order, compact = false }) => {
     const { menuItems, toppingOptions, milksOptions, flavourOptions, sizeItems, tempOptions } = useOrderData();
+    const { coffeeBeansId } = useParams();
 
 
     if (!order) {
@@ -68,12 +72,18 @@ const OrderComponent: React.FC<OrderProps> = ({ order, compact = false }) => {
     console.log("OrderComponent", order);
 
     const itemName = menuItems.find(item => item.id === Number(order.productId))?.name;
+    const itemImage = menuItems.find(item => item.id === Number(order.productId))?.image;
     const sizeName = sizeItems.find(size => size.id === Number(order.size))?.name;
     const flavourName = flavourOptions.find(flavour => flavour.id === Number(order.flavour))?.name;
     const tempName = tempOptions.find(temp => temp.id === Number(order.temp))?.name;
 
-    // Si tienes CoffeeBeansOptions, asegúrate de importarlo o definirlo
-    const coffeeBeansName = undefined; // Ajusta según tu lógica
+    // Mapear el coffeeBeansId a nombre
+    let coffeeBeansName = undefined;
+    if (order.coffeeBeansId || coffeeBeansId) {
+        const id = Number(order.coffeeBeansId ?? coffeeBeansId);
+        if (id === 1) coffeeBeansName = "Regular";
+        else if (id === 2) coffeeBeansName = "Descafeinado";
+    }
     const milkName = milksOptions.find(milk => milk.id === Number(order.milk))?.name;
 
     const sizePrice = `$${(sizeItems.find(size => size.id === Number(order.size))?.price || 0).toFixed(2)}`;
@@ -102,7 +112,7 @@ const OrderComponent: React.FC<OrderProps> = ({ order, compact = false }) => {
 
             <div className="bg-white rounded-2xl shadow-md p-6 mb-4 border border-stone-100 flex flex-col items-center">
                 <img
-                    src={menuItems.find(item => item.id === Number(order.id))?.image}
+                    src={itemImage || ''}
                     alt={itemName}
                     className="w-28 h-28 object-contain bg-white rounded-2xl shadow border border-stone-100 mb-3"
                 />
@@ -160,7 +170,7 @@ const OrderComponent: React.FC<OrderProps> = ({ order, compact = false }) => {
                     <ul className="text-base text-stone-600 divide-y divide-stone-100">
                         {order.toppings.map((ot, idx) => {
                             if (Number(ot.quantity) === 0) return null;
-                            const topping = toppingOptions.find(t => t.id === Number(ot.topping));
+                            const topping = toppingOptions.find(t => t.id === Number(ot.id));
                             const toppingName = topping?.name || '';
                             const toppingPrice = topping?.price || 0;
                             const toppingChargeableQuantity = Math.max(Number(ot.quantity) - (topping?.free_quantity || 0), 0);

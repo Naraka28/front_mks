@@ -8,6 +8,7 @@ import TicketActions from './auxiliaryComponents/TicketActions';
 import {
   getPendingTickets,
   getCompletedTickets,
+  getCanceledTickets,
   TicketsResponse,
   Order,
   cancelTicket,
@@ -17,7 +18,7 @@ import {
 import { useQuery } from '@tanstack/react-query';
 
 interface BodyCashierProps {
-  orderStatus: 'Pendiente' | 'Completado';
+  orderStatus: 'Pendiente' | 'Completado' | 'Cancelado';
 }
 
 const BodyCashier: React.FC<BodyCashierProps> = ({ orderStatus }) => {
@@ -32,7 +33,6 @@ const BodyCashier: React.FC<BodyCashierProps> = ({ orderStatus }) => {
   } = useQuery({
     queryKey: ['ticketsPending'],
     queryFn: getPendingTickets,
-    enabled: orderStatus === 'Pendiente',
   });
 
   const {
@@ -43,13 +43,31 @@ const BodyCashier: React.FC<BodyCashierProps> = ({ orderStatus }) => {
   } = useQuery({
     queryKey: ['ticketsCompleted'],
     queryFn: getCompletedTickets,
-    enabled: orderStatus === 'Completado',
+  });
+
+  const {
+    data: ticketsCanceled,
+    isLoading: isLoadingCanceled,
+    error: errorCanceled,
+    refetch: refetchCanceled,
+  } = useQuery({
+    queryKey: ['ticketsCanceled'],
+    queryFn: getCanceledTickets,
   });
   
+  console.log('ticketsPending', ticketsPending);
+  console.log('ticketsCanceled', ticketsCanceled);
 
   const isLoading = orderStatus === 'Pendiente' ? isLoadingPending : isLoadingCompleted;
   const error = orderStatus === 'Pendiente' ? errorPending : errorCompleted;
-  const tickets = orderStatus === 'Pendiente' ? ticketsPending : ticketsCompleted ;
+  let tickets;
+  if (orderStatus === 'Pendiente') {
+    tickets = ticketsPending;
+  } else if (orderStatus === 'Completado') {
+    tickets = ticketsCompleted;
+  } else if (orderStatus === 'Cancelado') {
+    tickets = ticketsCanceled;
+  }
 
   const ticketsArray = tickets
     ? Array.isArray(tickets)
@@ -136,7 +154,9 @@ const BodyCashier: React.FC<BodyCashierProps> = ({ orderStatus }) => {
                 ? `Ticket #${ticketId}`
                 : orderStatus === 'Pendiente'
                   ? 'Tickets Pendientes'
-                  : 'Tickets Completados'}
+                  : orderStatus === 'Completado'
+                    ? 'Tickets Completados'
+                    : 'Tickets Cancelados'}
             </p>
           </div>
           <div>

@@ -26,7 +26,7 @@ interface OrderActionsProps {
 const OrderActions: React.FC<OrderActionsProps> = ({ itemId, sizeId, flavourId, coffeeBeansId, toppings }) => {
     const navigate = useNavigate();
     const location = useLocation();
-    const { orders } = useOrders();
+    const { orders, clearOrders } = useOrders();
 
     const { data: menuItems = [] } = useQuery({ queryKey: ["products"], queryFn: getProducts });
     const { data: toppingOptions = [] } = useQuery({ queryKey: ["toppings"], queryFn: getToppings });
@@ -68,7 +68,7 @@ const OrderActions: React.FC<OrderActionsProps> = ({ itemId, sizeId, flavourId, 
                     total: total.toFixed(2),
                 },
             });
-            alert("¡La orden se envió correctamente!");
+            clearOrders();
         } catch (e: any) {
             alert("Error al enviar la orden");
         }

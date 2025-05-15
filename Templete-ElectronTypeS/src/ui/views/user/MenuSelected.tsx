@@ -159,10 +159,10 @@ const MenuSelected: React.FC = () => {
                                     : flavourId
                                         ? "Selecciona tipo de grano"
                                         : sizeId
-                                            ? `Selecciona un sabor para tamaño ${sizeId}`
+                                            ? `Selecciona un sabor`
                                             : tempId
                                                 ? "Selecciona tamaño"
-                                                : `Selecciona temperatura para ID: ${itemId}`}
+                                                : `Selecciona temperatura para ID:`}
                     </h1>
                     {/* Botón cancelar al lado del título */}
                     <Button
