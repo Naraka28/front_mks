@@ -6,6 +6,7 @@ import { ListBulletIcon } from '@heroicons/react/24/outline';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { deleteFlavor, getFlavors } from '../../../services/flavorServices';
 import { Link } from "react-router-dom";
+import { SyncLoader } from 'react-spinners';
 
 const ModalDetails = ({ open, onClose, product }) => {
   if (!product) return null;
@@ -111,7 +112,7 @@ const FlavorsTable = () => {
     }
   };
 
-  if (isLoading) return <div>Cargando sabores...</div>;
+  if (isLoading) return <div className='flex mt-32 items-center justify-center w-full h-full'><SyncLoader color="#5d1abc" margin={8} size={36} speedMultiplier={1}/></div>;
   if (error) return <div>Error al cargar sabores: {error.message}</div>;
 
   return (

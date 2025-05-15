@@ -1,6 +1,7 @@
 import { getAllowedFlavors } from "../../../services/productsServices";
 import Button from "../auxiliaryComponents/ButtonCard";
 import { useQuery } from '@tanstack/react-query';
+import { SyncLoader } from "react-spinners";
 
 
 
@@ -16,7 +17,7 @@ const Flavours: React.FC<FlavoursProps> = ({ onSelectFlavour, productId }) => {
     });
     
 
-    if (isLoading) return <p>Cargando sabores...</p>;
+    if (isLoading) return <div className='flex items-center justify-center w-full h-full'><SyncLoader color="#5d1abc" margin={8} size={36} speedMultiplier={1} /></div>;
     if (error) return <p>Error al cargar los sabores</p>;
 
 

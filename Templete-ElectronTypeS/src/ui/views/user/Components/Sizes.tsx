@@ -2,6 +2,7 @@ import React from "react";
 import Button from "../auxiliaryComponents/ButtonCard.tsx";
 import {useQuery} from "@tanstack/react-query";
 import { getAllowedSizes } from "../../../services/productsServices.ts";
+import { SyncLoader } from "react-spinners";
 
 interface SizesProps {
     onSelectSize: (id: number) => void;
@@ -15,7 +16,7 @@ const Sizes: React.FC<SizesProps> = ({ productId, onSelectSize }) => {
            queryFn: () => getAllowedSizes(productId),   
        });
     
-        if (isLoading) return <p>Loading sizes...</p>;
+        if (isLoading) return <div className='flex items-center justify-center w-full h-full'><SyncLoader color="#5d1abc" margin={8} size={36} speedMultiplier={1}/></div>;
         if (error) return <p>Error loading sizes</p>;
     
 

@@ -1,6 +1,6 @@
 import { getAllowedTemps } from "../../../services/productsServices";
 import Button from "../auxiliaryComponents/ButtonCard";
-
+import { SyncLoader } from "react-spinners";
 import { useQuery } from "@tanstack/react-query";
 
 interface TemperatureProps {
@@ -10,15 +10,15 @@ interface TemperatureProps {
 
 const Temperature: React.FC<TemperatureProps> = ({ onSelectTemp, productId }) => {
 
-          const { data: tempsOptions, isLoading, error } = useQuery({
-                queryKey: ["flavors", productId], // Incluye productId para evitar datos en caché incorrectos
-                queryFn: () => getAllowedTemps(productId),   
-            });
-        
-            if (isLoading) return <p>Loading temps...</p>;
-            if (error) return <p>Error loading temps</p>;
-        
-    
+    const { data: tempsOptions, isLoading, error } = useQuery({
+        queryKey: ["flavors", productId], // Incluye productId para evitar datos en caché incorrectos
+        queryFn: () => getAllowedTemps(productId),
+    });
+
+    if (isLoading) return <div className='flex items-center justify-center w-full h-full'><SyncLoader color="#5d1abc" margin={8} size={36} speedMultiplier={1} /></div>;
+    if (error) return <p>Error loading temps</p>;
+
+
 
 
     return (

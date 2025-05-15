@@ -3,6 +3,7 @@ import CounterButton from '../auxiliaryComponents/CounterButton.tsx';
 import { useQuery } from '@tanstack/react-query';
 import { getAllowedToppings } from '../../../services/productsServices.ts';
 import { Topping } from '../../../services/toppingsServices.ts';
+import { SyncLoader } from 'react-spinners';
 
 interface ToppingsProps {
     onSelectionChange: (selectedToppings: Record<number, number>) => void;
@@ -18,7 +19,7 @@ const Toppings: React.FC<ToppingsProps> = ({ onSelectionChange, productId }) => 
         queryFn: () => getAllowedToppings(productId),
     });    
 
-    if (isLoading) return <p>Loading toppings...</p>;
+    if (isLoading) return <div className='flex items-center justify-center w-full h-full'><SyncLoader color="#5d1abc" margin={8} size={36} speedMultiplier={1}/></div>;
     if (error) return <p>Error loading toppings</p>;
 
     const handleDecrement = (id: number) => {
